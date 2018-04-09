@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using System.Data;
 
 namespace Analytics
 {
@@ -10,6 +11,8 @@ namespace Analytics
     {
         ModelsState copySelf();
         void recoverySelf(ModelsState state);
-        DataSet loadStore();//загрузка данных из базы данных
+        void loadStore();//загрузка данных из базы данных
+        void subscribe(Observer newObserver);
+        void notifyObserver(object data);
     }
 }

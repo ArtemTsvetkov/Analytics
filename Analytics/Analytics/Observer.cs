@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace Analytics
 {
-    interface ModelsState
+    interface Observer
     {
+        void notify(object data);
     }
 }
-/*
- * Интерфейс для передачи текущего состояния модели в команду
- */
-

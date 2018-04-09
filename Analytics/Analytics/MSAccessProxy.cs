@@ -1,11 +1,12 @@
-﻿using System.Text;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Data.OleDb;
 using System.Data;
 using System.Windows.Forms;
 using System.IO;
-using System.Collections.Generic;
-using System;
-using System.Linq;
 
 namespace Analytics
 {
@@ -109,3 +110,4 @@ namespace Analytics
 /*
  * Контролирует возможность доступа к БД. Реализация паттерна "Посредник"
  */
+
