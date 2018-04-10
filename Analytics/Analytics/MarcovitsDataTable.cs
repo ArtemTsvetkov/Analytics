@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Analytics
 {
-    class ResultTableRows//класс для хранения строк результирующей таблицы
+    class MarcovitsDataTable//класс для хранения строк результирующей таблицы
     {
         public DateTime star_time;
         public DateTime finish_time;
@@ -16,12 +16,12 @@ namespace Analytics
         public string po;
         public string servers_host;
 
-        public ResultTableRows()
+        public MarcovitsDataTable()
         {
 
         }
 
-        public ResultTableRows(DateTime star_time, DateTime finish_time, string user, string host, string vendor, string po, string servers_host)
+        public MarcovitsDataTable(DateTime star_time, DateTime finish_time, string user, string host, string vendor, string po, string servers_host)
         {
             this.star_time = star_time;
             this.finish_time = finish_time;

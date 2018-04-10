@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Analytics
 {
-    class ConcreteModelsState : ModelsState
+    class AllLoadModelState : ModelsState
     {
         public string pathOfDataBase = "";
         public string tableOfDataBase = "";
-        public List<ResultTableRows> data = new List<ResultTableRows>();
+        public List<AllDataTable> data = new List<AllDataTable>();
     }
 }
