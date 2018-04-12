@@ -50,13 +50,19 @@ namespace Analytics
             }
             for (int j = 0; j < state.avgNumbersUseLicense.Length; j++)
             {
-                state.avgNumbersUseLicense[j] = state.avgNumbersUseLicense[j] / state.data.Count;
-                
+                state.avgNumbersUseLicense[j] = state.avgNumbersUseLicense[j] / state.data.Count;        
             }
             
             //Пока для тестов число закупленных лицензий равно среденему числу
             state.numberBuyLicense = (double[])state.avgNumbersUseLicense.Clone();
             state.numberBuyLicense[2] = 1;
+
+            //Для тестов вшил разные значения
+            state.numberBuyLicense[0] = 8;
+            state.numberBuyLicense[1] = 3;
+            state.numberBuyLicense[2] = 1;
+            state.numberBuyLicense[3] = 4;
+            state.numberBuyLicense[4] = 1;
             //Расчет разницы между кол-вом закупленных и текущих лицензий
             for (int i = 0; i < state.data.Count; i++)
             {
@@ -66,6 +72,7 @@ namespace Analytics
                 }
             }
 
+            state.avgDeviationFromPurchasedNumber = new double[state.unicSoftwareNames.Length];
             //расчет ковариации
             double[,] covarMas = new double[state.unicSoftwareNames.Length, state.unicSoftwareNames.Length];
             for(int i=0; i< state.unicSoftwareNames.Length; i++)
@@ -80,6 +87,9 @@ namespace Analytics
                         matrixB[m] = state.data.ElementAt(m).licenses[j];
                     }
                     covarMas[i, j] = covar(matrixA, matrixB);
+
+                    //Для рассчета доходности считаю доходность по каждой отдельной лицензии
+                    state.avgDeviationFromPurchasedNumber[i] = (1 - Math.Abs(avg(matrixA)));
                 }
             }
             //Пока вшил равные соотношения в процентах
@@ -88,6 +98,12 @@ namespace Analytics
             {
                 state.percents[i,0] = 0.2;
             }
+            //Замена некоторых просто для теста
+            state.percents[0, 0] = 0.4;
+            state.percents[1, 0] = 0.1;
+            state.percents[2, 0] = 0.2;
+            state.percents[3, 0] = 0.3;
+            state.percents[4, 0] = 0.1;
 
             //Подсчет общего риска
             state.risk = MultiplyMatrix(covarMas, state.percents);
@@ -99,54 +115,16 @@ namespace Analytics
             }
 
             state.risk = MultiplyMatrix(transpPercents, state.risk);
-            int gygg = 0;
-                /*double[] matrixA = new double[10];
-                matrixA[0] = 5.93;
-                matrixA[1] = 5.85;
-                matrixA[2] = 5.21;
-                matrixA[3] = 5.37;
-                matrixA[4] = 4.99;
-                matrixA[5] = 4.87;
-                matrixA[6] = 4.7;
-                matrixA[7] = 4.75;
-                matrixA[8] = 4.33;
-                matrixA[9] = 3.86;
 
-                double[] matrixB = new double[10];
-                matrixB[0] = 2.27;
-                matrixB[1] = 2.39;
-                matrixB[2] = 3.47;
-                matrixB[3] = 3.21;
-                matrixB[4] = 2.95;
-                matrixB[5] = 2.97;
-                matrixB[6] = 3.32;
-                matrixB[7] = 3.65;
-                matrixB[8] = 3.97;
-                matrixB[9] = 3.81;
-
-                double cov = covar(matrixA, matrixB);
-
-
-                int[,] aMatrix = new int[3, 2];
-                aMatrix[0, 0] = 1;
-                aMatrix[0, 1] = 4;
-                aMatrix[1, 0] = 2;
-                aMatrix[1, 1] = 5;
-                aMatrix[2, 0] = 3;
-                aMatrix[2, 1] = 6;
-
-                int[,] bMatrix = new int[2, 3];
-                bMatrix[0, 0] = 7;
-                bMatrix[0, 1] = 8;
-                bMatrix[0, 2] = 9;
-                bMatrix[1, 0] = 10;
-                bMatrix[1, 1] = 11;
-                bMatrix[1, 2] = 12;
-
-                int[,] unsver = MultiplyMatrix(aMatrix, bMatrix);*/
-
-
+            //Подсчет общего дохода
+            state.income = 0;
+            for (int i=0; i<state.avgDeviationFromPurchasedNumber.Length; i++)
+            {
+                state.income += state.avgDeviationFromPurchasedNumber[i] * state.percents[i,0];
             }
+
+            notifyObserver();
+        }
 
         public void subscribe(Observer newObserver)
         {
@@ -175,7 +153,8 @@ namespace Analytics
 
         public void notifyObserver()
         {
-            observer.notify(state.data);
+            observer.notify(state);//Пока отправляю весь стейт, но потом сделаю через стратегию, чтобы сама вью выбирала что ей отправлять из списка.
+                                   //список будет формироваться из части полей State. То есть State будет содержать два блока-обще доступный и приватный
         }
 
 
