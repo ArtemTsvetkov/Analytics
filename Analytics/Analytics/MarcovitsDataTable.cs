@@ -8,28 +8,26 @@ namespace Analytics
 {
     class MarcovitsDataTable//класс для хранения строк результирующей таблицы
     {
-        public DateTime star_time;
-        public DateTime finish_time;
-        public string user;
-        public string host;
-        public string vendor;
-        public string po;
-        public string servers_host;
+        //public int requireNumber;//покажет, сколько требовалось в определенный срок
+        //public int currentNumber = 0;//Покажет, сколько планировается закупить
+        public double[] licenses;//для произволного кол-ва анализируемых лицензий
+        public int year_in;
+        public int month_in;
+        public int day_in;
+        public int hours_in;
 
         public MarcovitsDataTable()
         {
 
         }
 
-        public MarcovitsDataTable(DateTime star_time, DateTime finish_time, string user, string host, string vendor, string po, string servers_host)
+        public MarcovitsDataTable(int year_in, int month_in, int day_in, int hours_in, double[] licenses)
         {
-            this.star_time = star_time;
-            this.finish_time = finish_time;
-            this.user = user;
-            this.host = host;
-            this.vendor = vendor;
-            this.po = po;
-            this.servers_host = servers_host;
+            this.year_in = year_in;
+            this.month_in = month_in;
+            this.day_in = day_in;
+            this.hours_in = hours_in;
+            this.licenses = licenses;
         }
     }
 }

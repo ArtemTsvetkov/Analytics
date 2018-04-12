@@ -39,6 +39,12 @@ namespace Analytics
 
         private void button1_Click(object sender, EventArgs e)
         {
+            Model newModel = new MarcovitsModel("D:\\Files\\MsVisualProjects\\Diplom\\Логи\\testlogs\\Database3.accdb", "Information");
+            newModel.calculationStatistics();
+
+
+
+
             Model model = new AllLoadModel("D:\\Files\\MsVisualProjects\\Diplom\\Логи\\testlogs\\Database3.accdb", "Information");
             model.subscribe(this);
             CommandsStore commandsStore = new ConcreteCommandStore();

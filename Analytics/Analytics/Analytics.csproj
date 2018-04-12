@@ -64,6 +64,7 @@
     <Compile Include="LoadDataCommand.cs" />
     <Compile Include="MarcovitsDataTable.cs" />
     <Compile Include="MarcovitsDataTableConverter.cs" />
+    <Compile Include="MarcovitsDistinctSoftwareNamesConverter.cs" />
     <Compile Include="MarcovitsModel.cs" />
     <Compile Include="MarcovitsModelState.cs" />
     <Compile Include="Model.cs" />
