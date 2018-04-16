@@ -52,17 +52,16 @@ namespace Analytics
             {
                 state.avgNumbersUseLicense[j] = state.avgNumbersUseLicense[j] / state.data.Count;        
             }
-            
-            //Пока для тестов число закупленных лицензий равно среденему числу
-            state.numberBuyLicense = (double[])state.avgNumbersUseLicense.Clone();
-            state.numberBuyLicense[2] = 1;
 
-            //Для тестов вшил разные значения
-            state.numberBuyLicense[0] = 8;
-            state.numberBuyLicense[1] = 3;
-            state.numberBuyLicense[2] = 1;
-            state.numberBuyLicense[3] = 4;
-            state.numberBuyLicense[4] = 1;
+            //Пока для тестов число закупленных лицензий читается из таблицы PurchasedLicenses
+            accessProxy.setConfig(state.pathOfDataBase, "SELECT type, count FROM PurchasedLicenses");
+            ds = accessProxy.execute();
+            DataTable table = ds.Tables[0];
+            state.numberBuyLicense = new double[state.unicSoftwareNames.Count()];
+            for (int i=0;i<state.unicSoftwareNames.Count();i++)
+            {
+                state.numberBuyLicense[i] = int.Parse(table.Rows[i][1].ToString());
+            }
             //Расчет разницы между кол-вом закупленных и текущих лицензий
             for (int i = 0; i < state.data.Count; i++)
             {
@@ -92,18 +91,15 @@ namespace Analytics
                     state.avgDeviationFromPurchasedNumber[i] = (1 - Math.Abs(avg(matrixA)));
                 }
             }
-            //Пока вшил равные соотношения в процентах
-            state.percents = new double[5,1];
-            for(int i=0; i<5; i++)
+            //Пока для тестов соотношения в процентах читается из таблицы PercentageOfLicense
+            accessProxy.setConfig(state.pathOfDataBase, "SELECT type, percent FROM PercentageOfLicense");
+            ds = accessProxy.execute();
+            table = ds.Tables[0];
+            state.percents = new double[state.unicSoftwareNames.Count(),1];
+            for (int i = 0; i < state.unicSoftwareNames.Count(); i++)
             {
-                state.percents[i,0] = 0.2;
+                state.percents[i,0] = double.Parse(table.Rows[i][1].ToString());
             }
-            //Замена некоторых просто для теста
-            state.percents[0, 0] = 0.4;
-            state.percents[1, 0] = 0.1;
-            state.percents[2, 0] = 0.2;
-            state.percents[3, 0] = 0.3;
-            state.percents[4, 0] = 0.1;
 
             //Подсчет общего риска
             state.risk = MultiplyMatrix(covarMas, state.percents);
