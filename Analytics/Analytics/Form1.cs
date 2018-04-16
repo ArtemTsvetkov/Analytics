@@ -44,12 +44,18 @@ namespace Analytics
                 chart1.Series[0].Points.AddXY(0, (state.income*100));
                 chart1.Series[0].Points.AddXY(0, 100- (state.income * 100));
                 chart1.Series[0].Points.ElementAt(1).Color = Color.Black;
+                double plus = state.income * 100;
+                label5.Visible = true;
+                label5.Text = "Доходность:" + plus.ToString();
                 //Вывод данных о риске
                 chart2.Series[0].Points.Clear();
                 chart2.Series[0].Points.AddXY(0, (state.risk[0,0] * 100));
                 chart2.Series[0].Points.AddXY(0, 100 - (state.income * 100));
                 chart2.Series[0].Points.ElementAt(0).Color = Color.Red;
                 chart2.Series[0].Points.ElementAt(1).Color = Color.Black;
+                double mines = state.risk[0, 0] * 100;
+                label6.Visible = true;
+                label6.Text = "Риск:" + plus.ToString();
                 //Вывод данных о распределении бюджета по лицензиям
                 chart3.Series[0].Points.Clear();
                 for(int i=0;i<state.unicSoftwareNames.Length;i++)
