@@ -10,9 +10,10 @@ namespace Analytics
     interface Model
     {
         ModelsState copySelf();
-        void recoverySelf(ModelsState state);
+        void recoverySelf(ModelsState state);//восстановление модели
         void loadStore();//загрузка данных из базы данных
-        void subscribe(Observer newObserver);
-        void notifyObserver(object data);
+        void subscribe(Observer newObserver);//подписка на модель
+        void notifyObserver();//Уведомление подписчиков о изменении стэйта
+        void calculationStatistics();//рассчет статистических параметров
     }
 }

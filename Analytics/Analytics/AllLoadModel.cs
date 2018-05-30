@@ -8,18 +8,23 @@ using System.IO;
 
 namespace Analytics
 {
-    class ConcreteModel : Model
+    class AllLoadModel : Model
     {
-        ConcreteModelsState state = new ConcreteModelsState();
+        AllLoadModelState state = new AllLoadModelState();
         Observer observer;
-        ResultTableRowsDataConverter converter = new ResultTableRowsDataConverter();
+        AllDataTableConverter converter = new AllDataTableConverter();
 
-        public ConcreteModel(string pathOfDataBase, string tableOfDataBase)
+        public AllLoadModel(string pathOfDataBase, string tableOfDataBase)
         {
             state.pathOfDataBase = pathOfDataBase;
             state.tableOfDataBase = tableOfDataBase;
         }
 
+        public void calculationStatistics()
+        {
+            throw new Exception();//Эта модель просто грузит все данные и все, она не считает 
+                                  //статистику, ее сделал просто для примера
+        }
         public void subscribe(Observer newObserver)
         {
             observer = newObserver;
@@ -32,7 +37,7 @@ namespace Analytics
 
         public void recoverySelf(ModelsState state)
         {
-            this.state = (ConcreteModelsState)state;
+            this.state = (AllLoadModelState)state;
         }
 
         public void loadStore()//загрузка данных из базы данных
@@ -41,12 +46,13 @@ namespace Analytics
             //получение значения id
             accessProxy.setConfig(state.pathOfDataBase, "SELECT user_name, user_host, software FROM " + state.tableOfDataBase);
             DataSet ds = accessProxy.execute();
-            notifyObserver(ds);
+            state.data = (List<AllDataTable>)converter.convert(ds);
+            notifyObserver();
         }
 
-        public void notifyObserver(object data)
+        public void notifyObserver()
         {
-            observer.notify(converter.convert(data));
+            observer.notify(state.data);
         }
     }
 }
