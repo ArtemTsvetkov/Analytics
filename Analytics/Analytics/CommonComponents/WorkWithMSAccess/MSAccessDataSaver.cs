@@ -11,7 +11,7 @@ using Analytics.CommonComponents.Interfaces.Data;
 
 namespace Analytics
 {
-    class MSAccessDataSaver : DataSaver<DataSet>
+    class MSAccessDataSaver : DataSaver<List<string>,string, DataSet>
     {
         private string host;//пример хоста:C:\\Users\\Artem\\Documents\\Database3.accdb
         private string query;//Для выполненения 1 запроса

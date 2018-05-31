@@ -1,4 +1,5 @@
-﻿using Analytics.CommonComponents.WorkWithMSAccess;
+﻿using Analytics.CommonComponents.Interfaces.Data;
+using Analytics.CommonComponents.WorkWithMSAccess;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,8 +13,8 @@ namespace Analytics
     {
         MarcovitsModelState state = new MarcovitsModelState();
         Observer observer;
-        MarcovitsDataTableConverter converter = new MarcovitsDataTableConverter();
-        MarcovitsDistinctSoftwareNamesConverter unucNamesConverter = new MarcovitsDistinctSoftwareNamesConverter();
+        DataConverter<DataSet> converter = new MarcovitsDataTableConverter();
+        DataConverter<DataSet> unucNamesConverter = new MarcovitsDistinctSoftwareNamesConverter();
 
         public MarcovitsModel(string pathOfDataBase, string tableOfDataBase)
         {
@@ -24,8 +25,8 @@ namespace Analytics
         public void calculationStatistics()
         {
             //Получение уникальных имен лицензий
-            MSAccessProxy accessProxy = new MSAccessProxy();
-            MSAccessStorageForData newData = new MSAccessStorageForData();
+            DataSaver<List<string>, string, DataSet> accessProxy = new MSAccessProxy();
+            StorageForData<DataSet> newData = new MSAccessStorageForData();
             accessProxy.setConfig(state.pathOfDataBase, "SELECT DISTINCT software FROM " + state.tableOfDataBase, newData);
             accessProxy.execute();
             DataSet ds = newData.getData();
@@ -145,8 +146,8 @@ namespace Analytics
 
         public void loadStore()//загрузка данных из базы данных
         {
-            MSAccessProxy accessProxy = new MSAccessProxy();
-            MSAccessStorageForData newData = new MSAccessStorageForData();
+            DataSaver<List<string>, string, DataSet> accessProxy = new MSAccessProxy();
+            StorageForData<DataSet> newData = new MSAccessStorageForData();
             //получение значения id
             accessProxy.setConfig(state.pathOfDataBase, "SELECT user_name, user_host, software FROM " + state.tableOfDataBase, newData);
             accessProxy.execute();

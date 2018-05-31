@@ -7,33 +7,26 @@ using System.Threading.Tasks;
 
 namespace Analytics
 {
-    class MarcovitsDataTableConverter : DataConverter
+    class MarcovitsDataTableConverter : DataConverter<DataSet>
     {
-        public object convert(object data)
+        public object convert(DataSet data)
         {
-            if (data.GetType() == typeof(DataSet))
+            DataSet ds = (DataSet)data;
+            List<MarcovitsDataTable> newData = new List<MarcovitsDataTable>();
+            DataTable table = ds.Tables[0];
+            for (int i = 0; i < table.Rows.Count; i++)
             {
-                DataSet ds = (DataSet)data;
-                List<MarcovitsDataTable> newData = new List<MarcovitsDataTable>();
-                DataTable table = ds.Tables[0];
-                for (int i = 0; i < table.Rows.Count; i++)
+                double[] licenses = new double[table.Columns.Count-4];
+                for(int j = 0;j< table.Columns.Count - 4; j++)
                 {
-                    double[] licenses = new double[table.Columns.Count-4];
-                    for(int j = 0;j< table.Columns.Count - 4; j++)
-                    {
-                        licenses[j] = convertFromItemToInt(table.Rows[i][j+4]);
-                    }
-
-                    MarcovitsDataTable resultTableRow = new MarcovitsDataTable(convertFromItemToInt(table.Rows[i][0]), convertFromItemToInt(table.Rows[i][1]),
-                        convertFromItemToInt(table.Rows[i][2]), convertFromItemToInt(table.Rows[i][3]), licenses);
-                    newData.Add(resultTableRow);
+                    licenses[j] = convertFromItemToInt(table.Rows[i][j+4]);
                 }
-                return newData;
+
+                MarcovitsDataTable resultTableRow = new MarcovitsDataTable(convertFromItemToInt(table.Rows[i][0]), convertFromItemToInt(table.Rows[i][1]),
+                    convertFromItemToInt(table.Rows[i][2]), convertFromItemToInt(table.Rows[i][3]), licenses);
+                newData.Add(resultTableRow);
             }
-            else
-            {
-                return null;
-            }
+            return newData;
         }
 
         private int convertFromItemToInt(object item)

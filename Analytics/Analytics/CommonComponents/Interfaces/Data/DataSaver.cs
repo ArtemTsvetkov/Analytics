@@ -8,14 +8,16 @@ using Analytics.CommonComponents.Interfaces.Data;
 
 namespace Analytics
 {
-    interface DataSaver<T>
+    interface DataSaver<TDataType1, TDataType2, TStorage>
     {
-        void setConfig(string host, string query, StorageForData<T> resultStorage);
-        void setConfig(string host, List<string> querys, StorageForData<T> resultStorage);
+        void setConfig(string host, TDataType1 data, StorageForData<TStorage> resultStorage);
+        void setConfig(string host, TDataType2 data, StorageForData<TStorage> resultStorage);
         void execute();
         bool connect();
     }
 }
 /*
  * Позволяет выгрузить данные, например, в БД.
+ * Два типа - TDataType1, TDataType2 понадобится, в случае, если, например, при взаимодействии
+ * с БД можно слать либо один запрос, либос разу несколько
  */

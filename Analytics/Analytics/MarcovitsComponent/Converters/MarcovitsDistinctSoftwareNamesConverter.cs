@@ -7,24 +7,17 @@ using System.Threading.Tasks;
 
 namespace Analytics
 {
-    class MarcovitsDistinctSoftwareNamesConverter : DataConverter
+    class MarcovitsDistinctSoftwareNamesConverter : DataConverter<DataSet>
     {
-        public object convert(object data)
+        public object convert(DataSet data)
         {
-            if (data.GetType() == typeof(DataSet))
+            DataSet ds = data;
+            string[] newData = new string[ds.Tables[0].Rows.Count];
+            for(int i=0; i< ds.Tables[0].Rows.Count; i++)
             {
-                DataSet ds = (DataSet)data;
-                string[] newData = new string[ds.Tables[0].Rows.Count];
-                for(int i=0; i< ds.Tables[0].Rows.Count; i++)
-                {
-                    newData[i] = ds.Tables[0].Rows[i][0].ToString();
-                }
-                return newData;
+                newData[i] = ds.Tables[0].Rows[i][0].ToString();
             }
-            else
-            {
-                return null;
-            }
+            return newData;
         }
     }
 }
