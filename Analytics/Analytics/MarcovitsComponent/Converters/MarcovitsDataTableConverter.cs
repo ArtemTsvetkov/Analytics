@@ -22,8 +22,10 @@ namespace Analytics
                     licenses[j] = convertFromItemToInt(table.Rows[i][j+4]);
                 }
 
-                MarcovitsDataTable resultTableRow = new MarcovitsDataTable(convertFromItemToInt(table.Rows[i][0]), convertFromItemToInt(table.Rows[i][1]),
-                    convertFromItemToInt(table.Rows[i][2]), convertFromItemToInt(table.Rows[i][3]), licenses);
+                MarcovitsDataTable resultTableRow = new MarcovitsDataTable(convertFromItemToInt(table.
+                    Rows[i][0]), convertFromItemToInt(table.Rows[i][1]),
+                    convertFromItemToInt(table.Rows[i][2]), convertFromItemToInt(table.Rows[i][3]), 
+                    licenses);
                 newData.Add(resultTableRow);
             }
             return newData;

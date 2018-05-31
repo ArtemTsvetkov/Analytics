@@ -27,7 +27,8 @@ namespace Analytics
             //Получение уникальных имен лицензий
             DataSaver<List<string>, string, DataSet> accessProxy = new MSAccessProxy();
             StorageForData<DataSet> newData = new MSAccessStorageForData();
-            accessProxy.setConfig(state.pathOfDataBase, "SELECT DISTINCT software FROM " + state.tableOfDataBase, newData);
+            accessProxy.setConfig(state.pathOfDataBase, "SELECT DISTINCT software FROM " + state.
+                tableOfDataBase, newData);
             accessProxy.execute();
             DataSet ds = newData.getData();
             state.unicSoftwareNames = (string[])unucNamesConverter.convert(ds);
@@ -35,9 +36,12 @@ namespace Analytics
             string query = "SELECT  i.year_in, i.month_in, i.day_in, i.hours_in";
             for(int i=0; i<state.unicSoftwareNames.Length; i++)
             {
-                query += ", (SELECT COUNT(*) FROM Information ii WHERE ii.software='"+ state.unicSoftwareNames[i]+ "' AND ii.year_in = i.year_in  AND ii.month_in =  i.month_in AND ii.day_in =  i.day_in AND ii.hours_in = i.hours_in)";
+                query += ", (SELECT COUNT(*) FROM Information ii WHERE ii.software='"+ state.
+                    unicSoftwareNames[i]+ "' AND ii.year_in = i.year_in  AND ii.month_in =  "+
+                    "i.month_in AND ii.day_in =  i.day_in AND ii.hours_in = i.hours_in)";
             }
-            query += "FROM Information i WHERE hours_in IS NOT NULL GROUP BY hours_in, day_in, month_in, year_in ORDER BY year_in, month_in, day_in, hours_in";
+            query += "FROM Information i WHERE hours_in IS NOT NULL GROUP BY hours_in, day_in, "+
+                "month_in, year_in ORDER BY year_in, month_in, day_in, hours_in";
             //Получение данных об использовании
             accessProxy.setConfig(state.pathOfDataBase, query, newData);
             accessProxy.execute();
@@ -59,7 +63,8 @@ namespace Analytics
             }
 
             //Пока для тестов число закупленных лицензий читается из таблицы PurchasedLicenses
-            accessProxy.setConfig(state.pathOfDataBase, "SELECT type, count FROM PurchasedLicenses", newData);
+            accessProxy.setConfig(state.pathOfDataBase, "SELECT type, count FROM PurchasedLicenses",
+                newData);
             accessProxy.execute();
             ds = newData.getData();
             DataTable table = ds.Tables[0];
@@ -73,13 +78,15 @@ namespace Analytics
             {
                 for (int j = 0; j < state.data.ElementAt(i).licenses.Length; j++)
                 {
-                    state.data.ElementAt(i).licenses[j] = (state.data.ElementAt(i).licenses[j]- state.numberBuyLicense[j])/ state.numberBuyLicense[j];
+                    state.data.ElementAt(i).licenses[j] = (state.data.ElementAt(i).licenses[j] - 
+                        state.numberBuyLicense[j])/ state.numberBuyLicense[j];
                 }
             }
 
             state.avgDeviationFromPurchasedNumber = new double[state.unicSoftwareNames.Length];
             //расчет ковариации
-            double[,] covarMas = new double[state.unicSoftwareNames.Length, state.unicSoftwareNames.Length];
+            double[,] covarMas = new double[state.unicSoftwareNames.Length, state.unicSoftwareNames.
+                Length];
             for(int i=0; i< state.unicSoftwareNames.Length; i++)
             {
                 for (int j = 0; j < state.unicSoftwareNames.Length; j++)
@@ -98,7 +105,8 @@ namespace Analytics
                 }
             }
             //Пока для тестов соотношения в процентах читается из таблицы PercentageOfLicense
-            accessProxy.setConfig(state.pathOfDataBase, "SELECT type, percent FROM PercentageOfLicense", newData);
+            accessProxy.setConfig(state.pathOfDataBase, "SELECT type, percent FROM PercentageOf"+
+                "License", newData);
             accessProxy.execute();
             ds = newData.getData();
             table = ds.Tables[0];
@@ -149,7 +157,8 @@ namespace Analytics
             DataSaver<List<string>, string, DataSet> accessProxy = new MSAccessProxy();
             StorageForData<DataSet> newData = new MSAccessStorageForData();
             //получение значения id
-            accessProxy.setConfig(state.pathOfDataBase, "SELECT user_name, user_host, software FROM " + state.tableOfDataBase, newData);
+            accessProxy.setConfig(state.pathOfDataBase, "SELECT user_name, user_host, software FROM " +
+                state.tableOfDataBase, newData);
             accessProxy.execute();
             DataSet ds = newData.getData();
             state.data = (List<MarcovitsDataTable>)converter.convert(ds);
@@ -158,8 +167,11 @@ namespace Analytics
 
         public void notifyObserver()
         {
-            observer.notify(state);//Пока отправляю весь стейт, но потом сделаю через стратегию, чтобы сама вью выбирала что ей отправлять из списка.
-                                   //список будет формироваться из части полей State. То есть State будет содержать два блока-обще доступный и приватный
+            //Пока отправляю весь стейт, но потом сделаю через стратегию, чтобы сама вью выбирала 
+            //что ей отправлять из списка.
+            //список будет формироваться из части полей State. То есть State будет содержать 
+            //два блока-обще доступный и приватный
+            observer.notify(state);
         }
 
 
@@ -209,14 +221,11 @@ namespace Analytics
                 {
                     for (int col = 0; col < bMatrix.GetLength(1); col++)
                     {
-                        // Multiply the row of A by the column of B to get the row, column of product.  
                         for (int inner = 0; inner < aMatrix.GetLength(1); inner++)
                         {
                             product[row, col] += aMatrix[row, inner] * bMatrix[inner, col];
                         }
-                        //std::cout << product[row][col] << "  ";  
                     }
-                    //std::cout << "\n";  
                 }
                 return product;
             }

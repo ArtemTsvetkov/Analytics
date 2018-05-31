@@ -16,9 +16,14 @@ namespace Analytics
         public double[] avgDeviationFromPurchasedNumber;//средняя доходность по каждой из лицензий
         //Хранит данные о использовании software за определенный период
         public List<MarcovitsDataTable> data = new List<MarcovitsDataTable>();
-        public double[] numberBuyLicense;//Кол-во закупленных лицензий
-        public double[,] percents;//процентное соотношение в общей закупке всех лицензий, двойной массив для унификации функции перемножения
-        public double income;//Рассчитанная доходность
-        public double[,] risk;//Рассчитанный риск, двойной массив для унификации функции перемножения
+        //Кол-во закупленных лицензий
+        public double[] numberBuyLicense;
+        //процентное соотношение в общей закупке всех лицензий, двойной массив для унификации 
+        //функции перемножения
+        public double[,] percents;
+        //Рассчитанная доходность
+        public double income;
+        //Рассчитанный риск, двойной массив для унификации функции перемножения
+        public double[,] risk;
     }
 }

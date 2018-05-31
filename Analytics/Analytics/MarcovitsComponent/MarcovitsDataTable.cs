@@ -19,7 +19,8 @@ namespace Analytics
 
         }
 
-        public MarcovitsDataTable(int year_in, int month_in, int day_in, int hours_in, double[] licenses)
+        public MarcovitsDataTable(int year_in, int month_in, int day_in, int hours_in,
+            double[] licenses)
         {
             this.year_in = year_in;
             this.month_in = month_in;

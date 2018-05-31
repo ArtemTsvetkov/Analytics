@@ -48,11 +48,13 @@ namespace Analytics
             }
         }
 
-        public bool connect()//Пока для простоты, будем считать, что если запрос выполнился, значит подключение есть
+        //Пока для простоты, будем считать, что если запрос выполнился, значит подключение есть
+        public bool connect()
         {
             List<string> currentQuerys = new List<string>();
             currentQuerys.Add("SELECT count(*) FROM Information");
-            string connStr = String.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + host + ";Persist Security Info=True;");
+            string connStr = String.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + host + 
+                ";Persist Security Info=True;");
             DataSet dataSet = new DataSet();
             OleDbConnection conn;
             conn = null;
@@ -78,7 +80,8 @@ namespace Analytics
                 DateTime thisDay = DateTime.Now;
                 buf.Add("Time: " + thisDay.ToString());
                 buf.Add("Exception: " + ex.Message);
-                ReadWriteTextFile.Write_to_file(buf, Directory.GetCurrentDirectory() + "\\Errors.txt", 0);
+                ReadWriteTextFile.Write_to_file(buf, Directory.GetCurrentDirectory() + "\\Errors.txt",
+                    0);
                 return false;
             }
             finally
@@ -87,22 +90,28 @@ namespace Analytics
             }
         }
 
-        private string selectTableNameFromQuery(string query)//функция поиска названия таблицы базы данных
+        //функция поиска названия таблицы базы данных
+        private string selectTableNameFromQuery(string query)
         {
-            String[] buf_of_substrings = query.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            if (buf_of_substrings[0].Equals("SELECT", StringComparison.CurrentCultureIgnoreCase) == true)
+            String[] buf_of_substrings = query.Split(new char[] { ' ' }, StringSplitOptions.
+                RemoveEmptyEntries);
+            if (buf_of_substrings[0].Equals("SELECT", StringComparison.CurrentCultureIgnoreCase) == 
+                true)
             {
                 return buf_of_substrings[3];
             }
-            if (buf_of_substrings[0].Equals("INSERT", StringComparison.CurrentCultureIgnoreCase) == true)
+            if (buf_of_substrings[0].Equals("INSERT", StringComparison.CurrentCultureIgnoreCase) == 
+                true)
             {
                 return buf_of_substrings[2];
             }
-            if (buf_of_substrings[0].Equals("UPDATE", StringComparison.CurrentCultureIgnoreCase) == true)
+            if (buf_of_substrings[0].Equals("UPDATE", StringComparison.CurrentCultureIgnoreCase) == 
+                true)
             {
                 return buf_of_substrings[1];
             }
-            if (buf_of_substrings[0].Equals("DELETE", StringComparison.CurrentCultureIgnoreCase) == true)
+            if (buf_of_substrings[0].Equals("DELETE", StringComparison.CurrentCultureIgnoreCase) ==
+                true)
             {
                 return buf_of_substrings[2];
             }

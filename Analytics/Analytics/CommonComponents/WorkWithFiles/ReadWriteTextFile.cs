@@ -40,7 +40,8 @@ namespace Analytics
                     fm = FileMode.Truncate;
                 }
                 FileStream file1 = new FileStream(file_path, fm); //создаем файловый поток
-                StreamWriter writer = new StreamWriter(file1, Encoding.UTF8); //создаем «потоковый писатель» и связываем его с файловым потоком 
+                //создаем «потоковый писатель» и связываем его с файловым потоком 
+                StreamWriter writer = new StreamWriter(file1, Encoding.UTF8); 
                 for (int i = 0; i < buf_of_file_lines.Count; i++)
                 {
                     writer.WriteLine(buf_of_file_lines.ElementAt(i)); //записываем в файл
@@ -69,7 +70,8 @@ namespace Analytics
             try
             {
                 FileStream file1 = new FileStream(file_path, FileMode.Open); //создаем файловый поток
-                StreamReader reader = new StreamReader(file1, Encoding.UTF8); // создаем «потоковый читатель» и связываем его с файловым потоком 
+                // создаем «потоковый читатель» и связываем его с файловым потоком 
+                StreamReader reader = new StreamReader(file1, Encoding.UTF8);
                 while (reader.EndOfStream == false)
                 {
                     buf_of_file_lines.Add(reader.ReadLine()); //считываем все данные с потока
@@ -96,7 +98,8 @@ namespace Analytics
 /*
  * Модуль для работы с файлами, для корректной работы файлы должны быть в кодировке utf8!
  * При успешной записи в файл функция Write_to_file вернет "true", иначе "false".
- * При успешном чтении из файла функция вернет список строк, иначе вернет список, в котором будет одна строка
- * со значением:"Ошибка чтения, файл не существует или не доступен!".
- * При записи в файл, одним из параметров является пареметр action, который принимает значение от 0 до 5 и задает режим записи и создания файла
+ * При успешном чтении из файла функция вернет список строк, иначе вернет список, в котором будет одна
+ * строка со значением:"Ошибка чтения, файл не существует или не доступен!".
+ * При записи в файл, одним из параметров является пареметр action, который принимает значение от 0 
+ * до 5 и задает режим записи и создания файла
  */
