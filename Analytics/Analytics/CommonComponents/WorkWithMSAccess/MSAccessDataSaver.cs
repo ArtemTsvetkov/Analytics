@@ -7,16 +7,18 @@ using System.Data.OleDb;
 using System.Data;
 using System.Windows.Forms;
 using System.IO;
+using Analytics.CommonComponents.Interfaces.Data;
 
 namespace Analytics
 {
-    class MSAccessDataSaver : DataSaver
+    class MSAccessDataSaver : DataSaver<DataSet>
     {
         private string host;//пример хоста:C:\\Users\\Artem\\Documents\\Database3.accdb
         private string query;//Для выполненения 1 запроса
         private List<string> querys;//Для выполнения сразу нескольких запросов
+        private StorageForData<DataSet> resultStorage;
 
-        public DataSet execute()
+        public void execute()
         {
             List<string> currentQuerys = new List<string>();
             if (query == null)
@@ -30,7 +32,8 @@ namespace Analytics
 
 
             string connStr = String.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + host + ";Persist Security Info=True;");
-            return runQuery(connStr, currentQuerys);
+            resultStorage.setData(runQuery(connStr, currentQuerys));
+            //return runQuery(connStr, currentQuerys);
         }
 
         public bool connect()//Тестирует возможность подключения к БД, в этом классе(он не прокси) всегда есть
@@ -38,18 +41,20 @@ namespace Analytics
             return true;
         }
 
-        public void setConfig(string host, string query)
+        public void setConfig(string host, string query, StorageForData<DataSet> resultStorage)
         {
             this.host = host;
             this.query = query;
             this.querys = null;
+            this.resultStorage = resultStorage;
         }
 
-        public void setConfig(string host, List<string> querys)
+        public void setConfig(string host, List<string> querys, StorageForData<DataSet> resultStorage)
         {
             this.host = host;
             this.querys = querys;
             this.query = null;
+            this.resultStorage = resultStorage;
         }
 
         private string selectTableNameFromQuery(string query)//функция поиска названия таблицы базы данных

@@ -7,41 +7,44 @@ using System.Data.OleDb;
 using System.Data;
 using System.Windows.Forms;
 using System.IO;
+using Analytics.CommonComponents.Interfaces.Data;
 
 namespace Analytics
 {
-    class MSAccessProxy : DataSaver
+    class MSAccessProxy : DataSaver<DataSet>
     {
         private MSAccessDataSaver saver = new MSAccessDataSaver();
         private string host;//пример хоста:C:\\Users\\Artem\\Documents\\Database3.accdb
         private string query;//Для выполненения 1 запроса
         private List<string> querys;//Для выполнения сразу нескольких запросов
 
-        public void setConfig(string host, List<string> querys)
+        public void setConfig(string host, List<string> querys, StorageForData<DataSet> resultStorage)
         {
             this.host = host;
             this.querys = querys;
             this.query = null;
-            saver.setConfig(host, querys);
+            saver.setConfig(host, querys, resultStorage);
         }
 
-        public void setConfig(string host, string query)
+        public void setConfig(string host, string query, StorageForData<DataSet> resultStorage)
         {
             this.host = host;
             this.query = query;
             this.querys = null;
-            saver.setConfig(host, query);
+            saver.setConfig(host, query, resultStorage);
         }
 
-        public DataSet execute()
+        public void execute()
         {
             if (connect())
             {
-                return saver.execute();
+                //return saver.execute();
+                saver.execute();
             }
             else
             {
-                return null;
+                //return null;
+                //ДОБАВИТЬ СЮДА ВЫЗОВ ИСКЛЮЧЕНИЯ
             }
         }
 
