@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Analytics
 {
-    interface DataConverter
+    interface DataConverter<T>
     {
-        object convert(object data);
+        object convert(T data);
     }
 }

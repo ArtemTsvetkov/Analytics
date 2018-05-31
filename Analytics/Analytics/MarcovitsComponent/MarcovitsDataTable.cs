@@ -8,8 +8,6 @@ namespace Analytics
 {
     class MarcovitsDataTable//класс для хранения строк результирующей таблицы
     {
-        //public int requireNumber;//покажет, сколько требовалось в определенный срок
-        //public int currentNumber = 0;//Покажет, сколько планировается закупить
         public double[] licenses;//для произволного кол-ва анализируемых лицензий
         public int year_in;
         public int month_in;

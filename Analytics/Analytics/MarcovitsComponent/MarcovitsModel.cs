@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Analytics.CommonComponents.Interfaces.Data;
+using Analytics.CommonComponents.WorkWithMSAccess;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -11,8 +13,8 @@ namespace Analytics
     {
         MarcovitsModelState state = new MarcovitsModelState();
         Observer observer;
-        MarcovitsDataTableConverter converter = new MarcovitsDataTableConverter();
-        MarcovitsDistinctSoftwareNamesConverter unucNamesConverter = new MarcovitsDistinctSoftwareNamesConverter();
+        DataConverter<DataSet> converter = new MarcovitsDataTableConverter();
+        DataConverter<DataSet> unucNamesConverter = new MarcovitsDistinctSoftwareNamesConverter();
 
         public MarcovitsModel(string pathOfDataBase, string tableOfDataBase)
         {
@@ -23,9 +25,11 @@ namespace Analytics
         public void calculationStatistics()
         {
             //Получение уникальных имен лицензий
-            MSAccessProxy accessProxy = new MSAccessProxy();
-            accessProxy.setConfig(state.pathOfDataBase, "SELECT DISTINCT software FROM " + state.tableOfDataBase);
-            DataSet ds = accessProxy.execute();
+            DataSaver<List<string>, string, DataSet> accessProxy = new MSAccessProxy();
+            StorageForData<DataSet> newData = new MSAccessStorageForData();
+            accessProxy.setConfig(state.pathOfDataBase, "SELECT DISTINCT software FROM " + state.tableOfDataBase, newData);
+            accessProxy.execute();
+            DataSet ds = newData.getData();
             state.unicSoftwareNames = (string[])unucNamesConverter.convert(ds);
             //Формирование запроса на получение данных
             string query = "SELECT  i.year_in, i.month_in, i.day_in, i.hours_in";
@@ -35,8 +39,9 @@ namespace Analytics
             }
             query += "FROM Information i WHERE hours_in IS NOT NULL GROUP BY hours_in, day_in, month_in, year_in ORDER BY year_in, month_in, day_in, hours_in";
             //Получение данных об использовании
-            accessProxy.setConfig(state.pathOfDataBase, query);
-            ds = accessProxy.execute();
+            accessProxy.setConfig(state.pathOfDataBase, query, newData);
+            accessProxy.execute();
+            ds = newData.getData();
             state.data = (List<MarcovitsDataTable>)converter.convert(ds);
 
             //Рассчет средних значений кол-ва лицензий
@@ -54,8 +59,9 @@ namespace Analytics
             }
 
             //Пока для тестов число закупленных лицензий читается из таблицы PurchasedLicenses
-            accessProxy.setConfig(state.pathOfDataBase, "SELECT type, count FROM PurchasedLicenses");
-            ds = accessProxy.execute();
+            accessProxy.setConfig(state.pathOfDataBase, "SELECT type, count FROM PurchasedLicenses", newData);
+            accessProxy.execute();
+            ds = newData.getData();
             DataTable table = ds.Tables[0];
             state.numberBuyLicense = new double[state.unicSoftwareNames.Count()];
             for (int i=0;i<state.unicSoftwareNames.Count();i++)
@@ -92,8 +98,9 @@ namespace Analytics
                 }
             }
             //Пока для тестов соотношения в процентах читается из таблицы PercentageOfLicense
-            accessProxy.setConfig(state.pathOfDataBase, "SELECT type, percent FROM PercentageOfLicense");
-            ds = accessProxy.execute();
+            accessProxy.setConfig(state.pathOfDataBase, "SELECT type, percent FROM PercentageOfLicense", newData);
+            accessProxy.execute();
+            ds = newData.getData();
             table = ds.Tables[0];
             state.percents = new double[state.unicSoftwareNames.Count(),1];
             for (int i = 0; i < state.unicSoftwareNames.Count(); i++)
@@ -139,10 +146,12 @@ namespace Analytics
 
         public void loadStore()//загрузка данных из базы данных
         {
-            MSAccessProxy accessProxy = new MSAccessProxy();
+            DataSaver<List<string>, string, DataSet> accessProxy = new MSAccessProxy();
+            StorageForData<DataSet> newData = new MSAccessStorageForData();
             //получение значения id
-            accessProxy.setConfig(state.pathOfDataBase, "SELECT user_name, user_host, software FROM " + state.tableOfDataBase);
-            DataSet ds = accessProxy.execute();
+            accessProxy.setConfig(state.pathOfDataBase, "SELECT user_name, user_host, software FROM " + state.tableOfDataBase, newData);
+            accessProxy.execute();
+            DataSet ds = newData.getData();
             state.data = (List<MarcovitsDataTable>)converter.convert(ds);
             notifyObserver();
         }

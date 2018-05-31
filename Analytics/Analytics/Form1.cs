@@ -20,22 +20,6 @@ namespace Analytics
         
         public void notify(object data)
         {
-            if (data.GetType() == typeof(List<AllDataTable>))
-            {
-                List<AllDataTable> rw = (List<AllDataTable>)data;
-
-
-                int m = rw.Count();
-                int n = 3;
-                dataGridView1.ColumnCount = n;
-                dataGridView1.RowCount = m;
-                for (int i = 0; i < m; i++)
-                {
-                    dataGridView1.Rows[i].Cells[0].Value = rw.ElementAt(i).user;
-                    dataGridView1.Rows[i].Cells[1].Value = rw.ElementAt(i).host;
-                    dataGridView1.Rows[i].Cells[2].Value = rw.ElementAt(i).po;
-                }
-            }
             if (data.GetType() == typeof(MarcovitsModelState))
             {
                 MarcovitsModelState state = (MarcovitsModelState)data;
@@ -76,13 +60,6 @@ namespace Analytics
 
         CommandsStore commandsStore = new ConcreteCommandStore();
         Model model;
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            model = new AllLoadModel("D:\\Files\\MsVisualProjects\\Diplom\\Логи\\testlogs\\Database3.accdb", "Information");
-            model.subscribe(this);
-            commandsStore.executeCommand(new LoadDataCommand(model));
-        }
 
         private void button2_Click(object sender, EventArgs e)
         {
