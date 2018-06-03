@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 
 namespace Analytics
 {
-    class ConcreteCommandStore : CommandsStore<MarcovitsModelState, MarcovitsModelState>
+    class ConcreteCommandStore<TModelsTypeOfResult, TModelsTypeState> : 
+        CommandsStore<TModelsTypeOfResult, TModelsTypeState> where TModelsTypeState : ModelsState
     {
-        private List<BasicCommand<MarcovitsModelState, MarcovitsModelState>> history = 
-            new List<BasicCommand<MarcovitsModelState, MarcovitsModelState>>();
+        private List<BasicCommand<TModelsTypeOfResult, TModelsTypeState>> history = 
+            new List<BasicCommand<TModelsTypeOfResult, TModelsTypeState>>();
 
-        public void executeCommand(BasicCommand<MarcovitsModelState, MarcovitsModelState> command)
+        public void executeCommand(BasicCommand<TModelsTypeOfResult, TModelsTypeState> command)
         {
             command.execute();
             push(command);
@@ -20,16 +21,16 @@ namespace Analytics
 
         public void recoveryModel()
         {
-            BasicCommand<MarcovitsModelState, MarcovitsModelState> command = pop();
+            BasicCommand<TModelsTypeOfResult, TModelsTypeState> command = pop();
             command.recoveryModel();
         }
 
-        public BasicCommand<MarcovitsModelState, MarcovitsModelState> pop()
+        public BasicCommand<TModelsTypeOfResult, TModelsTypeState> pop()
         {
             return history.Last();
         }
 
-        public void push(BasicCommand<MarcovitsModelState, MarcovitsModelState> command)
+        public void push(BasicCommand<TModelsTypeOfResult, TModelsTypeState> command)
         {
             history.Add(command);
         }
