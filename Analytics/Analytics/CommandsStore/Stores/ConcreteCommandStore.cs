@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Analytics.CommandsStore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace Analytics
 {
-    class ConcreteCommandStore : CommandsStore
+    class ConcreteCommandStore : CommandsStore<MarcovitsModelState, MarcovitsModelState>
     {
-        private List<Command> history = new List<Command>();
+        private List<BasicCommand<MarcovitsModelState, MarcovitsModelState>> history = 
+            new List<BasicCommand<MarcovitsModelState, MarcovitsModelState>>();
 
-        public void executeCommand(Command command)
+        public void executeCommand(BasicCommand<MarcovitsModelState, MarcovitsModelState> command)
         {
             command.execute();
             push(command);
@@ -18,16 +20,16 @@ namespace Analytics
 
         public void recoveryModel()
         {
-            Command command = pop();
+            BasicCommand<MarcovitsModelState, MarcovitsModelState> command = pop();
             command.recoveryModel();
         }
 
-        public Command pop()
+        public BasicCommand<MarcovitsModelState, MarcovitsModelState> pop()
         {
             return history.Last();
         }
 
-        public void push(Command command)
+        public void push(BasicCommand<MarcovitsModelState, MarcovitsModelState> command)
         {
             history.Add(command);
         }

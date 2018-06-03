@@ -8,20 +8,21 @@ using System.Threading.Tasks;
 
 namespace Analytics
 {
-    class LoadDataCommand : BasicCommand<MarcovitsModelState, MarcovitsModelState>
+    class GetMarcovitsStatistcCommand : BasicCommand<MarcovitsModelState, MarcovitsModelState>
     {
         //private BasicModel<MarcovitsModelState, MarcovitsModelState> model;
         private ModelsState state;
 
-        public LoadDataCommand(BasicModel<MarcovitsModelState, MarcovitsModelState> model)
-            : base(model)
+        public GetMarcovitsStatistcCommand(BasicModel<MarcovitsModelState, MarcovitsModelState>
+            model) : base(model)
         {
+            
         }
 
         public override void execute()
         {
             state = model.copySelf();
-            model.loadStore();
+            model.calculationStatistics();
         }
     }
 }

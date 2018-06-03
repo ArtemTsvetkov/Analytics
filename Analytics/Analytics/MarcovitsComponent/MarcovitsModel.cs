@@ -1,4 +1,5 @@
-﻿using Analytics.CommonComponents.Interfaces.Data;
+﻿using Analytics.CommonComponents.BasicObjects;
+using Analytics.CommonComponents.Interfaces.Data;
 using Analytics.CommonComponents.WorkWithMSAccess;
 using System;
 using System.Collections.Generic;
@@ -9,23 +10,24 @@ using System.Threading.Tasks;
 
 namespace Analytics
 {
-    class MarcovitsModel : Model
+    class MarcovitsModel : BasicModel<MarcovitsModelState, MarcovitsModelState>
     {
-        MarcovitsModelState state = new MarcovitsModelState();
-        Observer observer;
-        DataConverter<DataSet> converter = new MarcovitsDataTableConverter();
-        DataConverter<DataSet> unucNamesConverter = new MarcovitsDistinctSoftwareNamesConverter();
+        DataConverter<DataSet, List<MarcovitsDataTable>> converter = 
+            new MarcovitsDataTableConverter();
+        DataConverter<DataSet, string[]> unucNamesConverter = 
+            new MarcovitsDistinctSoftwareNamesConverter();
 
         public MarcovitsModel(string pathOfDataBase, string tableOfDataBase)
         {
+            state = new MarcovitsModelState();
             state.pathOfDataBase = pathOfDataBase;
             state.tableOfDataBase = tableOfDataBase;
         }
 
-        public void calculationStatistics()
+        public override void calculationStatistics()
         {
             //Получение уникальных имен лицензий
-            DataSaver<List<string>, string, DataSet> accessProxy = new MSAccessProxy();
+            DataWorker<List<string>, string, DataSet> accessProxy = new MSAccessProxy();
             StorageForData<DataSet> newData = new MSAccessStorageForData();
             accessProxy.setConfig(state.pathOfDataBase, "SELECT DISTINCT software FROM " + state.
                 tableOfDataBase, newData);
@@ -46,7 +48,7 @@ namespace Analytics
             accessProxy.setConfig(state.pathOfDataBase, query, newData);
             accessProxy.execute();
             ds = newData.getData();
-            state.data = (List<MarcovitsDataTable>)converter.convert(ds);
+            state.data = converter.convert(ds);
 
             //Рассчет средних значений кол-ва лицензий
             state.avgNumbersUseLicense = new double[state.unicSoftwareNames.Length];
@@ -134,17 +136,7 @@ namespace Analytics
                 state.income += state.avgDeviationFromPurchasedNumber[i] * state.percents[i,0];
             }
 
-            notifyObserver();
-        }
-
-        public void subscribe(Observer newObserver)
-        {
-            observer = newObserver;
-        }
-
-        public ModelsState copySelf()
-        {
-            return state;
+            notifyObservers();
         }
 
         public void recoverySelf(ModelsState state)
@@ -152,9 +144,9 @@ namespace Analytics
             this.state = (MarcovitsModelState)state;
         }
 
-        public void loadStore()//загрузка данных из базы данных
+        public override void loadStore()//загрузка данных из базы данных
         {
-            DataSaver<List<string>, string, DataSet> accessProxy = new MSAccessProxy();
+            DataWorker<List<string>, string, DataSet> accessProxy = new MSAccessProxy();
             StorageForData<DataSet> newData = new MSAccessStorageForData();
             //получение значения id
             accessProxy.setConfig(state.pathOfDataBase, "SELECT user_name, user_host, software FROM " +
@@ -162,21 +154,8 @@ namespace Analytics
             accessProxy.execute();
             DataSet ds = newData.getData();
             state.data = (List<MarcovitsDataTable>)converter.convert(ds);
-            notifyObserver();
+            notifyObservers();
         }
-
-        public void notifyObserver()
-        {
-            //Пока отправляю весь стейт, но потом сделаю через стратегию, чтобы сама вью выбирала 
-            //что ей отправлять из списка.
-            //список будет формироваться из части полей State. То есть State будет содержать 
-            //два блока-обще доступный и приватный
-            observer.notify(state);
-        }
-
-
-
-
 
         double avg(double[] matrix)//Расчет среднего значения
         {

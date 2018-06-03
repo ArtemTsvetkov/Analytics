@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Analytics
 {
-    class MarcovitsDistinctSoftwareNamesConverter : DataConverter<DataSet>
+    class MarcovitsDistinctSoftwareNamesConverter : DataConverter<DataSet, string[]>
     {
-        public object convert(DataSet data)
+        public string[] convert(DataSet data)
         {
             DataSet ds = data;
             string[] newData = new string[ds.Tables[0].Rows.Count];
