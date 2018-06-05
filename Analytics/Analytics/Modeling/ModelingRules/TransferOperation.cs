@@ -105,6 +105,12 @@ namespace Analytics.Modeling.ModelingRules
             return null;
         }
 
+        public override Operation clone()
+        {
+            return new TransferOperation(parameters[0], parameters[1], parameters[2], 
+                parameters[3], model);
+        }
+
         public override void processing()
         {
             //только обработчик режима безуслвоной передачи, при необходимости дополнить

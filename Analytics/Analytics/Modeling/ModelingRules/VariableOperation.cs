@@ -35,6 +35,11 @@ namespace Analytics.Modeling.ModelingRules
             return null;
         }
 
+        public override Operation clone()
+        {
+            return new VariableOperation(model);
+        }
+
         public override void processing()
         {
             //передвинул по программе дальше

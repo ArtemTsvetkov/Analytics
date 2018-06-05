@@ -213,5 +213,16 @@ namespace Analytics
                 throw new Exception();
             }
         }
+
+        public override MarcovitsModelState copySelf()
+        {
+            //throw new NotImplementedException();
+            return new MarcovitsModelState();
+        }
+
+        public override void recoverySelf(MarcovitsModelState state)
+        {
+            //throw new NotImplementedException();
+        }
     }
 }

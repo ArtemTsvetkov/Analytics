@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Analytics.Modeling.ModelingInstruments
 {
-    class Storage
+    class Storage : ModelingInstrument<Storage>
     {
         //имя устройства
         private string name;
@@ -57,6 +57,25 @@ namespace Analytics.Modeling.ModelingInstruments
         public void leaveStorage(int numberOfPlaces)
         {
             emptyPlaces += numberOfPlaces;
+        }
+
+        public string getType()
+        {
+            return "Storage";
+        }
+
+        public Storage clone()
+        {
+            Storage storage = new Storage(name, size);
+            storage.emptyPlaces = emptyPlaces;
+            int[] copy = new int[0];
+            id_tranzaktions_in_device_queue.CopyTo(copy);
+            for(int i=0; i<copy.Length;i++)
+            {
+                storage.id_tranzaktions_in_device_queue.Add(copy[i]);
+            }
+
+            return storage;
         }
     }
 }

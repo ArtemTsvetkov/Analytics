@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Analytics.Modeling.ModelingInstruments;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Analytics
 {
-    class TranzactionsGenerator
+    class TranzactionsGenerator : ModelingInstrument<TranzactionsGenerator>
     {
         public int time_until_the_next_tranzaction;//время до следующей заявки
         public int count_tranzaktion;//оставшееся кол-во транзактов
@@ -39,6 +40,17 @@ namespace Analytics
         public int get_deleys_time_right()
         {
             return delays_time_right;
+        }
+
+        public string getType()
+        {
+            return "TranzactionsGenerator";
+        }
+
+        public TranzactionsGenerator clone()
+        {
+            return new TranzactionsGenerator(delays_time_left, delays_time_right,
+                time_until_the_next_tranzaction, my_place, count_tranzaktion);
         }
     }
 }

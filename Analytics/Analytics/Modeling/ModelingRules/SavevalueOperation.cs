@@ -45,6 +45,11 @@ namespace Analytics.Modeling.ModelingRules
             return null;
         }
 
+        public override Operation clone()
+        {
+            return new SavevalueOperation(parameters[0], parameters[1], model);
+        }
+
         public override void processing()
         {
             for (int n = 0; n < model.getState().variables.Count; n++)

@@ -13,6 +13,7 @@ namespace Analytics
         //экземпляр класса
         Operation check(string rule);
         void processing();//Обработка транзакта правилом
+        Operation clone();//Копирование экземпляра класса
     }
 }
 /*

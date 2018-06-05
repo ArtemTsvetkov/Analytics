@@ -45,6 +45,11 @@ namespace Analytics.Modeling.ModelingRules
             return null;
         }
 
+        public override Operation clone()
+        {
+            return new AdvanceOperation(parameters[0], parameters[1], model);
+        }
+
         public override void processing()
         {
             //запись задержки в транзакт

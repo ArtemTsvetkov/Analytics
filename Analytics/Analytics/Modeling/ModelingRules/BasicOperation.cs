@@ -12,6 +12,7 @@ namespace Analytics.Modeling.ModelingRules
         protected string[] parameters;//Хранит параметры конкретной операции
         abstract public Operation check(string rule);
         abstract public void processing();
+        abstract public Operation clone();
 
         public BasicOperation(ModelingModel model)
         {

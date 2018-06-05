@@ -85,6 +85,7 @@
     <Compile Include="Modeling\ModelingInstruments\Device.cs" />
     <Compile Include="Modeling\ModelingInstruments\Element.cs" />
     <Compile Include="Modeling\ModelingInstruments\Lable.cs" />
+    <Compile Include="Modeling\ModelingInstruments\ModelingInstrument.cs" />
     <Compile Include="Modeling\ModelingInstruments\Queue.cs" />
     <Compile Include="Modeling\ModelingInstruments\Storage.cs" />
     <Compile Include="Modeling\ModelingInstruments\TranzactionsGenerator.cs" />
@@ -155,6 +156,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\gear4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Modeling\Statistics\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

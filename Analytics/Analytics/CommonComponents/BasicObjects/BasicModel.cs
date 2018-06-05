@@ -15,11 +15,8 @@ namespace Analytics.CommonComponents.BasicObjects
 
         abstract public void calculationStatistics();
         abstract public void loadStore();
-
-        public TTypeState copySelf()
-        {
-            return state;
-        }
+        abstract public TTypeState copySelf();
+        abstract public void recoverySelf(TTypeState state);
 
         public TTypeOfResult getResult()
         {
@@ -33,12 +30,6 @@ namespace Analytics.CommonComponents.BasicObjects
             {
                 observers.ElementAt(i).notify();
             }
-        }
-
-        public void recoverySelf(TTypeState state)
-        {
-            this.state = state;
-            notifyObservers();
         }
 
         public void setResultConverter(DataConverter<TTypeState, TTypeOfResult> dataConverter)

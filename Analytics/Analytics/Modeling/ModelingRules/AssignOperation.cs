@@ -107,5 +107,10 @@ namespace Analytics.Modeling.ModelingRules
             model.getState().tranzakts.ElementAt(model.getState().idProcessingTranzact).
                 set_parameter(parameters[0], parameters[1]);//записал параметр
         }
+
+        public override Operation clone()
+        {
+            return new AssignOperation(parameters[0], parameters[1], model);
+        }
     }
 }

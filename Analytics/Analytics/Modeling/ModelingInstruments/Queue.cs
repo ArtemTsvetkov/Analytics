@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Analytics.Modeling.ModelingInstruments;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Analytics
 {
-    class Queue
+    class Queue : ModelingInstrument<Queue>
     {
         private string name;//имя очереди
         public int count_of_tranzactions_in_queue;//кол-во транзактов в очереди
@@ -38,6 +39,21 @@ namespace Analytics
         public int get_sum_tranzacts_in_queue()
         {
             return sum_tranzacts_in_queue;
+        }
+
+        public string getType()
+        {
+            return "Queue";
+        }
+
+        public Queue clone()
+        {
+            Queue queue = new Queue(name);
+            queue.count_of_tranzactions_in_queue = count_of_tranzactions_in_queue;
+            queue.max_tranzacts_in_queue = max_tranzacts_in_queue;
+            queue.sum_tranzacts_in_queue = sum_tranzacts_in_queue;
+
+            return queue;
         }
     }
 }

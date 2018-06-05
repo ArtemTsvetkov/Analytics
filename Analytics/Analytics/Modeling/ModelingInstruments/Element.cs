@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Analytics.Modeling.ModelingInstruments;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Analytics
 {
-    class Element
+    class Element : ModelingInstrument<Element>
     {
         public int x_angle;
         public int y_angle;
@@ -21,6 +22,16 @@ namespace Analytics
             this.with = with;
             this.height = height;
             this.type = type;
+        }
+
+        public string getType()
+        {
+            return "Element";
+        }
+
+        public Element clone()
+        {
+            return new Element(x_angle, y_angle, with, height, type);
         }
     }
 }

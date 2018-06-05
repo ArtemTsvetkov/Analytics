@@ -32,6 +32,11 @@ namespace Analytics.Modeling.ModelingRules
             return null;
         }
 
+        public override Operation clone()
+        {
+            return new TerminateOperation(model);
+        }
+
         public override void processing()
         {
             //удаление транзакта

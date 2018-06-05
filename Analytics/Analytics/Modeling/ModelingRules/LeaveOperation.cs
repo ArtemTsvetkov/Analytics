@@ -68,6 +68,20 @@ namespace Analytics.Modeling.ModelingRules
             return null;
         }
 
+        public override Operation clone()
+        {
+            if (parameters.Count() == 2)
+            {
+                return new LeaveOperation(parameters[0], int.Parse(parameters[1]), model);
+            }
+            if (parameters.Count() == 1)
+            {
+                return new LeaveOperation(parameters[0], model);
+            }
+            //ВЫЗОВ ИСКЛЮЧЕНИЯ НЕВЕРНЫЙ ФОРМАТ
+            throw new Exception();
+        }
+
         public override void processing()
         {
             //передвинул по программе дальше

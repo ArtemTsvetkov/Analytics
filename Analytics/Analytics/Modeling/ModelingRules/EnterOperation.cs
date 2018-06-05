@@ -108,5 +108,19 @@ namespace Analytics.Modeling.ModelingRules
                 }
             }
         }
+
+        public override Operation clone()
+        {
+            if (parameters.Count() == 1)
+            {
+                return new EnterOperation(parameters[0], model);
+            }
+            if (parameters.Count() == 2)
+            {
+                return new EnterOperation(parameters[0], int.Parse(parameters[1]), model);
+            }
+            //ВЫЗОВ ИСКЛЮЧЕНИЯ-НЕВЕРНЫЙ ФОРМАТ
+            throw new Exception();
+        }
     }
 }

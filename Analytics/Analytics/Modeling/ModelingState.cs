@@ -28,6 +28,8 @@ namespace Analytics
         public int idProcessingTranzact;//Индекс текущего обрабатываемого транзакта
         //Он должен создаваться один раз, иначе распределение не то получится
         public Random rand = new Random();
+        //Количество прогонов модели
+        public int numberOfStartsModel = 0;
     }
 }
 /*

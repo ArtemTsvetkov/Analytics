@@ -46,6 +46,12 @@ namespace Analytics.Modeling.ModelingRules
             return null;
         }
 
+        public override Operation clone()
+        {
+            return new TestOperation(parameters[0], parameters[1], parameters[2], parameters[3], 
+                model);
+        }
+
         public override void processing()
         {
             //Значение операнда А должно быть не равно значению операнда В, иначе переход по метке

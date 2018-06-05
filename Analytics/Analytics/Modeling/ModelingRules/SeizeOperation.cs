@@ -42,6 +42,11 @@ namespace Analytics.Modeling.ModelingRules
             return null;
         }
 
+        public override Operation clone()
+        {
+            return new SeizeOperation(parameters[0], model);
+        }
+
         public override void processing()
         {
             //поиск устройства по имени

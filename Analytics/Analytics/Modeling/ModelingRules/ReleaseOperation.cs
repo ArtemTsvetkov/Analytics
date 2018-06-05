@@ -38,6 +38,11 @@ namespace Analytics.Modeling.ModelingRules
             return null;
         }
 
+        public override Operation clone()
+        {
+            return new ReleaseOperation(parameters[0], model);
+        }
+
         public override void processing()
         {
             //передвинул по программе дальше

@@ -26,6 +26,129 @@ namespace Analytics
             return state;
         }
 
+        public override void recoverySelf(ModelingState backUpState)
+        {
+            state = new ModelingState();
+            state.last_tranzaktions_id = backUpState.last_tranzaktions_id;
+            state.result = backUpState.result;
+            state.time_of_modeling = backUpState.time_of_modeling;
+            state.idProcessingTranzact = backUpState.idProcessingTranzact;
+            state.numberOfStartsModel = backUpState.numberOfStartsModel;
+            state.rand = backUpState.rand;
+
+            string[] originalRulesC = new string[backUpState.originalRules.Count];
+            backUpState.originalRules.CopyTo(originalRulesC);
+            for (int i = 0; i < originalRulesC.Length; i++)
+            {
+                state.originalRules.Add(originalRulesC[i]);
+            }
+
+            for (int i = 0; i < backUpState.queues.Count; i++)
+            {
+                state.queues.Add(backUpState.queues.ElementAt(i).clone());
+            }
+
+            for (int i = 0; i < backUpState.tranzakts.Count; i++)
+            {
+                state.tranzakts.Add(backUpState.tranzakts.ElementAt(i).clone());
+            }
+
+            for (int i = 0; i < backUpState.lables.Count; i++)
+            {
+                state.lables.Add(backUpState.lables.ElementAt(i).clone());
+            }
+
+            for (int i = 0; i < backUpState.devices.Count; i++)
+            {
+                state.devices.Add(backUpState.devices.ElementAt(i).clone());
+            }
+
+            for (int i = 0; i < backUpState.storages.Count; i++)
+            {
+                state.storages.Add(backUpState.storages.ElementAt(i).clone());
+            }
+
+            for (int i = 0; i < backUpState.variables.Count; i++)
+            {
+                state.variables.Add(backUpState.variables.ElementAt(i).clone());
+            }
+
+            for (int i = 0; i < backUpState.tranzation_generators.Count; i++)
+            {
+                state.tranzation_generators.Add(backUpState.tranzation_generators.ElementAt(i).clone());
+            }
+
+            for (int i = 0; i < backUpState.newRules.Count; i++)
+            {
+                state.newRules.Add(backUpState.newRules.ElementAt(i).clone());
+            }
+        }
+
+        public override ModelingState copySelf()
+        {
+            ModelingState copy = new ModelingState();
+            copy.last_tranzaktions_id = state.last_tranzaktions_id;
+            copy.result = state.result;
+            copy.time_of_modeling = state.time_of_modeling;
+            copy.idProcessingTranzact = state.idProcessingTranzact;
+            copy.numberOfStartsModel = state.numberOfStartsModel;
+            copy.rand = state.rand;
+
+            string[] originalRulesC = new string[state.originalRules.Count];
+            state.originalRules.CopyTo(originalRulesC);
+            for(int i=0;i<originalRulesC.Length;i++)
+            {
+                copy.originalRules.Add(originalRulesC[i]);
+            }
+
+            for (int i = 0; i < state.queues.Count; i++)
+            {
+                copy.queues.Add(state.queues.ElementAt(i).clone());
+            }
+
+            for (int i = 0; i < state.tranzakts.Count; i++)
+            {
+                copy.tranzakts.Add(state.tranzakts.ElementAt(i).clone());
+            }
+
+            for (int i = 0; i < state.lables.Count; i++)
+            {
+                copy.lables.Add(state.lables.ElementAt(i).clone());
+            }
+
+            for (int i = 0; i < state.devices.Count; i++)
+            {
+                copy.devices.Add(state.devices.ElementAt(i).clone());
+            }
+
+            for (int i = 0; i < state.storages.Count; i++)
+            {
+                copy.storages.Add(state.storages.ElementAt(i).clone());
+            }
+
+            for (int i = 0; i < state.variables.Count; i++)
+            {
+                copy.variables.Add(state.variables.ElementAt(i).clone());
+            }
+
+            for (int i = 0; i < state.tranzation_generators.Count; i++)
+            {
+                copy.tranzation_generators.Add(state.tranzation_generators.ElementAt(i).clone());
+            }
+
+            for (int i = 0; i < state.newRules.Count; i++)
+            {
+                copy.newRules.Add(state.newRules.ElementAt(i).clone());
+            }
+
+            return copy;
+        }
+
+        public void reset()
+        {
+
+        }
+
         //основная функция моделирования, возвращает результат
         //моделирования(ошибка или успех)
         private void run_simulation()

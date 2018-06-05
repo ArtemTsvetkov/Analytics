@@ -97,9 +97,11 @@ namespace Analytics.CommonComponents.Views
                 //Для отражения прогресса найду шаг обновления строки прогресса;
                 int step = 100 / int.Parse(form.numericUpDown1Elem.Value.ToString());
                 form.progressBar1Elem.Value = 0;
+                control.setConfiguration(form.textBox1Elem.Text);
+                ModelingState backupModel = control.copySelf();
                 for (int i = 0; i < form.numericUpDown1Elem.Value; i++)//моделирование в соответствии с количеством итераций
                 {
-                    control.setConfiguration(form.textBox1Elem.Text);
+                    control.recoverySelf(backupModel);
                     control.calculationStatistics();
                     modeling_objects = control.getResult();
                     if (modeling_objects.result == "Успех!")

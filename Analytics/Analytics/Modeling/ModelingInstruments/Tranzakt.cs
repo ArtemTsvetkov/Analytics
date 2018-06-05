@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Analytics.Modeling.ModelingInstruments;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Analytics
 {
-    class Tranzakt
+    class Tranzakt : ModelingInstrument<Tranzakt>
     {
         private int my_id;//id транзакта
         public int time_in_system;//время нахождения транзакта в системе
@@ -81,6 +82,35 @@ namespace Analytics
         public int get_my_id()
         {
             return my_id;
+        }
+
+        public string getType()
+        {
+            return "Tranzakt";
+        }
+
+        public Tranzakt clone()
+        {
+            Tranzakt tranzact = new Tranzakt(my_place, my_id);
+            tranzact.time_in_system = time_in_system;
+            tranzact.remaining_time_delay = remaining_time_delay;
+            tranzact.blocked = blocked;
+
+            string[] parametersC = new string[0];
+            parameters.CopyTo(parametersC);
+            for(int i=0;i< parametersC.Length;i++)
+            {
+                tranzact.parameters.Add(parametersC[i]);
+            }
+
+            string[] id_parametersC = new string[0];
+            id_parameters.CopyTo(id_parametersC);
+            for(int i=0; i< id_parametersC.Length;i++)
+            {
+                tranzact.id_parameters.Add(id_parametersC[i]);
+            }
+
+            return tranzact;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Analytics.Modeling.ModelingInstruments;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Analytics
 {
-    class Variable
+    class Variable : ModelingInstrument<Variable>
     {
         private string name;//имя переменной
         public string value;//значение переменной, для случая использования команды savevalue
@@ -28,6 +29,16 @@ namespace Analytics
         public string get_function()
         {
             return function;
+        }
+
+        public string getType()
+        {
+            return "Variable";
+        }
+
+        public Variable clone()
+        {
+            return new Variable(name, function, value);
         }
     }
 }
