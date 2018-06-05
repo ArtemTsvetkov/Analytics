@@ -1,11 +1,11 @@
-﻿using Modelirovanie.Modeling.ModelingExceptions;
+﻿using Analytics.Modeling.ModelingExceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Modelirovanie.Modeling.ModelingRules
+namespace Analytics.Modeling.ModelingRules
 {
     class TransferOperation : BasicOperation
     {
@@ -66,8 +66,8 @@ namespace Modelirovanie.Modeling.ModelingRules
             //Для случая наличия метки
             if (words.Length > 1 && words[1] == "TRANSFER")
             {
-                Lable lable = new Lable(model.state.newRules.Count, words[0]);//создание метки
-                model.state.lables.Add(lable);
+                Lable lable = new Lable(model.getState().newRules.Count, words[0]);//создание метки
+                model.getState().lables.Add(lable);
                 //только обработчик режима безуслвоной передачи, при необходимости дополнить
                 string[] param = words[2].Split(new char[] { ',' });
                 string A = "";
@@ -114,12 +114,13 @@ namespace Modelirovanie.Modeling.ModelingRules
             {
                 //переход транзакта по метке
                 //ищем нужную метку
-                for (int n = 0; n < model.state.lables.Count; n++)
+                for (int n = 0; n < model.getState().lables.Count; n++)
                 {
-                    if (model.state.lables.ElementAt(n).get_name() == parameters[1])
+                    if (model.getState().lables.ElementAt(n).get_name() == parameters[1])
                     {
-                        model.state.tranzakts.ElementAt(model.state.idProcessingTranzact).my_place
-                            = model.state.lables.ElementAt(n).get_my_plase();
+                        model.getState().tranzakts.ElementAt(model.getState().
+                            idProcessingTranzact).my_place = 
+                            model.getState().lables.ElementAt(n).get_my_plase();
                         break;
                     }
                 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Modelirovanie.Modeling.ModelingRules
+namespace Analytics.Modeling.ModelingRules
 {
     class InitialOperation : BasicOperation
     {
@@ -22,18 +22,18 @@ namespace Modelirovanie.Modeling.ModelingRules
                 string[] parameters = words[1].Split(new char[] { ',' }, StringSplitOptions.
                     RemoveEmptyEntries);
                 Variable variable = new Variable(parameters[0].Remove(0, 2), "", parameters[1]);
-                model.state.variables.Add(variable);
+                model.getState().variables.Add(variable);
                 return new InitialOperation(model);
             }
             //Для случая наличия метки
             if (words.Length > 1 && words[1] == "INITIAL")
             {
-                Lable lable = new Lable(model.state.newRules.Count, words[0]);//создание метки
-                model.state.lables.Add(lable);
+                Lable lable = new Lable(model.getState().newRules.Count, words[0]);//создание метки
+                model.getState().lables.Add(lable);
                 string[] parameters = words[2].Split(new char[] { ',' }, StringSplitOptions.
                     RemoveEmptyEntries);
                 Variable variable = new Variable(parameters[0], "", parameters[1]);
-                model.state.variables.Add(variable);
+                model.getState().variables.Add(variable);
                 return new InitialOperation(model);
             }
 
@@ -43,7 +43,8 @@ namespace Modelirovanie.Modeling.ModelingRules
         public override void processing()
         {
             //передвинул по программе дальше
-            model.state.tranzakts.ElementAt(model.state.idProcessingTranzact).my_place += 1;
+            model.getState().tranzakts.ElementAt(model.getState().idProcessingTranzact).
+                my_place += 1;
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Modelirovanie.Modeling.ModelingRules
+namespace Analytics.Modeling.ModelingRules
 {
     class TestOperation : BasicOperation
     {
@@ -36,8 +36,8 @@ namespace Modelirovanie.Modeling.ModelingRules
             //Для случая наличия метки
             if (words.Length > 1 && words[1] == "TEST")
             {
-                Lable lable = new Lable(model.state.newRules.Count, words[0]);//создание метки
-                model.state.lables.Add(lable);
+                Lable lable = new Lable(model.getState().newRules.Count, words[0]);//создание метки
+                model.getState().lables.Add(lable);
                 string[] param = words[3].Split(new char[] { ',' }, StringSplitOptions.
                     RemoveEmptyEntries);
                 return new TestOperation(words[2], param[0], param[1], param[2], model);
@@ -59,7 +59,7 @@ namespace Modelirovanie.Modeling.ModelingRules
                 {
                     //удаляю флаг параметра
                     string parameterWithOutFlag = parameters[1].Remove(0, 1);
-                    A = model.state.tranzakts.ElementAt(model.state.idProcessingTranzact)
+                    A = model.getState().tranzakts.ElementAt(model.getState().idProcessingTranzact)
                         .get_parameter(parameterWithOutFlag);
                 }
                 //так как сравнивается на равенство, то не имеет значение как сравнивать числа-как 
@@ -72,7 +72,8 @@ namespace Modelirovanie.Modeling.ModelingRules
                 {
                     //удаляю флаг параметра
                     string parameterWithOutFlag = parameters[2].Remove(0, 1);
-                    B = model.state.tranzakts.ElementAt(model.state.idProcessingTranzact).get_parameter(parameterWithOutFlag);
+                    B = model.getState().tranzakts.ElementAt(model.getState().
+                        idProcessingTranzact).get_parameter(parameterWithOutFlag);
                 }
                 //так как сравнивается на равенство, то не имеет значение как сравнивать числа-как 
                 //строку, или как число
@@ -83,17 +84,19 @@ namespace Modelirovanie.Modeling.ModelingRules
                 if (A != B)
                 {
                     //если не равно, то просто двигаем транзакт дальше
-                    model.state.tranzakts.ElementAt(model.state.idProcessingTranzact).my_place++;
+                    model.getState().tranzakts.ElementAt(model.getState().
+                        idProcessingTranzact).my_place++;
                 }
                 else
                 {
                     //иначе ищем нужную метку
-                    for (int n = 0; n < model.state.lables.Count; n++)
+                    for (int n = 0; n < model.getState().lables.Count; n++)
                     {
-                        if (model.state.lables.ElementAt(n).get_name() == parameters[3])
+                        if (model.getState().lables.ElementAt(n).get_name() == parameters[3])
                         {
-                            model.state.tranzakts.ElementAt(model.state.idProcessingTranzact).
-                                my_place = model.state.lables.ElementAt(n).get_my_plase();
+                            model.getState().tranzakts.ElementAt(model.getState().
+                                idProcessingTranzact).my_place = 
+                                model.getState().lables.ElementAt(n).get_my_plase();
                             break;
                         }
                     }
@@ -112,7 +115,7 @@ namespace Modelirovanie.Modeling.ModelingRules
                 {
                     //удаляю флаг параметра
                     string parameterWithOutFlag = parameters[1].Remove(0, 1);
-                    A = float.Parse(model.state.tranzakts.ElementAt(model.state.
+                    A = float.Parse(model.getState().tranzakts.ElementAt(model.getState().
                         idProcessingTranzact).get_parameter(parameterWithOutFlag));
                 }
                 //так как сравнивается на равенство, то не имеет значение как сравнивать 
@@ -125,7 +128,8 @@ namespace Modelirovanie.Modeling.ModelingRules
                 {
                     //удаляю флаг параметра
                     string parameterWithOutFlag = parameters[2].Remove(0, 1);
-                    B = float.Parse(model.state.tranzakts.ElementAt(model.state.idProcessingTranzact).get_parameter(parameterWithOutFlag));
+                    B = float.Parse(model.getState().tranzakts.ElementAt(model.getState().
+                        idProcessingTranzact).get_parameter(parameterWithOutFlag));
                 }
                 //так как сравнивается на равенство, то не имеет значение как сравнивать числа-как 
                 //строку, или как число
@@ -136,17 +140,19 @@ namespace Modelirovanie.Modeling.ModelingRules
                 if (A < B)
                 {
                     //двигаем транзакт дальше
-                    model.state.tranzakts.ElementAt(model.state.idProcessingTranzact).my_place++;
+                    model.getState().tranzakts.ElementAt(model.getState().idProcessingTranzact).
+                        my_place++;
                 }
                 else
                 {
                     //иначе ищем нужную метку
-                    for (int n = 0; n < model.state.lables.Count; n++)
+                    for (int n = 0; n < model.getState().lables.Count; n++)
                     {
-                        if (model.state.lables.ElementAt(n).get_name() == parameters[3])
+                        if (model.getState().lables.ElementAt(n).get_name() == parameters[3])
                         {
-                            model.state.tranzakts.ElementAt(model.state.idProcessingTranzact).
-                                my_place = model.state.lables.ElementAt(n).get_my_plase();
+                            model.getState().tranzakts.ElementAt(model.getState().
+                                idProcessingTranzact).
+                                my_place = model.getState().lables.ElementAt(n).get_my_plase();
                             break;
                         }
                     }

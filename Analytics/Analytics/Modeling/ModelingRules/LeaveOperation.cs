@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Modelirovanie.Modeling.ModelingRules
+namespace Analytics.Modeling.ModelingRules
 {
     class LeaveOperation : BasicOperation
     {
@@ -19,7 +19,8 @@ namespace Modelirovanie.Modeling.ModelingRules
             parameters[0] = name;
         }
 
-        private LeaveOperation(string name, int numberOfReleasedPoints, ModelingModel model) : base(model)
+        private LeaveOperation(string name, int numberOfReleasedPoints, ModelingModel model) : 
+            base(model)
         {
             parameters = new string[1];
             parameters[0] = name;
@@ -50,8 +51,8 @@ namespace Modelirovanie.Modeling.ModelingRules
             //Для случая наличия метки
             if (words.Length > 1 && words[1] == "LEAVE")
             {
-                Lable lable = new Lable(model.state.newRules.Count, words[0]);//создание метки
-                model.state.lables.Add(lable);
+                Lable lable = new Lable(model.getState().newRules.Count, words[0]);//создание метки
+                model.getState().lables.Add(lable);
                 string[] param = words[2].Split(new char[] { ',' }, StringSplitOptions.
                     RemoveEmptyEntries);
                 if (param.Count() == 2)
@@ -70,11 +71,11 @@ namespace Modelirovanie.Modeling.ModelingRules
         public override void processing()
         {
             //передвинул по программе дальше
-            model.state.tranzakts.ElementAt(model.state.idProcessingTranzact).my_place++;
+            model.getState().tranzakts.ElementAt(model.getState().idProcessingTranzact).my_place++;
             //поиск устройства по имени
-            for (int n = 0; n < model.state.storages.Count; n++)
+            for (int n = 0; n < model.getState().storages.Count; n++)
             {
-                if (model.state.storages.ElementAt(n).Get_name() == parameters[0])
+                if (model.getState().storages.ElementAt(n).Get_name() == parameters[0])
                 {
                     int releasedPoints = 1;
                     //Считывание, сколько мест освобождается
@@ -87,14 +88,16 @@ namespace Modelirovanie.Modeling.ModelingRules
                     {
                         //проверка очереди
                         //если в очереди есть транзакты
-                        if (model.state.storages.ElementAt(n).id_tranzaktions_in_device_queue.Count > 0)
-                        {//то первый в очереди занимает устройство и разблокируется для движения далее
-                         //поиск индекса транзакта по его id
+                        if (model.getState().storages.ElementAt(n).
+                            id_tranzaktions_in_device_queue.Count > 0)
+                        {//то первый в очереди занимает устройство и разблокируется для 
+                         //движения далее поиск индекса транзакта по его id
                             int tranzakts_index = -1;
-                            for (int a = 0; a < model.state.tranzakts.Count(); a++)
+                            for (int a = 0; a < model.getState().tranzakts.Count(); a++)
                             {
-                                if (model.state.tranzakts.ElementAt(a).get_my_id() == model.state.
-                                    storages.ElementAt(n).id_tranzaktions_in_device_queue.ElementAt(0))
+                                if (model.getState().tranzakts.ElementAt(a).get_my_id() == 
+                                    model.getState().storages.ElementAt(n).
+                                    id_tranzaktions_in_device_queue.ElementAt(0))
                                 {
                                     tranzakts_index = a;
                                     break;
@@ -102,18 +105,20 @@ namespace Modelirovanie.Modeling.ModelingRules
                             }
 
                             //разблокировал
-                            model.state.tranzakts.ElementAt(tranzakts_index).blocked = false;
+                            model.getState().tranzakts.ElementAt(tranzakts_index).blocked = false;
                             //передвинул по программе дальше
-                            model.state.tranzakts.ElementAt(tranzakts_index).my_place++;
+                            model.getState().tranzakts.ElementAt(tranzakts_index).my_place++;
                             //удалил из очереди, устройство не разблокируется, потому что при его 
                             //освобождении одним транзактом оно тут же занимается первым транзактом 
                             //из очереди
-                            model.state.storages.ElementAt(n).id_tranzaktions_in_device_queue.RemoveAt(0);
+                            model.getState().storages.ElementAt(n).
+                                id_tranzaktions_in_device_queue.RemoveAt(0);
                         }
                         else
                         {
-                            //то разблокируем устройство, текущий транзакт его покинул, а очередь пуста
-                            model.state.storages.ElementAt(n).leaveStorage(1);
+                            //то разблокируем устройство, текущий транзакт его покинул, а 
+                            //очередь пуста
+                            model.getState().storages.ElementAt(n).leaveStorage(1);
                             break;
                         }
                     }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Modelirovanie.Modeling.ModelingRules
+namespace Analytics.Modeling.ModelingRules
 {
     class AssignOperation : BasicOperation
     {
@@ -36,8 +36,8 @@ namespace Modelirovanie.Modeling.ModelingRules
             //Для случая наличия метки
             if (words.Length > 1 && words[1] == "ASSIGN")
             {
-                Lable lable = new Lable(model.state.newRules.Count, words[0]);//создание метки
-                model.state.lables.Add(lable);
+                Lable lable = new Lable(model.getState().newRules.Count, words[0]);//создание метки
+                model.getState().lables.Add(lable);
                 string[] param = words[2].Split(new char[] { ',' }, StringSplitOptions.
                     RemoveEmptyEntries);
                 parameters = new string[2];
@@ -52,12 +52,13 @@ namespace Modelirovanie.Modeling.ModelingRules
         public override void processing()
         {
             //передвинул по программе дальше
-            model.state.tranzakts.ElementAt(model.state.idProcessingTranzact).my_place += 1;                                                           
+            model.getState().tranzakts.ElementAt(model.getState().idProcessingTranzact).
+                my_place += 1;                                                           
             if (parameters[1] == "AC1")//время нахождения транзакта в системе, СЧА
             {
-                model.state.tranzakts.ElementAt(model.state.idProcessingTranzact).
-                    set_parameter(parameters[0], model.state.tranzakts.ElementAt(model.state.
-                    idProcessingTranzact).time_in_system.ToString());//записал параметр
+                model.getState().tranzakts.ElementAt(model.getState().idProcessingTranzact).
+                    set_parameter(parameters[0], model.getState().tranzakts.ElementAt(model.
+                    getState().idProcessingTranzact).time_in_system.ToString());//записал параметр
                 return;
             }
             //определение переменной, СЧА длина должна быть больше двух(V$Var-пример)
@@ -67,34 +68,34 @@ namespace Modelirovanie.Modeling.ModelingRules
                 {
                     //поиск переменной по ее имени
                     string name = parameters[1].Remove(0, 2);
-                    for (int k = 0; k < model.state.variables.Count(); k++)
+                    for (int k = 0; k < model.getState().variables.Count(); k++)
                     {
-                        if (model.state.variables.ElementAt(k).get_name() == name)
+                        if (model.getState().variables.ElementAt(k).get_name() == name)
                         {
                             //расчет значения
-                            string value = ModelingFunctionParser.go_parse(model.state, model.
-                                state.variables.ElementAt(k).get_function(), model.state.
-                                idProcessingTranzact);
+                            string value = ModelingFunctionParser.go_parse(model.getState(), 
+                                model.getState().variables.ElementAt(k).get_function(), 
+                                model.getState().idProcessingTranzact);
                             if (value != "syntaxis_error")
                             {
-                                model.state.tranzakts.ElementAt(model.state.idProcessingTranzact).
-                                    set_parameter(parameters[0], value);
+                                model.getState().tranzakts.ElementAt(model.getState().
+                                    idProcessingTranzact).set_parameter(parameters[0], value);
                             }
                             else//иначе синтаксическая ошибка
                             {
-                                int id_str = model.state.tranzakts.ElementAt(model.state.
+                                int id_str = model.getState().tranzakts.ElementAt(model.getState().
                                     idProcessingTranzact).my_place - 1;
-                                model.state.result = "syntaxis_error " + id_str.ToString() + 
+                                model.getState().result = "syntaxis_error " + id_str.ToString() + 
                                     "-ая строка, некорректная функция переменной: " + name;
                                 return;
                             }
                             break;
                         }
-                        if (k == model.state.variables.Count() - 1)//переменная не найдена
+                        if (k == model.getState().variables.Count() - 1)//переменная не найдена
                         {
-                            int id_str = model.state.tranzakts.ElementAt(model.state.
+                            int id_str = model.getState().tranzakts.ElementAt(model.getState().
                                 idProcessingTranzact).my_place - 1;
-                            model.state.result = "syntaxis_error " + id_str.ToString() + 
+                            model.getState().result = "syntaxis_error " + id_str.ToString() + 
                                 "-ая строка, переменная: " + name + "не найдена";
                             return;
                         }
@@ -103,7 +104,7 @@ namespace Modelirovanie.Modeling.ModelingRules
                 }
             }
             //иначе это обычный параметр, алгоритм сюда дайдет, если он не увидит какие-либо СЧА
-            model.state.tranzakts.ElementAt(model.state.idProcessingTranzact).
+            model.getState().tranzakts.ElementAt(model.getState().idProcessingTranzact).
                 set_parameter(parameters[0], parameters[1]);//записал параметр
         }
     }

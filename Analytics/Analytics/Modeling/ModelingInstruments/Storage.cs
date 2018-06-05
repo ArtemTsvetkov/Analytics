@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Modelirovanie.Modeling.ModelingInstruments
+namespace Analytics.Modeling.ModelingInstruments
 {
     class Storage
     {

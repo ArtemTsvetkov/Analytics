@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Modelirovanie.Modeling.ModelingRules
+namespace Analytics.Modeling.ModelingRules
 {
     class GenerateOperation : BasicOperation
     {
@@ -30,16 +30,16 @@ namespace Modelirovanie.Modeling.ModelingRules
                 //просто указать считанный параметр, которого сейчас нет
                 TranzactionsGenerator tranzactions_generator = new TranzactionsGenerator((
                     int.Parse(parameters[0]) - int.Parse(parameters[1])), (int.
-                    Parse(parameters[0]) + int.Parse(parameters[1])), 0, model.state.newRules.
-                    Count, int.Parse(parameters[2]));
-                model.state.tranzation_generators.Add(tranzactions_generator);
+                    Parse(parameters[0]) + int.Parse(parameters[1])), 0, model.getState().
+                    newRules.Count, int.Parse(parameters[2]));
+                model.getState().tranzation_generators.Add(tranzactions_generator);
                 return new GenerateOperation(model);
             }
             //Для случая наличия метки
             if (words.Length > 1 && words[1] == "GENERATE")
             {
-                Lable lable = new Lable(model.state.newRules.Count, words[0]);//создание метки
-                model.state.lables.Add(lable);
+                Lable lable = new Lable(model.getState().newRules.Count, words[0]);//создание метки
+                model.getState().lables.Add(lable);
                 //здесь не все параметры считываются, например, время начальной задержки вообще 
                 //пропущено, так как для курсовой это не требуется, если понадобится, изменить 
                 //этот if
@@ -47,12 +47,13 @@ namespace Modelirovanie.Modeling.ModelingRules
                     RemoveEmptyEntries);
                 //далее третьим параметром указывается время до следующей транзакции, в данном 
                 //случае оно равно нулю, по причине, описанной выше но далее в программе оно 
-                //используется, при модернизации вместо нуля нужно будет просто указать считанный параметр, которого сейчас нет
+                //используется, при модернизации вместо нуля нужно будет просто указать 
+                //считанный параметр, которого сейчас нет
                 TranzactionsGenerator tranzactions_generator = new TranzactionsGenerator((int.
                     Parse(parameters[0]) - int.Parse(parameters[1])), (int.Parse(parameters[0]) + 
-                    int.Parse(parameters[1])), 0, model.state.newRules.Count, int.
+                    int.Parse(parameters[1])), 0, model.getState().newRules.Count, int.
                     Parse(parameters[2]));
-                model.state.tranzation_generators.Add(tranzactions_generator);
+                model.getState().tranzation_generators.Add(tranzactions_generator);
                 return new GenerateOperation(model);
             }
 
@@ -62,7 +63,8 @@ namespace Modelirovanie.Modeling.ModelingRules
         public override void processing()
         {
             //передвинул по программе дальше
-            model.state.tranzakts.ElementAt(model.state.idProcessingTranzact).my_place += 1;
+            model.getState().tranzakts.ElementAt(model.getState().idProcessingTranzact).
+                my_place += 1;
         }
     }
 }

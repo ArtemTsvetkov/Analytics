@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Modelirovanie.Modeling.ModelingRules
+namespace Analytics.Modeling.ModelingRules
 {
     class VariableOperation : BasicOperation
     {
@@ -19,16 +19,16 @@ namespace Modelirovanie.Modeling.ModelingRules
             if (words.Length > 1 && words[1] == "VARIABLE")
             {
                 Variable variable = new Variable(words[0], words[2], "");
-                model.state.variables.Add(variable);
+                model.getState().variables.Add(variable);
                 return new VariableOperation(model);
             }
             //Для случая наличия метки
             if (words.Length > 2 && words[2] == "VARIABLE")
             {
-                Lable lable = new Lable(model.state.newRules.Count, words[0]);//создание метки
-                model.state.lables.Add(lable);
+                Lable lable = new Lable(model.getState().newRules.Count, words[0]);//создание метки
+                model.getState().lables.Add(lable);
                 Variable variable = new Variable(words[1], words[3], "");
-                model.state.variables.Add(variable);
+                model.getState().variables.Add(variable);
                 return new VariableOperation(model);
             }
 
@@ -38,7 +38,8 @@ namespace Modelirovanie.Modeling.ModelingRules
         public override void processing()
         {
             //передвинул по программе дальше
-            model.state.tranzakts.ElementAt(model.state.idProcessingTranzact).my_place += 1;
+            model.getState().tranzakts.ElementAt(model.getState().idProcessingTranzact).
+                my_place += 1;
         }
     }
 }

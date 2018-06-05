@@ -1,12 +1,12 @@
-﻿using Modelirovanie.Modeling;
-using Modelirovanie.Modeling.ModelingRules;
+﻿using Analytics.Modeling;
+using Analytics.Modeling.ModelingRules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Modelirovanie
+namespace Analytics
 {
     class RulesParser
     {
@@ -65,9 +65,9 @@ namespace Modelirovanie
 
             ModelingState modeling_objects = new ModelingState();
             //перебор каждой строк и поиск в ней определения какого-либо объекта
-            for (int i = 0; i < model.state.originalRules.Count; i++)
+            for (int i = 0; i < model.getState().originalRules.Count; i++)
             {
-                model.state.newRules.Add(advanceOperation.processing(model.state.originalRules.
+                model.getState().newRules.Add(advanceOperation.processing(model.getState().originalRules.
                     ElementAt(i)));
             }
         }

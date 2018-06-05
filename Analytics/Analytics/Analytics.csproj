@@ -78,6 +78,7 @@
     <Compile Include="CommonComponents\WorkWithMSAccess\MSAccessProxy.cs" />
     <Compile Include="CommonComponents\Interfaces\Observer.cs" />
     <Compile Include="Modeling\CheinPartOfOperationCreator.cs" />
+    <Compile Include="Modeling\Converters\ResultConverter.cs" />
     <Compile Include="Modeling\ModelingExceptions\IncorrectFormatOperation.cs" />
     <Compile Include="Modeling\ModelingExceptions\ModelingException.cs" />
     <Compile Include="Modeling\ModelingFunctionParser.cs" />

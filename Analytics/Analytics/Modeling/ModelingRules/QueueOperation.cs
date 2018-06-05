@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Modelirovanie.Modeling.ModelingRules
+namespace Analytics.Modeling.ModelingRules
 {
     class QueueOperation : BasicOperation
     {
@@ -26,16 +26,16 @@ namespace Modelirovanie.Modeling.ModelingRules
             if (words.Length > 0 && words[0] == "QUEUE")
             {
                 Queue queue = new Queue(words[1]);
-                model.state.queues.Add(queue);
+                model.getState().queues.Add(queue);
                 return new QueueOperation(words[1], model);
             }
             //Для случая наличия метки
             if (words.Length > 1 && words[1] == "QUEUE")
             {
-                Lable lable = new Lable(model.state.newRules.Count, words[0]);//создание метки
-                model.state.lables.Add(lable);
+                Lable lable = new Lable(model.getState().newRules.Count, words[0]);//создание метки
+                model.getState().lables.Add(lable);
                 Queue queue = new Queue(words[2]);
-                model.state.queues.Add(queue);
+                model.getState().queues.Add(queue);
                 return new QueueOperation(words[2], model);
             }
 
@@ -45,18 +45,19 @@ namespace Modelirovanie.Modeling.ModelingRules
         public override void processing()
         {
             //передвинул по программе дальше
-            model.state.tranzakts.ElementAt(model.state.idProcessingTranzact).my_place += 1;
+            model.getState().tranzakts.ElementAt(model.getState().
+                idProcessingTranzact).my_place += 1;
             //поиск очереди по имени
-            for (int n = 0; n < model.state.queues.Count; n++)
+            for (int n = 0; n < model.getState().queues.Count; n++)
             {
-                if (model.state.queues.ElementAt(n).get_name() == parameters[0])
+                if (model.getState().queues.ElementAt(n).get_name() == parameters[0])
                 {
                     //после нахождения инкрементирую кол-во тразактов в очереди, очередь-абстракция, 
                     //которая лишь показывает в конкретный момент кол-во тразактов на определенном 
                     //участке реальная очередь находится в устройстве, где существует очередность 
                     //вхождения и куда можно добавить очередность исходя из приоритетов
-                    model.state.queues.ElementAt(n).count_of_tranzactions_in_queue++;
-                    model.state.queues.ElementAt(n).update_tranzacts_in_queue();
+                    model.getState().queues.ElementAt(n).count_of_tranzactions_in_queue++;
+                    model.getState().queues.ElementAt(n).update_tranzacts_in_queue();
                     break;
                 }
             }

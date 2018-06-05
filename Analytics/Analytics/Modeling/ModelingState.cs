@@ -1,14 +1,13 @@
-﻿using Modelirovanie.Modeling.ModelingInstruments;
-using Modelirovanie.Modeling.ModelingRules;
+﻿using Analytics.Modeling.ModelingInstruments;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Modelirovanie
+namespace Analytics
 {
-    class ModelingState
+    class ModelingState : ModelsState
     {
         public int last_tranzaktions_id;//хранение последнего id транзакта
         public List<Queue> queues = new List<Queue>();

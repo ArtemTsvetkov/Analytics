@@ -1,18 +1,15 @@
 ﻿using Analytics;
-using Modelirovanie.Modeling;
-using Modelirovanie.Modeling.ModelingRules;
+using Analytics.CommonComponents.BasicObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Modelirovanie
+namespace Analytics
 {
-    class ModelingModel
+    class ModelingModel : BasicModel<ModelingState, ModelingState>
     {
-        public ModelingState state;//здесь хранятся все объекты
-
         public void setConfiguration(string path_rules_file)
         {
             //чтение файла с конфигурацией модели
@@ -24,9 +21,14 @@ namespace Modelirovanie
             rules_parser.go_parse(this);
         }
 
+        public ModelingState getState()
+        {
+            return state;
+        }
+
         //основная функция моделирования, возвращает результат
         //моделирования(ошибка или успех)
-        public ModelingState run_simulation()
+        private void run_simulation()
         {
             //начало моделировния, генерация транзактов и "перемещение" их от 
             //точки создания до точки удаления из системы
@@ -160,7 +162,6 @@ namespace Modelirovanie
             }
             state.time_of_modeling = system_time;
             state.result = "Успех!";
-            return state;
         }
 
 
@@ -174,6 +175,16 @@ namespace Modelirovanie
             return rand.Next(min_number, max_number);
         }
 
+        public override void calculationStatistics()
+        {
+            run_simulation();
+            notifyObservers();
+        }
+
+        public override void loadStore()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 /*

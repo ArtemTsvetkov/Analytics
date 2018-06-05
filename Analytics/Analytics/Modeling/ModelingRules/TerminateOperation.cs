@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Modelirovanie.Modeling.ModelingRules
+namespace Analytics.Modeling.ModelingRules
 {
     class TerminateOperation : BasicOperation
     {
@@ -24,8 +24,8 @@ namespace Modelirovanie.Modeling.ModelingRules
             //Для случая наличия метки
             if (words.Length > 1 && words[1] == "TERMINATE")//Для случая существования метки
             {
-                Lable lable = new Lable(model.state.newRules.Count, words[0]);//создание метки
-                model.state.lables.Add(lable);
+                Lable lable = new Lable(model.getState().newRules.Count, words[0]);//создание метки
+                model.getState().lables.Add(lable);
                 return new TerminateOperation(model);
             }
 
@@ -35,7 +35,7 @@ namespace Modelirovanie.Modeling.ModelingRules
         public override void processing()
         {
             //удаление транзакта
-            model.state.tranzakts.RemoveAt(model.state.idProcessingTranzact);
+            model.getState().tranzakts.RemoveAt(model.getState().idProcessingTranzact);
         }
     }
 }

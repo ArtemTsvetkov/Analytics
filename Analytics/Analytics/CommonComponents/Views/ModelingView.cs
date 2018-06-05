@@ -1,4 +1,5 @@
-﻿using Modelirovanie;
+﻿using Analytics.Modeling.Converters;
+using Modelirovanie;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +9,10 @@ using System.Windows.Forms;
 
 namespace Analytics.CommonComponents.Views
 {
-    class ModelingView
+    class ModelingView : Observer
     {
         private Form1 form;
+        private ModelingModel control;
 
         public ModelingView(Form1 form)
         {
@@ -20,11 +22,12 @@ namespace Analytics.CommonComponents.Views
         public void button1_Click()
         {
             List<string> rules = new List<string>();
-            //ReadWriteTextFile rwtf = new ReadWriteTextFile();
             rules = ReadWriteTextFile.Read_from_file(form.textBox1Elem.Text);
             if (rules.ElementAt(0) != "Ошибка чтения, файл не существует или не доступен!")
             {
-                ModelingModel control = new ModelingModel();
+                control = new ModelingModel();
+                ResultConverter resultConverter = new ResultConverter();
+                control.setResultConverter(resultConverter);
                 ModelingState modeling_objects = new ModelingState();
                 form.dataGridView1Elem.Rows.Clear();
                 form.dataGridView1Elem.Columns.Clear();
@@ -97,7 +100,8 @@ namespace Analytics.CommonComponents.Views
                 for (int i = 0; i < form.numericUpDown1Elem.Value; i++)//моделирование в соответствии с количеством итераций
                 {
                     control.setConfiguration(form.textBox1Elem.Text);
-                    modeling_objects = control.run_simulation();
+                    control.calculationStatistics();
+                    modeling_objects = control.getResult();
                     if (modeling_objects.result == "Успех!")
                     {
                         //запоминание результатов моделирования
@@ -256,7 +260,6 @@ namespace Analytics.CommonComponents.Views
                         form.dataGridView3Elem.Rows[m].Cells[0].Value = buf_of_stat_lable.ElementAt(m).name;
                         form.dataGridView3Elem.Rows[m].Cells[1].Value = float.Parse(buf_of_stat_lable.ElementAt(m).value) / int.Parse(form.numericUpDown1Elem.Value.ToString());
                     }
-                    //"D:\\Files\\MsVisualProjects\\Modelirovanie\\rules.txt"
                 }
             }
             else
@@ -268,6 +271,11 @@ namespace Analytics.CommonComponents.Views
                 result = MessageBox.Show(message, caption);
                 form.progressBar1Elem.Value = 100;
             }
+        }
+
+        public void notify()
+        {
+            
         }
     }
 }

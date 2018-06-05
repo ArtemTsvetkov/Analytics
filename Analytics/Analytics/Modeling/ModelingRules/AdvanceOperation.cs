@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Modelirovanie.Modeling.ModelingRules
+namespace Analytics.Modeling.ModelingRules
 {
     class AdvanceOperation : BasicOperation
     {
@@ -34,8 +34,8 @@ namespace Modelirovanie.Modeling.ModelingRules
             //Для случая наличия метки
             if (words.Length > 1 && words[1] == "ADVANCE")
             {
-                Lable lable = new Lable(model.state.newRules.Count, words[0]);//создание метки
-                model.state.lables.Add(lable);
+                Lable lable = new Lable(model.getState().newRules.Count, words[0]);//создание метки
+                model.getState().lables.Add(lable);
                 //считывание параметров
                 string[] param = words[2].Split(new char[] { ',' }, 
                     StringSplitOptions.RemoveEmptyEntries);
@@ -48,18 +48,21 @@ namespace Modelirovanie.Modeling.ModelingRules
         public override void processing()
         {
             //запись задержки в транзакт
-            model.state.tranzakts.ElementAt(model.state.idProcessingTranzact).blocked = true;
-            model.state.tranzakts.ElementAt(model.state.idProcessingTranzact).
+            model.getState().tranzakts.ElementAt(model.getState().idProcessingTranzact).
+                blocked = true;
+            model.getState().tranzakts.ElementAt(model.getState().idProcessingTranzact).
                 remaining_time_delay = create_assign(int.Parse(parameters[0]) - 
                 int.Parse(parameters[1]), int.Parse(parameters[0]) + int.Parse(parameters[1]), 
-                model.state.rand);
+                model.getState().rand);
             //проверка, когда задержка оказалась нулевой
-            if (model.state.tranzakts.ElementAt(model.state.idProcessingTranzact).
+            if (model.getState().tranzakts.ElementAt(model.getState().idProcessingTranzact).
                 remaining_time_delay == 0)
             {
-                model.state.tranzakts.ElementAt(model.state.idProcessingTranzact).blocked = false;
+                model.getState().tranzakts.ElementAt(model.getState().idProcessingTranzact).
+                    blocked = false;
                 //передвинул по программе дальше
-                model.state.tranzakts.ElementAt(model.state.idProcessingTranzact).my_place += 1;
+                model.getState().tranzakts.ElementAt(model.getState().idProcessingTranzact).
+                    my_place += 1;
             }
         }
 
