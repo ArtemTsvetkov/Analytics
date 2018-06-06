@@ -25,7 +25,6 @@ namespace Analytics
         {
             InitializeComponent();
             marcovitsView = new MarcovitsView(this);
-            modelingView = new ModelingView(this);
             timer1.Enabled = true;
             timer1.Interval = timer1.Interval * 2;
             textBox1.Text = "D:\\Files\\MsVisualProjects\\Diplom\\AnaliticsMath\\rules2.txt";
@@ -129,6 +128,7 @@ namespace Analytics
 
         private void button1_Click(object sender, EventArgs e)
         {
+            modelingView = new ModelingView(this);
             modelingView.button1_Click();
         }
     }

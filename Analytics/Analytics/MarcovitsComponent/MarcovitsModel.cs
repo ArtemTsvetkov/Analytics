@@ -139,11 +139,6 @@ namespace Analytics
             notifyObservers();
         }
 
-        public void recoverySelf(ModelsState state)
-        {
-            this.state = (MarcovitsModelState)state;
-        }
-
         public override void loadStore()//загрузка данных из базы данных
         {
             DataWorker<List<string>, string, DataSet> accessProxy = new MSAccessProxy();
@@ -216,13 +211,91 @@ namespace Analytics
 
         public override MarcovitsModelState copySelf()
         {
-            //throw new NotImplementedException();
-            return new MarcovitsModelState();
+            MarcovitsModelState copy = new MarcovitsModelState();
+            copy.pathOfDataBase = state.pathOfDataBase;
+            copy.tableOfDataBase = state.tableOfDataBase;
+            copy.income = state.income;
+
+            if (state.unicSoftwareNames != null)
+            {
+                copy.unicSoftwareNames = (string[])state.unicSoftwareNames.Clone();
+            }
+
+            if (state.avgNumbersUseLicense != null)
+            {
+                copy.avgNumbersUseLicense = (double[])state.avgNumbersUseLicense.Clone();
+            }
+
+            if (state.avgDeviationFromPurchasedNumber != null)
+            {
+                copy.avgDeviationFromPurchasedNumber = (double[])state.
+                    avgDeviationFromPurchasedNumber.Clone();
+            }
+
+            if (state.numberBuyLicense != null)
+            {
+                copy.numberBuyLicense = (double[])state.numberBuyLicense.Clone();
+            }
+
+            if (state.percents != null)
+            {
+                copy.percents = (double[,])state.percents.Clone();
+            }
+
+            if (state.risk != null)
+            {
+                copy.risk = (double[,])state.risk.Clone();
+            }
+
+            for(int i=0; i<state.data.Count; i++)
+            {
+                copy.data.Add(state.data.ElementAt(i).copy());
+            }
+
+            return copy;
         }
 
-        public override void recoverySelf(MarcovitsModelState state)
+        public override void recoverySelf(MarcovitsModelState oldState)
         {
-            //throw new NotImplementedException();
+            state.pathOfDataBase = oldState.pathOfDataBase;
+            state.tableOfDataBase = oldState.tableOfDataBase;
+            state.income = oldState.income;
+
+            if (oldState.unicSoftwareNames != null)
+            {
+                state.unicSoftwareNames = (string[])oldState.unicSoftwareNames.Clone();
+            }
+
+            if (oldState.avgNumbersUseLicense != null)
+            {
+                state.avgNumbersUseLicense = (double[])oldState.avgNumbersUseLicense.Clone();
+            }
+
+            if (oldState.avgDeviationFromPurchasedNumber != null)
+            {
+                state.avgDeviationFromPurchasedNumber = (double[])oldState.
+                    avgDeviationFromPurchasedNumber.Clone();
+            }
+
+            if (oldState.numberBuyLicense != null)
+            {
+                state.numberBuyLicense = (double[])oldState.numberBuyLicense.Clone();
+            }
+
+            if (oldState.percents != null)
+            {
+                state.percents = (double[,])oldState.percents.Clone();
+            }
+
+            if (oldState.risk != null)
+            {
+                state.risk = (double[,])oldState.risk.Clone();
+            }
+
+            for (int i = 0; i < oldState.data.Count; i++)
+            {
+                state.data.Add(oldState.data.ElementAt(i).copy());
+            }
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Analytics.CommandsStore
         Command<TModelsTypeOfResult, TModelsTypeState>
         where TModelsTypeState : ModelsState
     {
-        private TModelsTypeState modelsState;
+        protected TModelsTypeState modelsState;
         protected BasicModel<TModelsTypeOfResult, TModelsTypeState> model;
 
         abstract public void execute();
@@ -21,7 +21,7 @@ namespace Analytics.CommandsStore
             setModel(model);
         }
 
-        public ModelsState getModelState()
+        public TModelsTypeState getModelState()
         {
             return modelsState;
         }

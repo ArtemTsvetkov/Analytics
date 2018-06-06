@@ -9,7 +9,7 @@ namespace Analytics
 {
     interface Command<TModelsTypeOfResult, TModelsTypeState> where TModelsTypeState : ModelsState
     {
-        ModelsState getModelState();//Получить сохраненное состояние модели
+        TModelsTypeState getModelState();//Получить сохраненное состояние модели
         void execute();//Выполнить некоторые действия с моделью
         void recoveryModel();//Восстановить модель, отправив в нее ModelsState
         //Установить модель, с которой работает команда

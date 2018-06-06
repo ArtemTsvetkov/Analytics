@@ -10,8 +10,6 @@ namespace Analytics
 {
     class GetMarcovitsStatistcCommand : BasicCommand<MarcovitsModelState, MarcovitsModelState>
     {
-        //private BasicModel<MarcovitsModelState, MarcovitsModelState> model;
-        private ModelsState state;
 
         public GetMarcovitsStatistcCommand(BasicModel<MarcovitsModelState, MarcovitsModelState>
             model) : base(model)
@@ -21,7 +19,7 @@ namespace Analytics
 
         public override void execute()
         {
-            state = model.copySelf();
+            modelsState = model.copySelf();
             model.calculationStatistics();
         }
     }
