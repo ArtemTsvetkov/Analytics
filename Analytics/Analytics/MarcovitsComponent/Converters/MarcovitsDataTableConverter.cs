@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Analytics
 {
-    class MarcovitsDataTableConverter : DataConverter<DataSet>
+    class MarcovitsDataTableConverter : DataConverter<DataSet, List<MarcovitsDataTable>>
     {
-        public object convert(DataSet data)
+        public List<MarcovitsDataTable> convert(DataSet data)
         {
             DataSet ds = (DataSet)data;
             List<MarcovitsDataTable> newData = new List<MarcovitsDataTable>();

@@ -47,12 +47,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandsStore\BasicCommand.cs" />
     <Compile Include="CommandsStore\Command.cs" />
     <Compile Include="CommandsStore\CommandsStore.cs" />
+    <Compile Include="CommandsStore\Commands\Modeling\RunModeling.cs" />
     <Compile Include="CommandsStore\Stores\ConcreteCommandStore.cs" />
+    <Compile Include="CommonComponents\BasicObjects\BasicModel.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\DataConverter.cs" />
-    <Compile Include="CommonComponents\Interfaces\Data\DataSaver.cs" />
+    <Compile Include="CommonComponents\Interfaces\Data\DataWorker.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\StorageForData.cs" />
+    <Compile Include="CommonComponents\Views\MarcovitsView.cs" />
+    <Compile Include="CommonComponents\Views\ModelingView.cs" />
     <Compile Include="CommonComponents\WorkWithMSAccess\MSAccessStorageForData.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -60,21 +65,58 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="MarcovitsComponent\GetMarcovitsStatistcCommand.cs" />
-    <Compile Include="CommandsStore\Commands\LoadDataCommand.cs" />
+    <Compile Include="CommandsStore\Commands\Marcovits\GetMarcovitsStatistcCommand.cs" />
+    <Compile Include="CommandsStore\Commands\Marcovits\LoadDataCommand.cs" />
+    <Compile Include="MarcovitsComponent\Converters\ResultConverter.cs" />
     <Compile Include="MarcovitsComponent\MarcovitsDataTable.cs" />
     <Compile Include="MarcovitsComponent\Converters\MarcovitsDataTableConverter.cs" />
     <Compile Include="MarcovitsComponent\Converters\MarcovitsDistinctSoftwareNamesConverter.cs" />
     <Compile Include="MarcovitsComponent\MarcovitsModel.cs" />
     <Compile Include="MarcovitsComponent\MarcovitsModelState.cs" />
-    <Compile Include="MarcovitsComponent\Interfaces\Model.cs" />
+    <Compile Include="CommonComponents\Interfaces\Model.cs" />
     <Compile Include="CommonComponents\Interfaces\ModelsState.cs" />
     <Compile Include="CommonComponents\WorkWithMSAccess\MSAccessDataSaver.cs" />
     <Compile Include="CommonComponents\WorkWithMSAccess\MSAccessProxy.cs" />
     <Compile Include="CommonComponents\Interfaces\Observer.cs" />
+    <Compile Include="Modeling\CheinPartOfOperationCreator.cs" />
+    <Compile Include="Modeling\Converters\ResultConverter.cs" />
+    <Compile Include="Modeling\ModelingExceptions\IncorrectFormatOperation.cs" />
+    <Compile Include="Modeling\ModelingExceptions\ModelingException.cs" />
+    <Compile Include="Modeling\ModelingFunctionParser.cs" />
+    <Compile Include="Modeling\ModelingInstruments\Device.cs" />
+    <Compile Include="Modeling\ModelingInstruments\Element.cs" />
+    <Compile Include="Modeling\ModelingInstruments\Lable.cs" />
+    <Compile Include="Modeling\ModelingInstruments\ModelingInstrument.cs" />
+    <Compile Include="Modeling\ModelingInstruments\Queue.cs" />
+    <Compile Include="Modeling\ModelingInstruments\Storage.cs" />
+    <Compile Include="Modeling\ModelingInstruments\TranzactionsGenerator.cs" />
+    <Compile Include="Modeling\ModelingInstruments\Tranzakt.cs" />
+    <Compile Include="Modeling\ModelingInstruments\Variable.cs" />
+    <Compile Include="Modeling\ModelingModel.cs" />
+    <Compile Include="Modeling\ModelingRules\AdvanceOperation.cs" />
+    <Compile Include="Modeling\ModelingRules\AssignOperation.cs" />
+    <Compile Include="Modeling\ModelingRules\BasicOperation.cs" />
+    <Compile Include="Modeling\ModelingRules\DepartOperation.cs" />
+    <Compile Include="Modeling\ModelingRules\EnterOperation.cs" />
+    <Compile Include="Modeling\ModelingRules\GenerateOperation.cs" />
+    <Compile Include="Modeling\ModelingRules\InitialOperation.cs" />
+    <Compile Include="Modeling\ModelingRules\LeaveOperation.cs" />
+    <Compile Include="Modeling\ModelingRules\Operation.cs" />
+    <Compile Include="Modeling\ModelingRules\QueueOperation.cs" />
+    <Compile Include="Modeling\ModelingRules\ReleaseOperation.cs" />
+    <Compile Include="Modeling\ModelingRules\SavevalueOperation.cs" />
+    <Compile Include="Modeling\ModelingRules\SeizeOperation.cs" />
+    <Compile Include="Modeling\ModelingRules\StorageOperation.cs" />
+    <Compile Include="Modeling\ModelingRules\TerminateOperation.cs" />
+    <Compile Include="Modeling\ModelingRules\TestOperation.cs" />
+    <Compile Include="Modeling\ModelingRules\TransferOperation.cs" />
+    <Compile Include="Modeling\ModelingRules\VariableOperation.cs" />
+    <Compile Include="Modeling\ModelingState.cs" />
+    <Compile Include="Modeling\RulesParser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CommonComponents\WorkWithFiles\ReadWriteTextFile.cs" />
+    <Compile Include="Statistics.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -86,6 +128,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -100,7 +143,24 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\bg.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\gear1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\gear2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\gear3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\gear4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Modeling\Statistics\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

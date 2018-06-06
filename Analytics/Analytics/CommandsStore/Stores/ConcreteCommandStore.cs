@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Analytics.CommandsStore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,11 +7,13 @@ using System.Threading.Tasks;
 
 namespace Analytics
 {
-    class ConcreteCommandStore : CommandsStore
+    class ConcreteCommandStore<TModelsTypeOfResult, TModelsTypeState> : 
+        CommandsStore<TModelsTypeOfResult, TModelsTypeState> where TModelsTypeState : ModelsState
     {
-        private List<Command> history = new List<Command>();
+        private List<BasicCommand<TModelsTypeOfResult, TModelsTypeState>> history = 
+            new List<BasicCommand<TModelsTypeOfResult, TModelsTypeState>>();
 
-        public void executeCommand(Command command)
+        public void executeCommand(BasicCommand<TModelsTypeOfResult, TModelsTypeState> command)
         {
             command.execute();
             push(command);
@@ -18,16 +21,16 @@ namespace Analytics
 
         public void recoveryModel()
         {
-            Command command = pop();
+            BasicCommand<TModelsTypeOfResult, TModelsTypeState> command = pop();
             command.recoveryModel();
         }
 
-        public Command pop()
+        public BasicCommand<TModelsTypeOfResult, TModelsTypeState> pop()
         {
             return history.Last();
         }
 
-        public void push(Command command)
+        public void push(BasicCommand<TModelsTypeOfResult, TModelsTypeState> command)
         {
             history.Add(command);
         }

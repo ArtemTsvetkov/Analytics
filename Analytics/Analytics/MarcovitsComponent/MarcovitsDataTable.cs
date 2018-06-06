@@ -28,5 +28,11 @@ namespace Analytics
             this.hours_in = hours_in;
             this.licenses = licenses;
         }
+
+        public MarcovitsDataTable copy()
+        {
+            return new MarcovitsDataTable(year_in, month_in, day_in,
+                hours_in, licenses);
+        }
     }
 }

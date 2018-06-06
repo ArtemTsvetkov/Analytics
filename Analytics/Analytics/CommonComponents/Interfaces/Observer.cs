@@ -8,6 +8,6 @@ namespace Analytics
 {
     interface Observer
     {
-        void notify(object data);
+        void notify();
     }
 }

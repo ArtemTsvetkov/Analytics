@@ -1,4 +1,5 @@
-﻿using Analytics.CommonComponents.Interfaces.Data;
+﻿using Analytics.CommonComponents.BasicObjects;
+using Analytics.CommonComponents.Interfaces.Data;
 using Analytics.CommonComponents.WorkWithMSAccess;
 using System;
 using System.Collections.Generic;
@@ -9,23 +10,24 @@ using System.Threading.Tasks;
 
 namespace Analytics
 {
-    class MarcovitsModel : Model
+    class MarcovitsModel : BasicModel<MarcovitsModelState, MarcovitsModelState>
     {
-        MarcovitsModelState state = new MarcovitsModelState();
-        Observer observer;
-        DataConverter<DataSet> converter = new MarcovitsDataTableConverter();
-        DataConverter<DataSet> unucNamesConverter = new MarcovitsDistinctSoftwareNamesConverter();
+        DataConverter<DataSet, List<MarcovitsDataTable>> converter = 
+            new MarcovitsDataTableConverter();
+        DataConverter<DataSet, string[]> unucNamesConverter = 
+            new MarcovitsDistinctSoftwareNamesConverter();
 
         public MarcovitsModel(string pathOfDataBase, string tableOfDataBase)
         {
+            state = new MarcovitsModelState();
             state.pathOfDataBase = pathOfDataBase;
             state.tableOfDataBase = tableOfDataBase;
         }
 
-        public void calculationStatistics()
+        public override void calculationStatistics()
         {
             //Получение уникальных имен лицензий
-            DataSaver<List<string>, string, DataSet> accessProxy = new MSAccessProxy();
+            DataWorker<List<string>, string, DataSet> accessProxy = new MSAccessProxy();
             StorageForData<DataSet> newData = new MSAccessStorageForData();
             accessProxy.setConfig(state.pathOfDataBase, "SELECT DISTINCT software FROM " + state.
                 tableOfDataBase, newData);
@@ -46,7 +48,7 @@ namespace Analytics
             accessProxy.setConfig(state.pathOfDataBase, query, newData);
             accessProxy.execute();
             ds = newData.getData();
-            state.data = (List<MarcovitsDataTable>)converter.convert(ds);
+            state.data = converter.convert(ds);
 
             //Рассчет средних значений кол-ва лицензий
             state.avgNumbersUseLicense = new double[state.unicSoftwareNames.Length];
@@ -134,27 +136,12 @@ namespace Analytics
                 state.income += state.avgDeviationFromPurchasedNumber[i] * state.percents[i,0];
             }
 
-            notifyObserver();
+            notifyObservers();
         }
 
-        public void subscribe(Observer newObserver)
+        public override void loadStore()//загрузка данных из базы данных
         {
-            observer = newObserver;
-        }
-
-        public ModelsState copySelf()
-        {
-            return state;
-        }
-
-        public void recoverySelf(ModelsState state)
-        {
-            this.state = (MarcovitsModelState)state;
-        }
-
-        public void loadStore()//загрузка данных из базы данных
-        {
-            DataSaver<List<string>, string, DataSet> accessProxy = new MSAccessProxy();
+            DataWorker<List<string>, string, DataSet> accessProxy = new MSAccessProxy();
             StorageForData<DataSet> newData = new MSAccessStorageForData();
             //получение значения id
             accessProxy.setConfig(state.pathOfDataBase, "SELECT user_name, user_host, software FROM " +
@@ -162,21 +149,8 @@ namespace Analytics
             accessProxy.execute();
             DataSet ds = newData.getData();
             state.data = (List<MarcovitsDataTable>)converter.convert(ds);
-            notifyObserver();
+            notifyObservers();
         }
-
-        public void notifyObserver()
-        {
-            //Пока отправляю весь стейт, но потом сделаю через стратегию, чтобы сама вью выбирала 
-            //что ей отправлять из списка.
-            //список будет формироваться из части полей State. То есть State будет содержать 
-            //два блока-обще доступный и приватный
-            observer.notify(state);
-        }
-
-
-
-
 
         double avg(double[] matrix)//Расчет среднего значения
         {
@@ -232,6 +206,95 @@ namespace Analytics
             else//Должно совпадать, иначе нет смысла считать
             {
                 throw new Exception();
+            }
+        }
+
+        public override MarcovitsModelState copySelf()
+        {
+            MarcovitsModelState copy = new MarcovitsModelState();
+            copy.pathOfDataBase = state.pathOfDataBase;
+            copy.tableOfDataBase = state.tableOfDataBase;
+            copy.income = state.income;
+
+            if (state.unicSoftwareNames != null)
+            {
+                copy.unicSoftwareNames = (string[])state.unicSoftwareNames.Clone();
+            }
+
+            if (state.avgNumbersUseLicense != null)
+            {
+                copy.avgNumbersUseLicense = (double[])state.avgNumbersUseLicense.Clone();
+            }
+
+            if (state.avgDeviationFromPurchasedNumber != null)
+            {
+                copy.avgDeviationFromPurchasedNumber = (double[])state.
+                    avgDeviationFromPurchasedNumber.Clone();
+            }
+
+            if (state.numberBuyLicense != null)
+            {
+                copy.numberBuyLicense = (double[])state.numberBuyLicense.Clone();
+            }
+
+            if (state.percents != null)
+            {
+                copy.percents = (double[,])state.percents.Clone();
+            }
+
+            if (state.risk != null)
+            {
+                copy.risk = (double[,])state.risk.Clone();
+            }
+
+            for(int i=0; i<state.data.Count; i++)
+            {
+                copy.data.Add(state.data.ElementAt(i).copy());
+            }
+
+            return copy;
+        }
+
+        public override void recoverySelf(MarcovitsModelState oldState)
+        {
+            state.pathOfDataBase = oldState.pathOfDataBase;
+            state.tableOfDataBase = oldState.tableOfDataBase;
+            state.income = oldState.income;
+
+            if (oldState.unicSoftwareNames != null)
+            {
+                state.unicSoftwareNames = (string[])oldState.unicSoftwareNames.Clone();
+            }
+
+            if (oldState.avgNumbersUseLicense != null)
+            {
+                state.avgNumbersUseLicense = (double[])oldState.avgNumbersUseLicense.Clone();
+            }
+
+            if (oldState.avgDeviationFromPurchasedNumber != null)
+            {
+                state.avgDeviationFromPurchasedNumber = (double[])oldState.
+                    avgDeviationFromPurchasedNumber.Clone();
+            }
+
+            if (oldState.numberBuyLicense != null)
+            {
+                state.numberBuyLicense = (double[])oldState.numberBuyLicense.Clone();
+            }
+
+            if (oldState.percents != null)
+            {
+                state.percents = (double[,])oldState.percents.Clone();
+            }
+
+            if (oldState.risk != null)
+            {
+                state.risk = (double[,])oldState.risk.Clone();
+            }
+
+            for (int i = 0; i < oldState.data.Count; i++)
+            {
+                state.data.Add(oldState.data.ElementAt(i).copy());
             }
         }
     }

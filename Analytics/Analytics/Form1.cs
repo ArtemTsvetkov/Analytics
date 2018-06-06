@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Analytics.CommonComponents.BasicObjects;
+using Analytics.CommonComponents.Views;
+using Analytics.MarcovitsComponent.Converters;
+using Modelirovanie;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,66 +11,125 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace Analytics
 {
-    public partial class Form1 : Form, Observer
+    public partial class Form1 : Form
     {
-        
+        private MarcovitsView marcovitsView;
+        private ModelingView modelingView;
+        public int timer = 0;
+
         public Form1()
         {
             InitializeComponent();
-        }
-        
-        public void notify(object data)
-        {
-            if (data.GetType() == typeof(MarcovitsModelState))
-            {
-                MarcovitsModelState state = (MarcovitsModelState)data;
-                //Вывод данных о доходности
-                chart1.Series[0].Points.Clear();
-                chart1.Series[0].Points.AddXY(0, (state.income*100));
-                chart1.Series[0].Points.AddXY(0, 100- (state.income * 100));
-                chart1.Series[0].Points.ElementAt(1).Color = Color.Black;
-                double plus = state.income * 100;
-                label5.Visible = true;
-                label5.Text = "Доходность:" + plus.ToString();
-                //Вывод данных о риске
-                chart2.Series[0].Points.Clear();
-                chart2.Series[0].Points.AddXY(0, (state.risk[0,0] * 100));
-                chart2.Series[0].Points.AddXY(0, 100 - (state.income * 100));
-                chart2.Series[0].Points.ElementAt(0).Color = Color.Red;
-                chart2.Series[0].Points.ElementAt(1).Color = Color.Black;
-                double mines = state.risk[0, 0] * 100;
-                label6.Visible = true;
-                label6.Text = "Риск:" + plus.ToString();
-                //Вывод данных о распределении бюджета по лицензиям
-                chart3.Series[0].Points.Clear();
-                for(int i=0;i<state.unicSoftwareNames.Length;i++)
-                {
-                    chart3.Series[0].Points.AddXY(0, (state.percents[i,0] * 100));
-                    chart3.Series[0].Points.ElementAt(i).Label = state.unicSoftwareNames[i];
-                    chart3.Legends.ElementAt(0).Title = "Лицензии:";
-                }
-                //Вывод данных о средней доходности по каждой из лицензий
-                chart4.Series[0].Points.Clear();
-                for (int i = 0; i < state.unicSoftwareNames.Length; i++)
-                {
-                    chart4.Series[0].Points.AddXY(0, (state.avgDeviationFromPurchasedNumber[i]*100));
-                    chart4.Series[0].Points.ElementAt(i).Label = state.unicSoftwareNames[i];
-                }
-            }
+            marcovitsView = new MarcovitsView(this);
+            timer1.Enabled = true;
+            timer1.Interval = timer1.Interval * 2;
+            textBox1.Text = "D:\\Files\\MsVisualProjects\\Diplom\\AnaliticsMath\\rules2.txt";
         }
 
-        CommandsStore commandsStore = new ConcreteCommandStore();
-        Model model;
+        public Chart chart1Elem
+        {
+            get { return chart1; }
+        }
+
+        public Chart chart2Elem
+        {
+            get { return chart2; }
+        }
+
+        public Chart chart3Elem
+        {
+            get { return chart3; }
+        }
+
+        public Chart chart4Elem
+        {
+            get { return chart4; }
+        }
+
+        public Label label5Elem
+        {
+            get { return label5; }
+        }
+
+        public Label label6Elem
+        {
+            get { return label6; }
+        }
+
+        public TextBox textBox1Elem
+        {
+            get { return textBox1; }
+        }
+
+        public DataGridView dataGridView1Elem
+        {
+            get { return dataGridView1; }
+        }
+
+        public DataGridView dataGridView3Elem
+        {
+            get { return dataGridView3; }
+        }
+
+        public DataGridView dataGridView2Elem
+        {
+            get { return dataGridView2; }
+        }
+
+        public NumericUpDown numericUpDown1Elem
+        {
+            get { return numericUpDown1; }
+        }
+
+        public ProgressBar progressBar1Elem
+        {
+            get { return progressBar1; }
+        }
+
+        public Label label1Elem
+        {
+            get { return label1; }
+        }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            model = new MarcovitsModel("D:\\Files\\MsVisualProjects\\Diplom\\Логи\\testlogs\\Database3.accdb", "Information");
-            model.subscribe(this);
-            commandsStore.executeCommand(new GetMarcovitsStatistcCommand(model)); 
-            model.calculationStatistics();
+            marcovitsView.button2_Click();
+        }
+
+        private void timer1_Tick_1(object sender, EventArgs e)
+        {
+            timer++;
+            if (timer == 0)
+            {
+                pictureBox2.Image = Properties.Resources.gear1;
+                pictureBox2.Update();
+            }
+            if (timer == 1)
+            {
+                pictureBox2.Image = Properties.Resources.gear2;
+                pictureBox2.Update();
+            }
+            if (timer == 2)
+            {
+                pictureBox2.Image = Properties.Resources.gear3;
+                pictureBox2.Update();
+            }
+            if (timer == 3)
+            {
+                pictureBox2.Image = Properties.Resources.gear4;
+                pictureBox2.Update();
+                timer = 0;
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            modelingView = new ModelingView(this);
+            modelingView.button1_Click();
         }
     }
 }

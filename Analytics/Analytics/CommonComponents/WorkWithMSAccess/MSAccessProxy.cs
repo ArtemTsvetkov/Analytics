@@ -11,9 +11,9 @@ using Analytics.CommonComponents.Interfaces.Data;
 
 namespace Analytics
 {
-    class MSAccessProxy : DataSaver<List<string>, string, DataSet>
+    class MSAccessProxy : DataWorker<List<string>, string, DataSet>
     {
-        private DataSaver<List<string>, string, DataSet> saver = new MSAccessDataSaver();
+        private DataWorker<List<string>, string, DataSet> saver = new MSAccessDataSaver();
         private string host;//пример хоста:C:\\Users\\Artem\\Documents\\Database3.accdb
         private string query;//Для выполненения 1 запроса
         private List<string> querys;//Для выполнения сразу нескольких запросов
