@@ -86,8 +86,8 @@ namespace Analytics.CommonComponents.Views
 
         public void button1_Click()
         {
-            CommandsStore<ModelingState, ModelingState, string> commandsStore =
-                new ConcreteCommandStore<ModelingState, ModelingState, string>();
+            CommandsStore<ModelingState, string> commandsStore =
+                new ConcreteCommandStore<ModelingState, string>();
 
             step = 100 / int.Parse(form.numericUpDown1Elem.Value.ToString());
             List<string> rules = new List<string>();
@@ -95,12 +95,10 @@ namespace Analytics.CommonComponents.Views
             if (rules.ElementAt(0) != "Ошибка чтения, файл не существует или не доступен!")
             {
                 control = new ModelingModel();
-                ResultConverter resultConverter = new ResultConverter();
-                control.setResultConverter(resultConverter);
                 control.subscribe(this);
                 control.setConfig(form.textBox1Elem.Text);
                 control.loadStore();
-                ModelingState backupModel = control.copySelf();
+                ModelsState backupModel = control.copySelf();
                 for (i = 0; i < form.numericUpDown1Elem.Value; i++)//моделирование в соответствии с количеством итераций
                 {
                     //control.recoverySelf(backupModel);

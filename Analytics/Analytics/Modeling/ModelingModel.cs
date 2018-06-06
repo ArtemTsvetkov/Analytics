@@ -8,72 +8,75 @@ using System.Threading.Tasks;
 
 namespace Analytics
 {
-    class ModelingModel : BasicModel<ModelingState, ModelingState, string>
+    class ModelingModel : BasicModel<ModelingState, string>
     {
+        private ModelingState state;
+
         public ModelingState getState()
         {
             return state;
         }
 
-        public override void recoverySelf(ModelingState backUpState)
+        public override void recoverySelf(ModelsState backUpState)
         {
+            ModelingState oldState = (ModelingState)backUpState;
             state = new ModelingState();
-            state.last_tranzaktions_id = backUpState.last_tranzaktions_id;
-            state.result = backUpState.result;
-            state.time_of_modeling = backUpState.time_of_modeling;
-            state.idProcessingTranzact = backUpState.idProcessingTranzact;
-            state.numberOfStartsModel = backUpState.numberOfStartsModel;
-            state.rand = backUpState.rand;
+            state.last_tranzaktions_id = oldState.last_tranzaktions_id;
+            state.result = oldState.result;
+            state.time_of_modeling = oldState.time_of_modeling;
+            state.idProcessingTranzact = oldState.idProcessingTranzact;
+            state.numberOfStartsModel = oldState.numberOfStartsModel;
+            state.rand = oldState.rand;
 
-            string[] originalRulesC = new string[backUpState.originalRules.Count];
-            backUpState.originalRules.CopyTo(originalRulesC);
+            string[] originalRulesC = new string[oldState.originalRules.Count];
+            oldState.originalRules.CopyTo(originalRulesC);
             for (int i = 0; i < originalRulesC.Length; i++)
             {
                 state.originalRules.Add(originalRulesC[i]);
             }
 
-            for (int i = 0; i < backUpState.queues.Count; i++)
+            for (int i = 0; i < oldState.queues.Count; i++)
             {
-                state.queues.Add(backUpState.queues.ElementAt(i).clone());
+                state.queues.Add(oldState.queues.ElementAt(i).clone());
             }
 
-            for (int i = 0; i < backUpState.tranzakts.Count; i++)
+            for (int i = 0; i < oldState.tranzakts.Count; i++)
             {
-                state.tranzakts.Add(backUpState.tranzakts.ElementAt(i).clone());
+                state.tranzakts.Add(oldState.tranzakts.ElementAt(i).clone());
             }
 
-            for (int i = 0; i < backUpState.lables.Count; i++)
+            for (int i = 0; i < oldState.lables.Count; i++)
             {
-                state.lables.Add(backUpState.lables.ElementAt(i).clone());
+                state.lables.Add(oldState.lables.ElementAt(i).clone());
             }
 
-            for (int i = 0; i < backUpState.devices.Count; i++)
+            for (int i = 0; i < oldState.devices.Count; i++)
             {
-                state.devices.Add(backUpState.devices.ElementAt(i).clone());
+                state.devices.Add(oldState.devices.ElementAt(i).clone());
             }
 
-            for (int i = 0; i < backUpState.storages.Count; i++)
+            for (int i = 0; i < oldState.storages.Count; i++)
             {
-                state.storages.Add(backUpState.storages.ElementAt(i).clone());
+                state.storages.Add(oldState.storages.ElementAt(i).clone());
             }
 
-            for (int i = 0; i < backUpState.variables.Count; i++)
+            for (int i = 0; i < oldState.variables.Count; i++)
             {
-                state.variables.Add(backUpState.variables.ElementAt(i).clone());
+                state.variables.Add(oldState.variables.ElementAt(i).clone());
             }
 
-            for (int i = 0; i < backUpState.tranzation_generators.Count; i++)
+            for (int i = 0; i < oldState.tranzation_generators.Count; i++)
             {
-                state.tranzation_generators.Add(backUpState.tranzation_generators.ElementAt(i).clone());
+                state.tranzation_generators.Add(oldState.tranzation_generators.ElementAt(i).clone());
             }
 
-            for (int i = 0; i < backUpState.newRules.Count; i++)
+            for (int i = 0; i < oldState.newRules.Count; i++)
             {
-                state.newRules.Add(backUpState.newRules.ElementAt(i).clone());
+                state.newRules.Add(oldState.newRules.ElementAt(i).clone());
             }
         }
 
-        public override ModelingState copySelf()
+        public override ModelsState copySelf()
         {
             ModelingState copy = new ModelingState();
             copy.last_tranzaktions_id = state.last_tranzaktions_id;
@@ -302,6 +305,11 @@ namespace Analytics
         public override void setConfig(string configData)
         {
             config = configData;
+        }
+
+        public override ModelingState getResult()
+        {
+            return state;
         }
     }
 }

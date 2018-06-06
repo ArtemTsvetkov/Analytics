@@ -14,7 +14,7 @@ namespace Analytics.CommonComponents.Views
     class MarcovitsView : Observer
     {
         private Form1 form;
-        private BasicModel<MarcovitsModelState, MarcovitsModelState, MarcovitsConfig> model;
+        private BasicModel<MarcovitsModelState, MarcovitsConfig> model;
 
         public MarcovitsView(Form1 form)
         {
@@ -23,18 +23,15 @@ namespace Analytics.CommonComponents.Views
 
         public void button2_Click()
         {
-            CommandsStore<MarcovitsModelState, MarcovitsModelState, MarcovitsConfig> commandsStore =
-                new ConcreteCommandStore<MarcovitsModelState, MarcovitsModelState, MarcovitsConfig>();
-            ResultConverter resultConverter = new ResultConverter();
+            CommandsStore<MarcovitsModelState, MarcovitsConfig> commandsStore =
+                new ConcreteCommandStore<MarcovitsModelState, MarcovitsConfig>();
             model = new MarcovitsModel();
             MarcovitsConfig config = new MarcovitsConfig(
                 "D:\\Files\\MsVisualProjects\\Diplom\\Логи\\testlogs\\Database3.accdb",
                 "Information");
             model.setConfig(config);
-            model.setResultConverter(resultConverter);
             model.subscribe(this);
             commandsStore.executeCommand(new GetMarcovitsStatistcCommand<MarcovitsConfig>(model));
-            //model.calculationStatistics();
         }
 
         public void notify()

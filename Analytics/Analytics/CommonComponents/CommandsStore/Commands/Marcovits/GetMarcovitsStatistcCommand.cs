@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 namespace Analytics
 {
     class GetMarcovitsStatistcCommand<TConfigType>
-        : BasicCommand<MarcovitsModelState, MarcovitsModelState, TConfigType>
+        : BasicCommand<MarcovitsModelState, TConfigType>
     {
 
-        public GetMarcovitsStatistcCommand(BasicModel<MarcovitsModelState, MarcovitsModelState, TConfigType>
+        public GetMarcovitsStatistcCommand(BasicModel<MarcovitsModelState, TConfigType>
             model) : base(model)
         {
             

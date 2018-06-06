@@ -11,8 +11,9 @@ using System.Threading.Tasks;
 
 namespace Analytics
 {
-    class MarcovitsModel : BasicModel<MarcovitsModelState, MarcovitsModelState, MarcovitsConfig>
+    class MarcovitsModel : BasicModel<MarcovitsModelState, MarcovitsConfig>
     {
+        private MarcovitsModelState state;
         DataConverter<DataSet, List<MarcovitsDataTable>> converter = 
             new MarcovitsDataTableConverter();
         DataConverter<DataSet, string[]> unucNamesConverter = 
@@ -21,8 +22,6 @@ namespace Analytics
         public MarcovitsModel()
         {
             state = new MarcovitsModelState();
-            //state.pathOfDataBase = pathOfDataBase;
-            //state.tableOfDataBase = tableOfDataBase;
         }
 
         public override void calculationStatistics()
@@ -140,7 +139,7 @@ namespace Analytics
             notifyObservers();
         }
 
-        public override void loadStore()//загрузка данных из базы данных
+        public override void loadStore()//загрузка данных
         {
             DataWorker<List<string>, string, DataSet> accessProxy = new MSAccessProxy();
             StorageForData<DataSet> newData = new MSAccessStorageForData();
@@ -149,7 +148,7 @@ namespace Analytics
                 config.getTableOfDataBase(), newData);
             accessProxy.execute();
             DataSet ds = newData.getData();
-            state.data = (List<MarcovitsDataTable>)converter.convert(ds);
+            state.data = converter.convert(ds);
             notifyObservers();
         }
 
@@ -184,7 +183,6 @@ namespace Analytics
             }
         }
 
-
         double[,] MultiplyMatrix(double[,] aMatrix, double[,] bMatrix)//Умножение матриц
         {
             if (aMatrix.GetLength(1) == bMatrix.GetLength(0))
@@ -210,7 +208,7 @@ namespace Analytics
             }
         }
 
-        public override MarcovitsModelState copySelf()
+        public override ModelsState copySelf()
         {
             MarcovitsModelState copy = new MarcovitsModelState();
             //copy.pathOfDataBase = state.pathOfDataBase;
@@ -256,52 +254,58 @@ namespace Analytics
             return copy;
         }
 
-        public override void recoverySelf(MarcovitsModelState oldState)
+        public override void recoverySelf(ModelsState oldState)
         {
             //state.pathOfDataBase = oldState.pathOfDataBase;
             //config.setTableOfDataBase(oldState.tableOfDataBase);
-            state.income = oldState.income;
+            MarcovitsModelState oldMarcovitsState = (MarcovitsModelState)oldState;
+            state.income = oldMarcovitsState.income;
 
-            if (oldState.unicSoftwareNames != null)
+            if (oldMarcovitsState.unicSoftwareNames != null)
             {
-                state.unicSoftwareNames = (string[])oldState.unicSoftwareNames.Clone();
+                state.unicSoftwareNames = (string[])oldMarcovitsState.unicSoftwareNames.Clone();
             }
 
-            if (oldState.avgNumbersUseLicense != null)
+            if (oldMarcovitsState.avgNumbersUseLicense != null)
             {
-                state.avgNumbersUseLicense = (double[])oldState.avgNumbersUseLicense.Clone();
+                state.avgNumbersUseLicense = (double[])oldMarcovitsState.avgNumbersUseLicense.Clone();
             }
 
-            if (oldState.avgDeviationFromPurchasedNumber != null)
+            if (oldMarcovitsState.avgDeviationFromPurchasedNumber != null)
             {
-                state.avgDeviationFromPurchasedNumber = (double[])oldState.
+                state.avgDeviationFromPurchasedNumber = (double[])oldMarcovitsState.
                     avgDeviationFromPurchasedNumber.Clone();
             }
 
-            if (oldState.numberBuyLicense != null)
+            if (oldMarcovitsState.numberBuyLicense != null)
             {
-                state.numberBuyLicense = (double[])oldState.numberBuyLicense.Clone();
+                state.numberBuyLicense = (double[])oldMarcovitsState.numberBuyLicense.Clone();
             }
 
-            if (oldState.percents != null)
+            if (oldMarcovitsState.percents != null)
             {
-                state.percents = (double[,])oldState.percents.Clone();
+                state.percents = (double[,])oldMarcovitsState.percents.Clone();
             }
 
-            if (oldState.risk != null)
+            if (oldMarcovitsState.risk != null)
             {
-                state.risk = (double[,])oldState.risk.Clone();
+                state.risk = (double[,])oldMarcovitsState.risk.Clone();
             }
 
-            for (int i = 0; i < oldState.data.Count; i++)
+            for (int i = 0; i < oldMarcovitsState.data.Count; i++)
             {
-                state.data.Add(oldState.data.ElementAt(i).copy());
+                state.data.Add(oldMarcovitsState.data.ElementAt(i).copy());
             }
         }
 
         public override void setConfig(MarcovitsConfig configData)
         {
             config = configData;
+        }
+
+        public override MarcovitsModelState getResult()
+        {
+            return state;
         }
     }
 }

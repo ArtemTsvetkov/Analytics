@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Analytics.CommandsStore.Commands.Modeling
 {
-    class RunModeling<TConfigType> : BasicCommand<ModelingState, ModelingState, TConfigType>
+    class RunModeling<TConfigType> : BasicCommand<ModelingState, TConfigType>
     {
 
-        public RunModeling(BasicModel<ModelingState, ModelingState, TConfigType>
+        public RunModeling(BasicModel<ModelingState, TConfigType>
             model) : base(model)
         {
             
