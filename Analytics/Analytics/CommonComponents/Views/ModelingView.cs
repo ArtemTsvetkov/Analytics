@@ -1,4 +1,5 @@
-﻿using Analytics.Modeling.Converters;
+﻿using Analytics.CommandsStore.Commands.Modeling;
+using Analytics.Modeling.Converters;
 using Modelirovanie;
 using System;
 using System.Collections.Generic;
@@ -85,6 +86,9 @@ namespace Analytics.CommonComponents.Views
 
         public void button1_Click()
         {
+            CommandsStore<ModelingState, ModelingState> commandsStore =
+                new ConcreteCommandStore<ModelingState, ModelingState>();
+
             step = 100 / int.Parse(form.numericUpDown1Elem.Value.ToString());
             List<string> rules = new List<string>();
             rules = ReadWriteTextFile.Read_from_file(form.textBox1Elem.Text);
@@ -98,8 +102,9 @@ namespace Analytics.CommonComponents.Views
                 ModelingState backupModel = control.copySelf();
                 for (i = 0; i < form.numericUpDown1Elem.Value; i++)//моделирование в соответствии с количеством итераций
                 {
-                    control.recoverySelf(backupModel);
-                    control.calculationStatistics();
+                    //control.recoverySelf(backupModel);
+                    //control.calculationStatistics();
+                    commandsStore.executeCommand(new RunModeling(control));
                 }
 
                 if (form.label1Elem.Text != "Ошибка моделирования")

@@ -29,7 +29,7 @@ namespace Analytics.CommonComponents.Views
             model.setResultConverter(resultConverter);
             model.subscribe(this);
             commandsStore.executeCommand(new GetMarcovitsStatistcCommand(model));
-            model.calculationStatistics();
+            //model.calculationStatistics();
         }
 
         public void notify()

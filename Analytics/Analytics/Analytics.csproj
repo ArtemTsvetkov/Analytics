@@ -50,6 +50,7 @@
     <Compile Include="CommandsStore\BasicCommand.cs" />
     <Compile Include="CommandsStore\Command.cs" />
     <Compile Include="CommandsStore\CommandsStore.cs" />
+    <Compile Include="CommandsStore\Commands\Modeling\RunModeling.cs" />
     <Compile Include="CommandsStore\Stores\ConcreteCommandStore.cs" />
     <Compile Include="CommonComponents\BasicObjects\BasicModel.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\DataConverter.cs" />
@@ -64,8 +65,8 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="CommandsStore\Commands\GetMarcovitsStatistcCommand.cs" />
-    <Compile Include="CommandsStore\Commands\LoadDataCommand.cs" />
+    <Compile Include="CommandsStore\Commands\Marcovits\GetMarcovitsStatistcCommand.cs" />
+    <Compile Include="CommandsStore\Commands\Marcovits\LoadDataCommand.cs" />
     <Compile Include="MarcovitsComponent\Converters\ResultConverter.cs" />
     <Compile Include="MarcovitsComponent\MarcovitsDataTable.cs" />
     <Compile Include="MarcovitsComponent\Converters\MarcovitsDataTableConverter.cs" />
