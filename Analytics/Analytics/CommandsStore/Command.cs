@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Analytics
 {
-    interface Command<TModelsTypeOfResult, TModelsTypeState> where TModelsTypeState : ModelsState
+    interface Command<TModelsTypeOfResult, TModelsTypeState, TConfigType> where TModelsTypeState : ModelsState
     {
         TModelsTypeState getModelState();//Получить сохраненное состояние модели
         void execute();//Выполнить некоторые действия с моделью
         void recoveryModel();//Восстановить модель, отправив в нее ModelsState
         //Установить модель, с которой работает команда
-        void setModel(BasicModel<TModelsTypeOfResult, TModelsTypeState> model);
+        void setModel(BasicModel<TModelsTypeOfResult, TModelsTypeState, TConfigType> model);
     }
 }
 /*

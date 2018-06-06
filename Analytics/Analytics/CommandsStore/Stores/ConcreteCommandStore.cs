@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Analytics
 {
-    class ConcreteCommandStore<TModelsTypeOfResult, TModelsTypeState> : 
-        CommandsStore<TModelsTypeOfResult, TModelsTypeState> where TModelsTypeState : ModelsState
+    class ConcreteCommandStore<TModelsTypeOfResult, TModelsTypeState, TConfigType> : 
+        CommandsStore<TModelsTypeOfResult, TModelsTypeState, TConfigType> where TModelsTypeState : ModelsState
     {
-        private List<BasicCommand<TModelsTypeOfResult, TModelsTypeState>> history = 
-            new List<BasicCommand<TModelsTypeOfResult, TModelsTypeState>>();
+        private List<BasicCommand<TModelsTypeOfResult, TModelsTypeState, TConfigType>> history = 
+            new List<BasicCommand<TModelsTypeOfResult, TModelsTypeState, TConfigType>>();
 
-        public void executeCommand(BasicCommand<TModelsTypeOfResult, TModelsTypeState> command)
+        public void executeCommand(BasicCommand<TModelsTypeOfResult, TModelsTypeState, TConfigType> command)
         {
             command.execute();
             push(command);
@@ -21,16 +21,16 @@ namespace Analytics
 
         public void recoveryModel()
         {
-            BasicCommand<TModelsTypeOfResult, TModelsTypeState> command = pop();
+            BasicCommand<TModelsTypeOfResult, TModelsTypeState, TConfigType> command = pop();
             command.recoveryModel();
         }
 
-        public BasicCommand<TModelsTypeOfResult, TModelsTypeState> pop()
+        public BasicCommand<TModelsTypeOfResult, TModelsTypeState, TConfigType> pop()
         {
             return history.Last();
         }
 
-        public void push(BasicCommand<TModelsTypeOfResult, TModelsTypeState> command)
+        public void push(BasicCommand<TModelsTypeOfResult, TModelsTypeState, TConfigType> command)
         {
             history.Add(command);
         }

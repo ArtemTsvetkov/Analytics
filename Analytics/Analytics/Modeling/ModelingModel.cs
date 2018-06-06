@@ -8,19 +8,8 @@ using System.Threading.Tasks;
 
 namespace Analytics
 {
-    class ModelingModel : BasicModel<ModelingState, ModelingState>
+    class ModelingModel : BasicModel<ModelingState, ModelingState, string>
     {
-        public void setConfiguration(string path_rules_file)
-        {
-            //чтение файла с конфигурацией модели
-            state = new ModelingState();
-            //ReadWriteTextFile RWTF = new ReadWriteTextFile();
-            state.originalRules = ReadWriteTextFile.Read_from_file(path_rules_file);
-            //создание всех очередей, устройств, меток и тд
-            RulesParser rules_parser = new RulesParser();
-            rules_parser.go_parse(this);
-        }
-
         public ModelingState getState()
         {
             return state;
@@ -286,10 +275,6 @@ namespace Analytics
             state.result = "Успех!";
         }
 
-
-
-
-
         //функция создания времени задержки, принимает разброс возможных значений
         private int create_assign(int min_number, int max_number, Random rand)
         {
@@ -305,7 +290,18 @@ namespace Analytics
 
         public override void loadStore()
         {
-            throw new NotImplementedException();
+            //чтение файла с конфигурацией модели
+            state = new ModelingState();
+            //ReadWriteTextFile RWTF = new ReadWriteTextFile();
+            state.originalRules = ReadWriteTextFile.Read_from_file(config);
+            //создание всех очередей, устройств, меток и тд
+            RulesParser rules_parser = new RulesParser();
+            rules_parser.go_parse(this);
+        }
+
+        public override void setConfig(string configData)
+        {
+            config = configData;
         }
     }
 }

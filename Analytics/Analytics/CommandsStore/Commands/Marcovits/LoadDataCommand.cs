@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace Analytics
 {
-    class LoadDataCommand : BasicCommand<MarcovitsModelState, MarcovitsModelState>
+    class LoadDataCommand<TConfigType> : BasicCommand<MarcovitsModelState, MarcovitsModelState, TConfigType>
     {
         //private BasicModel<MarcovitsModelState, MarcovitsModelState> model;
         private ModelsState state;
 
-        public LoadDataCommand(BasicModel<MarcovitsModelState, MarcovitsModelState> model)
+        public LoadDataCommand(BasicModel<MarcovitsModelState, MarcovitsModelState, TConfigType> model)
             : base(model)
         {
         }

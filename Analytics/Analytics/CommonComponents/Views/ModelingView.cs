@@ -86,8 +86,8 @@ namespace Analytics.CommonComponents.Views
 
         public void button1_Click()
         {
-            CommandsStore<ModelingState, ModelingState> commandsStore =
-                new ConcreteCommandStore<ModelingState, ModelingState>();
+            CommandsStore<ModelingState, ModelingState, string> commandsStore =
+                new ConcreteCommandStore<ModelingState, ModelingState, string>();
 
             step = 100 / int.Parse(form.numericUpDown1Elem.Value.ToString());
             List<string> rules = new List<string>();
@@ -98,13 +98,14 @@ namespace Analytics.CommonComponents.Views
                 ResultConverter resultConverter = new ResultConverter();
                 control.setResultConverter(resultConverter);
                 control.subscribe(this);
-                control.setConfiguration(form.textBox1Elem.Text);
+                control.setConfig(form.textBox1Elem.Text);
+                control.loadStore();
                 ModelingState backupModel = control.copySelf();
                 for (i = 0; i < form.numericUpDown1Elem.Value; i++)//моделирование в соответствии с количеством итераций
                 {
                     //control.recoverySelf(backupModel);
                     //control.calculationStatistics();
-                    commandsStore.executeCommand(new RunModeling(control));
+                    commandsStore.executeCommand(new RunModeling<string>(control));
                 }
 
                 if (form.label1Elem.Text != "Ошибка моделирования")

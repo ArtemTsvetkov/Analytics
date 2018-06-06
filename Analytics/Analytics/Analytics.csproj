@@ -67,6 +67,7 @@
     </Compile>
     <Compile Include="CommandsStore\Commands\Marcovits\GetMarcovitsStatistcCommand.cs" />
     <Compile Include="CommandsStore\Commands\Marcovits\LoadDataCommand.cs" />
+    <Compile Include="MarcovitsComponent\Config\MarcovitsConfig.cs" />
     <Compile Include="MarcovitsComponent\Converters\ResultConverter.cs" />
     <Compile Include="MarcovitsComponent\MarcovitsDataTable.cs" />
     <Compile Include="MarcovitsComponent\Converters\MarcovitsDataTableConverter.cs" />

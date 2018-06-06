@@ -1,6 +1,7 @@
 ﻿using Analytics.CommonComponents.BasicObjects;
 using Analytics.CommonComponents.Interfaces.Data;
 using Analytics.CommonComponents.WorkWithMSAccess;
+using Analytics.MarcovitsComponent.Config;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,18 +11,18 @@ using System.Threading.Tasks;
 
 namespace Analytics
 {
-    class MarcovitsModel : BasicModel<MarcovitsModelState, MarcovitsModelState>
+    class MarcovitsModel : BasicModel<MarcovitsModelState, MarcovitsModelState, MarcovitsConfig>
     {
         DataConverter<DataSet, List<MarcovitsDataTable>> converter = 
             new MarcovitsDataTableConverter();
         DataConverter<DataSet, string[]> unucNamesConverter = 
             new MarcovitsDistinctSoftwareNamesConverter();
 
-        public MarcovitsModel(string pathOfDataBase, string tableOfDataBase)
+        public MarcovitsModel()
         {
             state = new MarcovitsModelState();
-            state.pathOfDataBase = pathOfDataBase;
-            state.tableOfDataBase = tableOfDataBase;
+            //state.pathOfDataBase = pathOfDataBase;
+            //state.tableOfDataBase = tableOfDataBase;
         }
 
         public override void calculationStatistics()
@@ -29,11 +30,11 @@ namespace Analytics
             //Получение уникальных имен лицензий
             DataWorker<List<string>, string, DataSet> accessProxy = new MSAccessProxy();
             StorageForData<DataSet> newData = new MSAccessStorageForData();
-            accessProxy.setConfig(state.pathOfDataBase, "SELECT DISTINCT software FROM " + state.
-                tableOfDataBase, newData);
+            accessProxy.setConfig(config.getPathOfDataBase(), "SELECT DISTINCT software FROM " + config.
+                getTableOfDataBase(), newData);
             accessProxy.execute();
             DataSet ds = newData.getData();
-            state.unicSoftwareNames = (string[])unucNamesConverter.convert(ds);
+            state.unicSoftwareNames = unucNamesConverter.convert(ds);
             //Формирование запроса на получение данных
             string query = "SELECT  i.year_in, i.month_in, i.day_in, i.hours_in";
             for(int i=0; i<state.unicSoftwareNames.Length; i++)
@@ -45,7 +46,7 @@ namespace Analytics
             query += "FROM Information i WHERE hours_in IS NOT NULL GROUP BY hours_in, day_in, "+
                 "month_in, year_in ORDER BY year_in, month_in, day_in, hours_in";
             //Получение данных об использовании
-            accessProxy.setConfig(state.pathOfDataBase, query, newData);
+            accessProxy.setConfig(config.getPathOfDataBase(), query, newData);
             accessProxy.execute();
             ds = newData.getData();
             state.data = converter.convert(ds);
@@ -65,7 +66,7 @@ namespace Analytics
             }
 
             //Пока для тестов число закупленных лицензий читается из таблицы PurchasedLicenses
-            accessProxy.setConfig(state.pathOfDataBase, "SELECT type, count FROM PurchasedLicenses",
+            accessProxy.setConfig(config.getPathOfDataBase(), "SELECT type, count FROM PurchasedLicenses",
                 newData);
             accessProxy.execute();
             ds = newData.getData();
@@ -107,7 +108,7 @@ namespace Analytics
                 }
             }
             //Пока для тестов соотношения в процентах читается из таблицы PercentageOfLicense
-            accessProxy.setConfig(state.pathOfDataBase, "SELECT type, percent FROM PercentageOf"+
+            accessProxy.setConfig(config.getPathOfDataBase(), "SELECT type, percent FROM PercentageOf"+
                 "License", newData);
             accessProxy.execute();
             ds = newData.getData();
@@ -144,8 +145,8 @@ namespace Analytics
             DataWorker<List<string>, string, DataSet> accessProxy = new MSAccessProxy();
             StorageForData<DataSet> newData = new MSAccessStorageForData();
             //получение значения id
-            accessProxy.setConfig(state.pathOfDataBase, "SELECT user_name, user_host, software FROM " +
-                state.tableOfDataBase, newData);
+            accessProxy.setConfig(config.getPathOfDataBase(), "SELECT user_name, user_host, software FROM " +
+                config.getTableOfDataBase(), newData);
             accessProxy.execute();
             DataSet ds = newData.getData();
             state.data = (List<MarcovitsDataTable>)converter.convert(ds);
@@ -212,8 +213,8 @@ namespace Analytics
         public override MarcovitsModelState copySelf()
         {
             MarcovitsModelState copy = new MarcovitsModelState();
-            copy.pathOfDataBase = state.pathOfDataBase;
-            copy.tableOfDataBase = state.tableOfDataBase;
+            //copy.pathOfDataBase = state.pathOfDataBase;
+            //copy.tableOfDataBase = config.getTableOfDataBase();
             copy.income = state.income;
 
             if (state.unicSoftwareNames != null)
@@ -257,8 +258,8 @@ namespace Analytics
 
         public override void recoverySelf(MarcovitsModelState oldState)
         {
-            state.pathOfDataBase = oldState.pathOfDataBase;
-            state.tableOfDataBase = oldState.tableOfDataBase;
+            //state.pathOfDataBase = oldState.pathOfDataBase;
+            //config.setTableOfDataBase(oldState.tableOfDataBase);
             state.income = oldState.income;
 
             if (oldState.unicSoftwareNames != null)
@@ -296,6 +297,11 @@ namespace Analytics
             {
                 state.data.Add(oldState.data.ElementAt(i).copy());
             }
+        }
+
+        public override void setConfig(MarcovitsConfig configData)
+        {
+            config = configData;
         }
     }
 }

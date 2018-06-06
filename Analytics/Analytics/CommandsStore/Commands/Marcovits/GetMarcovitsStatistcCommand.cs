@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 
 namespace Analytics
 {
-    class GetMarcovitsStatistcCommand : BasicCommand<MarcovitsModelState, MarcovitsModelState>
+    class GetMarcovitsStatistcCommand<TConfigType>
+        : BasicCommand<MarcovitsModelState, MarcovitsModelState, TConfigType>
     {
 
-        public GetMarcovitsStatistcCommand(BasicModel<MarcovitsModelState, MarcovitsModelState>
+        public GetMarcovitsStatistcCommand(BasicModel<MarcovitsModelState, MarcovitsModelState, TConfigType>
             model) : base(model)
         {
             

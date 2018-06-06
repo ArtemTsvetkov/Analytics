@@ -8,9 +8,10 @@ using Analytics.CommonComponents.Interfaces.Data;
 
 namespace Analytics
 {
-    interface Model<TTypeOfResult, TTypeState> where TTypeState : ModelsState
+    interface Model<TTypeOfResult, TTypeState, TConfigType> where TTypeState : ModelsState
     {
         TTypeState copySelf();//Создание копии модели для возможного ее восстановления
+        void setConfig(TConfigType configData);
         void recoverySelf(TTypeState state);//восстановление модели
         void loadStore();//загрузка данных откуда-то
         void subscribe(Observer newObserver);//подписка на модель
