@@ -11,30 +11,17 @@ using Analytics.CommonComponents.Interfaces.Data;
 
 namespace Analytics
 {
-    class MSAccessDataSaver : DataWorker<List<string>,string, DataSet>
+    class MSAccessDataSaver: DataWorker<List<string>, DataSet>
     {
         private string host;//пример хоста:C:\\Users\\Artem\\Documents\\Database3.accdb
-        private string query;//Для выполненения 1 запроса
-        private List<string> querys;//Для выполнения сразу нескольких запросов
+        private List<string> query;
         private StorageForData<DataSet> resultStorage;
 
         public void execute()
         {
-            List<string> currentQuerys = new List<string>();
-            if (query == null)
-            {
-                currentQuerys = querys;
-            }
-            else
-            {
-                currentQuerys.Add(query);
-            }
-
-
-            string connStr = String.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + host + 
+            string connStr = string.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + host + 
                 ";Persist Security Info=True;");
-            resultStorage.setData(runQuery(connStr, currentQuerys));
-            //return runQuery(connStr, currentQuerys);
+            resultStorage.setData(runQuery(connStr, query));
         }
 
         //Тестирует возможность подключения к БД, в этом классе(он не прокси) всегда есть
@@ -44,26 +31,17 @@ namespace Analytics
             return true;
         }
 
-        public void setConfig(string host, string query, StorageForData<DataSet> resultStorage)
+        public void setConfig(string host, List<string> query, StorageForData<DataSet> resultStorage)
         {
             this.host = host;
             this.query = query;
-            this.querys = null;
-            this.resultStorage = resultStorage;
-        }
-
-        public void setConfig(string host, List<string> querys, StorageForData<DataSet> resultStorage)
-        {
-            this.host = host;
-            this.querys = querys;
-            this.query = null;
             this.resultStorage = resultStorage;
         }
 
         //функция поиска названия таблицы базы данных
         private string selectTableNameFromQuery(string query)
         {
-            String[] buf_of_substrings = query.Split(new char[] { ' ' }, StringSplitOptions.
+            string[] buf_of_substrings = query.Split(new char[] { ' ' }, StringSplitOptions.
                 RemoveEmptyEntries);
             if (buf_of_substrings[0].Equals("SELECT", StringComparison.CurrentCultureIgnoreCase) ==
                 true)

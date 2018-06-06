@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Analytics.CommonComponents.Interfaces.Data
 {
-    interface DataWorker<TDataType1, TDataType2, TStorage>
+    interface DataWorker<TDataType, TStorage>
     {
-        void setConfig(string host, TDataType1 data, StorageForData<TStorage> resultStorage);
-        void setConfig(string host, TDataType2 data, StorageForData<TStorage> resultStorage);
+        void setConfig(string host, TDataType data, StorageForData<TStorage> resultStorage);
         void execute();
         bool connect();
     }

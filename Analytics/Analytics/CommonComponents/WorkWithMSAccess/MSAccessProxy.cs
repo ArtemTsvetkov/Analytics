@@ -11,26 +11,16 @@ using Analytics.CommonComponents.Interfaces.Data;
 
 namespace Analytics
 {
-    class MSAccessProxy : DataWorker<List<string>, string, DataSet>
+    class MSAccessProxy : DataWorker<List<string>, DataSet>
     {
-        private DataWorker<List<string>, string, DataSet> saver = new MSAccessDataSaver();
+        private DataWorker<List<string>, DataSet> saver = new MSAccessDataSaver();
         private string host;//пример хоста:C:\\Users\\Artem\\Documents\\Database3.accdb
-        private string query;//Для выполненения 1 запроса
-        private List<string> querys;//Для выполнения сразу нескольких запросов
+        private List<string> query;
 
         public void setConfig(string host, List<string> querys, StorageForData<DataSet> resultStorage)
         {
             this.host = host;
-            this.querys = querys;
-            this.query = null;
-            saver.setConfig(host, querys, resultStorage);
-        }
-
-        public void setConfig(string host, string query, StorageForData<DataSet> resultStorage)
-        {
-            this.host = host;
-            this.query = query;
-            this.querys = null;
+            query = querys;
             saver.setConfig(host, query, resultStorage);
         }
 
@@ -38,12 +28,10 @@ namespace Analytics
         {
             if (connect())
             {
-                //return saver.execute();
                 saver.execute();
             }
             else
             {
-                //return null;
                 //ДОБАВИТЬ СЮДА ВЫЗОВ ИСКЛЮЧЕНИЯ
             }
         }

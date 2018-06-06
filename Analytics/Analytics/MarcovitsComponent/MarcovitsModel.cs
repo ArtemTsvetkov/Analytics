@@ -27,11 +27,13 @@ namespace Analytics
         public override void calculationStatistics()
         {
             //Получение уникальных имен лицензий
-            DataWorker<List<string>, string, DataSet> accessProxy = new MSAccessProxy();
+            DataWorker<List<string>, DataSet> accessProxy = new MSAccessProxy();
             StorageForData<DataSet> newData = new MSAccessStorageForData();
-            accessProxy.setConfig(config.getPathOfDataBase(), "SELECT DISTINCT software FROM " + config.
-                getTableOfDataBase(), newData);
+            List<string> list = new List<string>();
+            list.Add("SELECT DISTINCT software FROM " + config.getTableOfDataBase());
+            accessProxy.setConfig(config.getPathOfDataBase(), list, newData);
             accessProxy.execute();
+            list.Clear();
             DataSet ds = newData.getData();
             state.unicSoftwareNames = unucNamesConverter.convert(ds);
             //Формирование запроса на получение данных
@@ -45,7 +47,9 @@ namespace Analytics
             query += "FROM Information i WHERE hours_in IS NOT NULL GROUP BY hours_in, day_in, "+
                 "month_in, year_in ORDER BY year_in, month_in, day_in, hours_in";
             //Получение данных об использовании
-            accessProxy.setConfig(config.getPathOfDataBase(), query, newData);
+            list.Clear();
+            list.Add(query);
+            accessProxy.setConfig(config.getPathOfDataBase(), list, newData);
             accessProxy.execute();
             ds = newData.getData();
             state.data = converter.convert(ds);
@@ -65,8 +69,9 @@ namespace Analytics
             }
 
             //Пока для тестов число закупленных лицензий читается из таблицы PurchasedLicenses
-            accessProxy.setConfig(config.getPathOfDataBase(), "SELECT type, count FROM PurchasedLicenses",
-                newData);
+            list.Clear();
+            list.Add("SELECT type, count FROM PurchasedLicenses");
+            accessProxy.setConfig(config.getPathOfDataBase(), list, newData);
             accessProxy.execute();
             ds = newData.getData();
             DataTable table = ds.Tables[0];
@@ -107,8 +112,9 @@ namespace Analytics
                 }
             }
             //Пока для тестов соотношения в процентах читается из таблицы PercentageOfLicense
-            accessProxy.setConfig(config.getPathOfDataBase(), "SELECT type, percent FROM PercentageOf"+
-                "License", newData);
+            list.Clear();
+            list.Add("SELECT type, percent FROM PercentageOfLicense");
+            accessProxy.setConfig(config.getPathOfDataBase(), list, newData);
             accessProxy.execute();
             ds = newData.getData();
             table = ds.Tables[0];
@@ -141,11 +147,12 @@ namespace Analytics
 
         public override void loadStore()//загрузка данных
         {
-            DataWorker<List<string>, string, DataSet> accessProxy = new MSAccessProxy();
+            DataWorker<List<string>, DataSet> accessProxy = new MSAccessProxy();
             StorageForData<DataSet> newData = new MSAccessStorageForData();
             //получение значения id
-            accessProxy.setConfig(config.getPathOfDataBase(), "SELECT user_name, user_host, software FROM " +
-                config.getTableOfDataBase(), newData);
+            List<string> list = new List<string>();
+            list.Add("SELECT user_name, user_host, software FROM " + config.getTableOfDataBase());
+            accessProxy.setConfig(config.getPathOfDataBase(), list, newData);
             accessProxy.execute();
             DataSet ds = newData.getData();
             state.data = converter.convert(ds);
