@@ -58,6 +58,11 @@
     <Compile Include="CommonComponents\Interfaces\Data\StorageForData.cs" />
     <Compile Include="CommonComponents\Views\MarcovitsView.cs" />
     <Compile Include="CommonComponents\Views\ModelingView.cs" />
+    <Compile Include="CommonComponents\WorkWithFiles\Load\TextFilesConfigFieldsOnLoad.cs" />
+    <Compile Include="CommonComponents\WorkWithFiles\Load\TextFilesDataLoader.cs" />
+    <Compile Include="CommonComponents\WorkWithFiles\Save\TextFilesConfigFieldsOnSave.cs" />
+    <Compile Include="CommonComponents\WorkWithFiles\Save\TextFilesDataSaver.cs" />
+    <Compile Include="CommonComponents\WorkWithMSAccess\MSAccessStateFields.cs" />
     <Compile Include="CommonComponents\WorkWithMSAccess\MSAccessStorageForData.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

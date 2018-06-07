@@ -1,5 +1,6 @@
 ﻿using Analytics;
 using Analytics.CommonComponents.BasicObjects;
+using Analytics.CommonComponents.WorkWithFiles.Load;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -295,8 +296,12 @@ namespace Analytics
         {
             //чтение файла с конфигурацией модели
             state = new ModelingState();
-            //ReadWriteTextFile RWTF = new ReadWriteTextFile();
-            state.originalRules = ReadWriteTextFile.Read_from_file(config);
+            TextFilesDataLoader loader = new TextFilesDataLoader();
+            TextFilesConfigFieldsOnLoad loadersConfig =
+                new TextFilesConfigFieldsOnLoad(config);
+            loader.setConfig(loadersConfig);
+            loader.execute();
+            state.originalRules = loader.getResult();
             //создание всех очередей, устройств, меток и тд
             RulesParser rules_parser = new RulesParser();
             rules_parser.go_parse(this);

@@ -27,14 +27,15 @@ namespace Analytics
         public override void calculationStatistics()
         {
             //Получение уникальных имен лицензий
-            DataWorker<List<string>, DataSet> accessProxy = new MSAccessProxy();
-            StorageForData<DataSet> newData = new MSAccessStorageForData();
+            DataWorker<MSAccessStateFields, DataSet> accessProxy = new MSAccessProxy();
             List<string> list = new List<string>();
             list.Add("SELECT DISTINCT software FROM " + config.getTableOfDataBase());
-            accessProxy.setConfig(config.getPathOfDataBase(), list, newData);
+            MSAccessStateFields configProxy = 
+                new MSAccessStateFields(config.getPathOfDataBase(), list);
+            accessProxy.setConfig(configProxy);
             accessProxy.execute();
             list.Clear();
-            DataSet ds = newData.getData();
+            DataSet ds = accessProxy.getResult();
             state.unicSoftwareNames = unucNamesConverter.convert(ds);
             //Формирование запроса на получение данных
             string query = "SELECT  i.year_in, i.month_in, i.day_in, i.hours_in";
@@ -49,9 +50,10 @@ namespace Analytics
             //Получение данных об использовании
             list.Clear();
             list.Add(query);
-            accessProxy.setConfig(config.getPathOfDataBase(), list, newData);
+            configProxy = new MSAccessStateFields(config.getPathOfDataBase(), list);
+            accessProxy.setConfig(configProxy);
             accessProxy.execute();
-            ds = newData.getData();
+            ds = accessProxy.getResult();
             state.data = converter.convert(ds);
 
             //Рассчет средних значений кол-ва лицензий
@@ -71,9 +73,10 @@ namespace Analytics
             //Пока для тестов число закупленных лицензий читается из таблицы PurchasedLicenses
             list.Clear();
             list.Add("SELECT type, count FROM PurchasedLicenses");
-            accessProxy.setConfig(config.getPathOfDataBase(), list, newData);
+            configProxy = new MSAccessStateFields(config.getPathOfDataBase(), list);
+            accessProxy.setConfig(configProxy);
             accessProxy.execute();
-            ds = newData.getData();
+            ds = accessProxy.getResult();
             DataTable table = ds.Tables[0];
             state.numberBuyLicense = new double[state.unicSoftwareNames.Count()];
             for (int i=0;i<state.unicSoftwareNames.Count();i++)
@@ -114,9 +117,10 @@ namespace Analytics
             //Пока для тестов соотношения в процентах читается из таблицы PercentageOfLicense
             list.Clear();
             list.Add("SELECT type, percent FROM PercentageOfLicense");
-            accessProxy.setConfig(config.getPathOfDataBase(), list, newData);
+            configProxy = new MSAccessStateFields(config.getPathOfDataBase(), list);
+            accessProxy.setConfig(configProxy);
             accessProxy.execute();
-            ds = newData.getData();
+            ds = accessProxy.getResult();
             table = ds.Tables[0];
             state.percents = new double[state.unicSoftwareNames.Count(),1];
             for (int i = 0; i < state.unicSoftwareNames.Count(); i++)
@@ -147,14 +151,15 @@ namespace Analytics
 
         public override void loadStore()//загрузка данных
         {
-            DataWorker<List<string>, DataSet> accessProxy = new MSAccessProxy();
-            StorageForData<DataSet> newData = new MSAccessStorageForData();
+            DataWorker<MSAccessStateFields, DataSet> accessProxy = new MSAccessProxy();
             //получение значения id
             List<string> list = new List<string>();
             list.Add("SELECT user_name, user_host, software FROM " + config.getTableOfDataBase());
-            accessProxy.setConfig(config.getPathOfDataBase(), list, newData);
+            MSAccessStateFields configProxy =
+                new MSAccessStateFields(config.getPathOfDataBase(), list);
+            accessProxy.setConfig(configProxy);
             accessProxy.execute();
-            DataSet ds = newData.getData();
+            DataSet ds = accessProxy.getResult();
             state.data = converter.convert(ds);
             notifyObservers();
         }

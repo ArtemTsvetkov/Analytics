@@ -8,20 +8,20 @@ using System.Data;
 using System.Windows.Forms;
 using System.IO;
 using Analytics.CommonComponents.Interfaces.Data;
+using Analytics.CommonComponents.WorkWithMSAccess;
 
 namespace Analytics
 {
-    class MSAccessDataSaver: DataWorker<List<string>, DataSet>
+    class MSAccessDataSaver: DataWorker<MSAccessStateFields, DataSet>
     {
-        private string host;//пример хоста:C:\\Users\\Artem\\Documents\\Database3.accdb
-        private List<string> query;
-        private StorageForData<DataSet> resultStorage;
+        private MSAccessStateFields config;
+        private DataSet resultStorage;
 
         public void execute()
         {
-            string connStr = string.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + host + 
-                ";Persist Security Info=True;");
-            resultStorage.setData(runQuery(connStr, query));
+            string connStr = string.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + 
+                config.getHost() + ";Persist Security Info=True;");
+            resultStorage = runQuery(connStr, config.getQuery());
         }
 
         //Тестирует возможность подключения к БД, в этом классе(он не прокси) всегда есть
@@ -31,11 +31,9 @@ namespace Analytics
             return true;
         }
 
-        public void setConfig(string host, List<string> query, StorageForData<DataSet> resultStorage)
+        public void setConfig(MSAccessStateFields config)
         {
-            this.host = host;
-            this.query = query;
-            this.resultStorage = resultStorage;
+            this.config = config;
         }
 
         //функция поиска названия таблицы базы данных
@@ -116,6 +114,11 @@ namespace Analytics
             {
                 if (conn != null) conn.Close();
             }
+        }
+
+        public DataSet getResult()
+        {
+            return resultStorage;
         }
     }
 }
