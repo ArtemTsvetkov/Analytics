@@ -153,11 +153,6 @@ namespace Analytics
             return copy;
         }
 
-        public void reset()
-        {
-
-        }
-
         //основная функция моделирования
         private void run_simulation()
         {
