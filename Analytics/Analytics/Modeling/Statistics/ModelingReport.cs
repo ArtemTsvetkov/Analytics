@@ -133,8 +133,11 @@ namespace Analytics.Modeling
 
             for (int i = 0; i < state.variables.Count(); i++)
             {
-                variablesValue.ElementAt(i).value +=
-                    int.Parse(state.variables.ElementAt(i).value);
+                if(!state.variables.ElementAt(i).value.Equals(""))
+                {
+                    variablesValue.ElementAt(i).value +=
+                        double.Parse(state.variables.ElementAt(i).value);
+                }
             }
         }
     }

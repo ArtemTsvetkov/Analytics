@@ -123,18 +123,21 @@ namespace Analytics.CommonComponents.Views
             {
                 form.dataGridView1Elem.Rows.Clear();
                 form.dataGridView1Elem.Rows.Add(report.getVariablesValue().Count());
+                form.dataGridView1Elem.Rows.RemoveAt(0);
             }
             if (form.dataGridView2Elem.Rows.Count != report.getAvgTranzactsInQueue().Count()
                 && report.getAvgTranzactsInQueue().Count() > 0)
             {
                 form.dataGridView2Elem.Rows.Clear();
                 form.dataGridView2Elem.Rows.Add(report.getAvgTranzactsInQueue().Count());
+                form.dataGridView2Elem.Rows.RemoveAt(0);
             }
             if (form.dataGridView3Elem.Rows.Count != report.getNumberRunTranzactsOnLable().Count()
                 && report.getNumberRunTranzactsOnLable().Count() > 0)
             {
                 form.dataGridView3Elem.Rows.Clear();
                 form.dataGridView3Elem.Rows.Add(report.getNumberRunTranzactsOnLable().Count());
+                form.dataGridView3Elem.Rows.RemoveAt(0);
             }
 
             //Заполнение таблиц
