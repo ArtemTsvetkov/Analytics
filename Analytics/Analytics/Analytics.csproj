@@ -85,6 +85,7 @@
     <Compile Include="CommonComponents\WorkWithMSAccess\MSAccessProxy.cs" />
     <Compile Include="CommonComponents\Interfaces\Observer.cs" />
     <Compile Include="Modeling\CheinPartOfOperationCreator.cs" />
+    <Compile Include="Modeling\Config\ModelingConfig.cs" />
     <Compile Include="Modeling\Converters\ResultConverter.cs" />
     <Compile Include="Modeling\ModelingExceptions\IncorrectFormatOperation.cs" />
     <Compile Include="Modeling\ModelingExceptions\ModelingException.cs" />
@@ -99,6 +100,8 @@
     <Compile Include="Modeling\ModelingInstruments\Tranzakt.cs" />
     <Compile Include="Modeling\ModelingInstruments\Variable.cs" />
     <Compile Include="Modeling\ModelingModel.cs" />
+    <Compile Include="Modeling\Statistics\ElementsNameWithElementsValue.cs" />
+    <Compile Include="Modeling\Statistics\ModelingReport.cs" />
     <Compile Include="Modeling\ModelingRules\AdvanceOperation.cs" />
     <Compile Include="Modeling\ModelingRules\AssignOperation.cs" />
     <Compile Include="Modeling\ModelingRules\BasicOperation.cs" />
@@ -164,9 +167,7 @@
   <ItemGroup>
     <None Include="Resources\gear4.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Modeling\Statistics\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

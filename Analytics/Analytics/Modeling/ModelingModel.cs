@@ -1,6 +1,9 @@
 ﻿using Analytics;
 using Analytics.CommonComponents.BasicObjects;
 using Analytics.CommonComponents.WorkWithFiles.Load;
+using Analytics.Modeling;
+using Analytics.Modeling.Config;
+using Analytics.Modeling.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,15 +12,22 @@ using System.Threading.Tasks;
 
 namespace Analytics
 {
-    class ModelingModel : BasicModel<ModelingState, string>
+    class ModelingModel : BasicModel<ModelingReport, ModelingConfig>
     {
         private ModelingState state;
+        //Отчет по моделированию
+        private ModelingReport report;
+        private int numberOfStartsModel = 0;
 
         public ModelingState getState()
         {
             return state;
         }
 
+        //Данная функция, следуя флагу resetAllState, либо полностью
+        //откатит все изменения стейта, либо только те объекты, которые участвуют
+        //непосредственно в моделировании(очереди, устройства и тд), но оставит
+        //количество запусков моделирования и отчет
         public override void recoverySelf(ModelsState backUpState)
         {
             ModelingState oldState = (ModelingState)backUpState;
@@ -74,6 +84,12 @@ namespace Analytics
             for (int i = 0; i < oldState.newRules.Count; i++)
             {
                 state.newRules.Add(oldState.newRules.ElementAt(i).clone());
+            }
+
+            if(!config.getResetAllState())
+            {
+                state.numberOfStartsModel = numberOfStartsModel;
+                state.report = report;
             }
         }
 
@@ -289,6 +305,16 @@ namespace Analytics
         public override void calculationStatistics()
         {
             run_simulation();
+
+            state.numberOfStartsModel++;
+            numberOfStartsModel = state.numberOfStartsModel;
+            if (state.numberOfStartsModel == 1)
+            {
+                state.report = new ModelingReport(state);
+            }
+            state.report.updateReport(state);
+            report = state.report;
+
             notifyObservers();
         }
 
@@ -298,7 +324,7 @@ namespace Analytics
             state = new ModelingState();
             TextFilesDataLoader loader = new TextFilesDataLoader();
             TextFilesConfigFieldsOnLoad loadersConfig =
-                new TextFilesConfigFieldsOnLoad(config);
+                new TextFilesConfigFieldsOnLoad(config.getConfigData());
             loader.setConfig(loadersConfig);
             loader.execute();
             state.originalRules = loader.getResult();
@@ -307,14 +333,16 @@ namespace Analytics
             rules_parser.go_parse(this);
         }
 
-        public override void setConfig(string configData)
+        public override void setConfig(ModelingConfig configData)
         {
             config = configData;
         }
 
-        public override ModelingState getResult()
+        public override ModelingReport getResult()
         {
-            return state;
+            DataConverter<ModelingState, ModelingReport> converter =
+                new ResultConverter();
+            return converter.convert(state);
         }
     }
 }

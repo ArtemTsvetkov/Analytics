@@ -1,4 +1,6 @@
 ﻿using Analytics.CommandsStore.Commands.Modeling;
+using Analytics.Modeling;
+using Analytics.Modeling.Config;
 using Analytics.Modeling.Converters;
 using Modelirovanie;
 using System;
@@ -86,8 +88,8 @@ namespace Analytics.CommonComponents.Views
 
         public void button1_Click()
         {
-            CommandsStore<ModelingState, string> commandsStore =
-                new ConcreteCommandStore<ModelingState, string>();
+            CommandsStore<ModelingReport, ModelingConfig> commandsStore =
+                new ConcreteCommandStore<ModelingReport, ModelingConfig>();
 
             step = 100 / int.Parse(form.numericUpDown1Elem.Value.ToString());
             List<string> rules = new List<string>();
@@ -96,14 +98,13 @@ namespace Analytics.CommonComponents.Views
             {
                 control = new ModelingModel();
                 control.subscribe(this);
-                control.setConfig(form.textBox1Elem.Text);
+                ModelingConfig config = new ModelingConfig(form.textBox1Elem.Text, false);
+                control.setConfig(config);
                 control.loadStore();
                 ModelsState backupModel = control.copySelf();
                 for (i = 0; i < form.numericUpDown1Elem.Value; i++)//моделирование в соответствии с количеством итераций
                 {
-                    //control.recoverySelf(backupModel);
-                    //control.calculationStatistics();
-                    commandsStore.executeCommand(new RunModeling<string>(control));
+                    commandsStore.executeCommand(new RunModeling<ModelingConfig>(control));
                 }
 
                 if (form.label1Elem.Text != "Ошибка моделирования")
@@ -144,8 +145,9 @@ namespace Analytics.CommonComponents.Views
         public void notify()
         {
             ModelingState modeling_objects = new ModelingState();
-            modeling_objects = control.getResult();
-            if (modeling_objects.result == "Успех!")
+            //modeling_objects = control.getResult();
+            ModelingReport report = control.getResult();
+            /*if (modeling_objects.result == "Успех!")
             {
                 //запоминание результатов моделирования
                 for (int j = 0; j < modeling_objects.variables.Count; j++)//перебор всех перменных
@@ -276,7 +278,7 @@ namespace Analytics.CommonComponents.Views
                 DialogResult result;
                 result = MessageBox.Show(message, caption);
                 form.progressBar1Elem.Value = 100;
-            }
+            }*/
             form.progressBar1Elem.Value += step;
         }
     }
