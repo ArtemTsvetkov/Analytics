@@ -1,9 +1,11 @@
 ﻿using Analytics;
 using Analytics.CommonComponents.BasicObjects;
+using Analytics.CommonComponents.Interfaces.Data;
 using Analytics.CommonComponents.WorkWithFiles.Load;
 using Analytics.Modeling;
 using Analytics.Modeling.Config;
 using Analytics.Modeling.Converters;
+using Analytics.Modeling.ModelsCreator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -315,12 +317,21 @@ namespace Analytics
 
         public override void loadStore()
         {
-            //чтение файла с конфигурацией модели
             state = new ModelingState();
+            /*
+            //чтение файла с конфигурацией модели
             TextFilesDataLoader loader = new TextFilesDataLoader();
             TextFilesConfigFieldsOnLoad loadersConfig =
                 new TextFilesConfigFieldsOnLoad(config.getConfigData());
             loader.setConfig(loadersConfig);
+            loader.execute();
+            state.originalRules = loader.getResult();*/
+            //Создание модели в реалтайме
+            DataWorker<List<LicenceInfo>, List<string>> loader = new ModelsCreatorProxy();
+            List<LicenceInfo> licenceInfo = new List<LicenceInfo>();
+            licenceInfo.Add(new LicenceInfo("OCH","OCH",2,70,12,400,10,5));
+            licenceInfo.Add(new LicenceInfo("OCH2", "OCH2", 2, 70, 12, 400, 10, 5));
+            loader.setConfig(licenceInfo);
             loader.execute();
             state.originalRules = loader.getResult();
             //создание всех очередей, устройств, меток и тд
