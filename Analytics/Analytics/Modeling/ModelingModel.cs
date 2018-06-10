@@ -318,22 +318,22 @@ namespace Analytics
         public override void loadStore()
         {
             state = new ModelingState();
-            /*
+            
             //чтение файла с конфигурацией модели
             TextFilesDataLoader loader = new TextFilesDataLoader();
             TextFilesConfigFieldsOnLoad loadersConfig =
                 new TextFilesConfigFieldsOnLoad(config.getConfigData());
             loader.setConfig(loadersConfig);
             loader.execute();
-            state.originalRules = loader.getResult();*/
+            state.originalRules = loader.getResult();
             //Создание модели в реалтайме
-            DataWorker<List<LicenceInfo>, List<string>> loader = new ModelsCreatorProxy();
+            /*DataWorker<List<LicenceInfo>, List<string>> loader = new ModelsCreatorProxy();
             List<LicenceInfo> licenceInfo = new List<LicenceInfo>();
             licenceInfo.Add(new LicenceInfo("OCH","OCH",2,70,12,400,10,5));
             licenceInfo.Add(new LicenceInfo("OCH2", "OCH2", 2, 70, 12, 400, 10, 5));
             loader.setConfig(licenceInfo);
             loader.execute();
-            state.originalRules = loader.getResult();
+            state.originalRules = loader.getResult();*/
             //создание всех очередей, устройств, меток и тд
             RulesParser rules_parser = new RulesParser();
             rules_parser.go_parse(this);
