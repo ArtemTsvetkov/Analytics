@@ -108,7 +108,17 @@ namespace Analytics.Modeling.ModelingRules
                     if(model.getState().tranzakts.ElementAt(model.getState().
                             idProcessingTranzact).sparePlace != 0)
                     {
-                        //То переместил транзакт на запасное место
+                        //Убрал один переход из метки, что по ней был переход, так как транзакт не смог 
+                        //войти, а значит переход не должен быть зафиксирован
+                        for (int i = 0; i < model.getState().lables.Count; i++)
+                        {
+                            if (model.getState().lables.ElementAt(i).get_my_plase() == model.getState().
+                                tranzakts.ElementAt(model.getState().idProcessingTranzact).my_place)
+                            {
+                                model.getState().lables.ElementAt(i).decrementEntriesNumber();
+                            }
+                        }
+                        //Переместил транзакт на запасное место
                         model.getState().tranzakts.ElementAt(model.getState().
                             idProcessingTranzact).my_place = 
                             model.getState().tranzakts.ElementAt(model.getState().

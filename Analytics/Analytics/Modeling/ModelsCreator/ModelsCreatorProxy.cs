@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Analytics.Modeling.ModelsCreator
 {
-    class ModelsCreatorProxy : DataWorker<List<LicenceInfo>, List<string>>
+    class ModelsCreatorProxy : DataWorker<ModelsCreatorState, List<string>>
     {
-        private DataWorker<List<LicenceInfo>, List<string>> creator = new ModelsCreator();
+        private DataWorker<ModelsCreatorState, List<string>> creator = new ModelsCreator();
 
-        public void setConfig(List<LicenceInfo> fields)
+        public void setConfig(ModelsCreatorState fields)
         {
             creator.setConfig(fields);
         }

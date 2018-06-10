@@ -35,6 +35,11 @@ namespace Analytics
             entries_number++;
         }
 
+        public void decrementEntriesNumber()
+        {
+            entries_number--;
+        }
+
         public void set_entries_number(int entries_number)
         {
             this.entries_number = entries_number;

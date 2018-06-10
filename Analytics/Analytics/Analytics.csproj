@@ -103,6 +103,7 @@
     <Compile Include="Modeling\ModelsCreator\LicenceInfo.cs" />
     <Compile Include="Modeling\ModelsCreator\ModelsCreator.cs" />
     <Compile Include="Modeling\ModelsCreator\ModelsCreatorProxy.cs" />
+    <Compile Include="Modeling\ModelsCreator\ModelsCreatorState.cs" />
     <Compile Include="Modeling\Statistics\ElementsNameWithElementsValue.cs" />
     <Compile Include="Modeling\Statistics\ModelingReport.cs" />
     <Compile Include="Modeling\ModelingRules\AdvanceOperation.cs" />

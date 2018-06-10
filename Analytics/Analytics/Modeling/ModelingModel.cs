@@ -318,7 +318,7 @@ namespace Analytics
         public override void loadStore()
         {
             state = new ModelingState();
-            
+
             //чтение файла с конфигурацией модели
             TextFilesDataLoader loader = new TextFilesDataLoader();
             TextFilesConfigFieldsOnLoad loadersConfig =
@@ -327,13 +327,21 @@ namespace Analytics
             loader.execute();
             state.originalRules = loader.getResult();
             //Создание модели в реалтайме
-            /*DataWorker<List<LicenceInfo>, List<string>> loader = new ModelsCreatorProxy();
-            List<LicenceInfo> licenceInfo = new List<LicenceInfo>();
-            licenceInfo.Add(new LicenceInfo("OCH","OCH",2,70,12,400,10,5));
-            licenceInfo.Add(new LicenceInfo("OCH2", "OCH2", 2, 70, 12, 400, 10, 5));
-            loader.setConfig(licenceInfo);
+            /*DataWorker<ModelsCreatorState, List<string>> loader = new ModelsCreatorProxy();
+            ModelsCreatorState config = new ModelsCreatorState();
+            config.korellation = new double[2, 2];
+            config.korellation[0, 0] = 1;
+            config.korellation[0, 1] = -0.25;
+            config.korellation[1, 0] = -0.25;
+            config.korellation[1, 1] = 1;
+            config.withKovar = true;
+            config.licenceInfo = new List<LicenceInfo>();
+            config.licenceInfo.Add(new LicenceInfo("OCH","OCH",2,70,12,400,10,5));
+            config.licenceInfo.Add(new LicenceInfo("OCH2", "OCH2", 2, 70, 12, 400, 10, 5));
+            loader.setConfig(config);
             loader.execute();
             state.originalRules = loader.getResult();*/
+
             //создание всех очередей, устройств, меток и тд
             RulesParser rules_parser = new RulesParser();
             rules_parser.go_parse(this);
