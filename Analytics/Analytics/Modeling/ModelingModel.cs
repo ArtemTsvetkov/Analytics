@@ -250,26 +250,26 @@ namespace Analytics
                                 time_until_the_next_tranzaction--;
                         }
                     }
-                    //инкремент системного времени
-                    system_time++;
-                    //декремент оставшегося времени задержки в транзактах
-                    for (int j = 0; j < state.tranzakts.Count; j++)
+                    
+                }
+                //инкремент системного времени
+                system_time++;
+                //декремент оставшегося времени задержки в транзактах
+                for (int j = 0; j < state.tranzakts.Count; j++)
+                {
+                    //инкремент времени нахождения транзакта в системе
+                    state.tranzakts.ElementAt(j).time_in_system++;
+                    if (state.tranzakts.ElementAt(j).remaining_time_delay > 0)
                     {
-                        //инкремент времени нахождения транзакта в системе
-                        state.tranzakts.ElementAt(j).time_in_system++;
-                        if (state.tranzakts.ElementAt(j).remaining_time_delay > 0)
+                        state.tranzakts.ElementAt(j).remaining_time_delay--;
+                        //проверка, возможно, транзакт можно снова разблокировать
+                        if (state.tranzakts.ElementAt(j).remaining_time_delay == 0)
                         {
-                            state.tranzakts.ElementAt(j).remaining_time_delay--;
-                            //проверка, возможно, транзакт можно снова разблокировать
-                            if (state.tranzakts.ElementAt(j).remaining_time_delay == 0)
-                            {
-                                state.tranzakts.ElementAt(j).blocked = false;
-                                state.tranzakts.ElementAt(j).my_place++;
-                            }
+                            state.tranzakts.ElementAt(j).blocked = false;
+                            state.tranzakts.ElementAt(j).my_place++;
                         }
                     }
                 }
-
 
                 //проверка на завершенность моделирования
                 //изменится на true, в случае, если хотя бы
@@ -320,27 +320,27 @@ namespace Analytics
             state = new ModelingState();
 
             //чтение файла с конфигурацией модели
-            TextFilesDataLoader loader = new TextFilesDataLoader();
+            /*TextFilesDataLoader loader = new TextFilesDataLoader();
             TextFilesConfigFieldsOnLoad loadersConfig =
                 new TextFilesConfigFieldsOnLoad(config.getConfigData());
             loader.setConfig(loadersConfig);
             loader.execute();
-            state.originalRules = loader.getResult();
+            state.originalRules = loader.getResult();*/
             //Создание модели в реалтайме
-            /*DataWorker<ModelsCreatorState, List<string>> loader = new ModelsCreatorProxy();
+            DataWorker<ModelsCreatorState, List<string>> loader = new ModelsCreatorProxy();
             ModelsCreatorState config = new ModelsCreatorState();
             config.korellation = new double[2, 2];
             config.korellation[0, 0] = 1;
-            config.korellation[0, 1] = -0.25;
-            config.korellation[1, 0] = -0.25;
+            config.korellation[0, 1] = -0.70;
+            config.korellation[1, 0] = -0.70;
             config.korellation[1, 1] = 1;
             config.withKovar = true;
             config.licenceInfo = new List<LicenceInfo>();
-            config.licenceInfo.Add(new LicenceInfo("OCH","OCH",2,70,12,400,10,5));
-            config.licenceInfo.Add(new LicenceInfo("OCH2", "OCH2", 2, 70, 12, 400, 10, 5));
+            config.licenceInfo.Add(new LicenceInfo("OCH","OCH",4,1000,1,400,5,1));
+            config.licenceInfo.Add(new LicenceInfo("OCH2", "OCH2", 2, 10, 2, 400, 10, 5));
             loader.setConfig(config);
             loader.execute();
-            state.originalRules = loader.getResult();*/
+            state.originalRules = loader.getResult();
 
             //создание всех очередей, устройств, меток и тд
             RulesParser rules_parser = new RulesParser();

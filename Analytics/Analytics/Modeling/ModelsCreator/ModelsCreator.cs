@@ -62,6 +62,7 @@ namespace Analytics.Modeling.ModelsCreator
                                 if (fields.korellation[m, i] == -1)
                                 {
                                     result.Add("TRANSFER ,OnStartLN2");
+                                    continue;
                                 }
                                 //Если больше нуля, но меньше единицы, то для
                                 //простоты модели считаю, что нет зависимости
