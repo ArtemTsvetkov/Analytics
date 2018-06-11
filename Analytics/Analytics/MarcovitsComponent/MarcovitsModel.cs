@@ -1,4 +1,5 @@
-﻿using Analytics.CommonComponents.BasicObjects;
+﻿using Analytics.CommonComponents;
+using Analytics.CommonComponents.BasicObjects;
 using Analytics.CommonComponents.Interfaces.Data;
 using Analytics.CommonComponents.Math;
 using Analytics.CommonComponents.WorkWithMSAccess;
@@ -28,33 +29,12 @@ namespace Analytics
         public override void calculationStatistics()
         {
             //Получение уникальных имен лицензий
-            DataWorker<MSAccessStateFields, DataSet> accessProxy = new MSAccessProxy();
-            List<string> list = new List<string>();
-            list.Add("SELECT DISTINCT software FROM " + config.getTableOfDataBase());
-            MSAccessStateFields configProxy = 
-                new MSAccessStateFields(config.getPathOfDataBase(), list);
-            accessProxy.setConfig(configProxy);
-            accessProxy.execute();
-            list.Clear();
-            DataSet ds = accessProxy.getResult();
+            DataSet ds = configProxyForLoadDataFromBDAndExecute(
+                QueryConfigurator.getUnicLicensesName(config.getTableOfDataBase()));
             state.unicSoftwareNames = unucNamesConverter.convert(ds);
             //Формирование запроса на получение данных
-            string query = "SELECT  i.year_in, i.month_in, i.day_in, i.hours_in";
-            for(int i=0; i<state.unicSoftwareNames.Length; i++)
-            {
-                query += ", (SELECT COUNT(*) FROM Information ii WHERE ii.software='"+ state.
-                    unicSoftwareNames[i]+ "' AND ii.year_in = i.year_in  AND ii.month_in =  "+
-                    "i.month_in AND ii.day_in =  i.day_in AND ii.hours_in = i.hours_in)";
-            }
-            query += "FROM Information i WHERE hours_in IS NOT NULL GROUP BY hours_in, day_in, "+
-                "month_in, year_in ORDER BY year_in, month_in, day_in, hours_in";
-            //Получение данных об использовании
-            list.Clear();
-            list.Add(query);
-            configProxy = new MSAccessStateFields(config.getPathOfDataBase(), list);
-            accessProxy.setConfig(configProxy);
-            accessProxy.execute();
-            ds = accessProxy.getResult();
+            ds = configProxyForLoadDataFromBDAndExecute(QueryConfigurator.
+                getDataOfUseAllLicenses(state.unicSoftwareNames));
             state.data = converter.convert(ds);
 
             //Рассчет средних значений кол-ва лицензий
@@ -71,13 +51,9 @@ namespace Analytics
                 state.avgNumbersUseLicense[j] = state.avgNumbersUseLicense[j] / state.data.Count;        
             }
 
-            //Пока для тестов число закупленных лицензий читается из таблицы PurchasedLicenses
-            list.Clear();
-            list.Add("SELECT type, count FROM PurchasedLicenses");
-            configProxy = new MSAccessStateFields(config.getPathOfDataBase(), list);
-            accessProxy.setConfig(configProxy);
-            accessProxy.execute();
-            ds = accessProxy.getResult();
+            //Число закупленных лицензий читается из таблицы PurchasedLicenses
+            ds = configProxyForLoadDataFromBDAndExecute(
+                QueryConfigurator.getNumberOfPurchasedLicenses());
             DataTable table = ds.Tables[0];
             state.numberBuyLicense = new double[state.unicSoftwareNames.Count()];
             for (int i=0;i<state.unicSoftwareNames.Count();i++)
@@ -115,13 +91,9 @@ namespace Analytics
                     state.avgDeviationFromPurchasedNumber[i] = (1 - Math.Abs(MathWorker.avg(matrixA)));
                 }
             }
-            //Пока для тестов соотношения в процентах читается из таблицы PercentageOfLicense
-            list.Clear();
-            list.Add("SELECT type, percent FROM PercentageOfLicense");
-            configProxy = new MSAccessStateFields(config.getPathOfDataBase(), list);
-            accessProxy.setConfig(configProxy);
-            accessProxy.execute();
-            ds = accessProxy.getResult();
+            //Cоотношения в процентах читается из таблицы PercentageOfLicense
+            ds = configProxyForLoadDataFromBDAndExecute(
+                QueryConfigurator.getPartsInPersentOfPurchasedLicenses());
             table = ds.Tables[0];
             state.percents = new double[state.unicSoftwareNames.Count(),1];
             for (int i = 0; i < state.unicSoftwareNames.Count(); i++)
@@ -148,6 +120,19 @@ namespace Analytics
             }
 
             notifyObservers();
+        }
+
+        public DataSet configProxyForLoadDataFromBDAndExecute(string query)
+        {
+            DataWorker<MSAccessStateFields, DataSet> accessProxy = new MSAccessProxy();
+            List<string> list = new List<string>();
+            list.Add(query);
+            MSAccessStateFields configProxy =
+                new MSAccessStateFields(config.getPathOfDataBase(), list);
+            accessProxy.setConfig(configProxy);
+            accessProxy.execute();
+            list.Clear();
+            return accessProxy.getResult();
         }
 
         public override void loadStore()//загрузка данных

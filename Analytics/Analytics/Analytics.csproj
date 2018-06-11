@@ -57,6 +57,7 @@
     <Compile Include="CommonComponents\Interfaces\Data\DataWorker.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\StorageForData.cs" />
     <Compile Include="CommonComponents\Math\MathWorker.cs" />
+    <Compile Include="CommonComponents\QueryConfigurator.cs" />
     <Compile Include="CommonComponents\Views\MarcovitsView.cs" />
     <Compile Include="CommonComponents\Views\ModelingView.cs" />
     <Compile Include="CommonComponents\WorkWithFiles\Load\TextFilesConfigFieldsOnLoad.cs" />
