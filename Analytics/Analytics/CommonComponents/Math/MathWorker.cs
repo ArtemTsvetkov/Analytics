@@ -41,6 +41,31 @@ namespace Analytics.CommonComponents.Math
             }
         }
 
+        //Расчет корелляции
+        public static double corellation(double[] matrixA, double[] matrixB)
+        {
+            double unswer = 0;
+            double matrixCovar = covar(matrixA, matrixB);
+            unswer = matrixCovar / (standardDeviation(matrixA)*standardDeviation(matrixB));
+
+            return unswer;
+        }
+
+        //Расчет стандартного (среднеквадратичного отклонения)
+        public static double standardDeviation(double[] matrix)
+        {
+            double unswer = 0;
+            double matrixAvg = avg(matrix);
+            for(int i=0; i < matrix.Length; i++)
+            {
+                unswer += System.Math.Pow((matrix[i]-matrixAvg), 2);
+            }
+            unswer = unswer / (matrix.Length-1);
+            unswer = System.Math.Pow(unswer, 0.5);
+
+            return unswer;
+        }
+
         //Умножение матриц
         public static double[,] multiplyMatrix(double[,] aMatrix, double[,] bMatrix)
         {
