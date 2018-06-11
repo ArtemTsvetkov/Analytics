@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Analytics.Modeling.ModelsCreator
 {
-    class ModelsCreatorState
+    class ModelsCreatorConfigState
     {
         //Расчет с учeтом ковариации
         public bool withKovar = false;

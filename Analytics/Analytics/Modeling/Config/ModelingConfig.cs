@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Analytics.Modeling.GroupByTypes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,64 @@ namespace Analytics.Modeling.Config
         private string configData;
         //Флаг, указывающий сброс всего стейта
         private bool resetAllState;
+        //Путь до БД
+        private string pathOfDataBase;
+        //Название теблицы в БД
+        private string tableOfDataBase;
+        //Флаг использования корелляции между запроса на лицензии
+        private bool withKovar;
+        //Модификатор группировки для нализа(по дням/минутам и тд)
+        private GropByType groupType;
+
+
+        public ModelingConfig(string configData, bool resetAllState, 
+            string pathOfDataBase, string tableOfDataBase)
+        {
+            this.configData = configData;
+            this.resetAllState = resetAllState;
+            this.pathOfDataBase = pathOfDataBase;
+            this.tableOfDataBase = tableOfDataBase;
+        }
+
+        public void setGroupType(GropByType groupType)
+        {
+            this.groupType = groupType;
+        }
+
+        public GropByType getGroupType()
+        {
+            return groupType;
+        }
+
+        public bool getWithKovar()
+        {
+            return withKovar;
+        }
+
+        public void setWithKovar(bool withKovar)
+        {
+            this.withKovar = withKovar;
+        }
+
+        public string getPathOfDataBase()
+        {
+            return pathOfDataBase;
+        }
+
+        public string getTableOfDataBase()
+        {
+            return tableOfDataBase;
+        }
+
+        public void setPathOfDataBase(string pathOfDataBase)
+        {
+            this.pathOfDataBase = pathOfDataBase;
+        }
+
+        public void setTableOfDataBase(string tableOfDataBase)
+        {
+            this.tableOfDataBase = tableOfDataBase;
+        }
 
         public ModelingConfig(string configData, bool resetAllState)
         {

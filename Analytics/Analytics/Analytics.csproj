@@ -87,7 +87,16 @@
     <Compile Include="CommonComponents\Interfaces\Observer.cs" />
     <Compile Include="Modeling\CheinPartOfOperationCreator.cs" />
     <Compile Include="Modeling\Config\ModelingConfig.cs" />
+    <Compile Include="Modeling\Converters\ModelCreatorConfigCreator.cs" />
     <Compile Include="Modeling\Converters\ResultConverter.cs" />
+    <Compile Include="Modeling\GroupByTypes\BasicType.cs" />
+    <Compile Include="Modeling\GroupByTypes\DayType.cs" />
+    <Compile Include="Modeling\GroupByTypes\GropByType.cs" />
+    <Compile Include="Modeling\GroupByTypes\HourType.cs" />
+    <Compile Include="Modeling\GroupByTypes\MinuteType.cs" />
+    <Compile Include="Modeling\GroupByTypes\MonthType.cs" />
+    <Compile Include="Modeling\GroupByTypes\SecondType.cs" />
+    <Compile Include="Modeling\GroupByTypes\YearType.cs" />
     <Compile Include="Modeling\ModelingExceptions\IncorrectFormatOperation.cs" />
     <Compile Include="Modeling\ModelingExceptions\ModelingException.cs" />
     <Compile Include="Modeling\ModelingFunctionParser.cs" />
@@ -103,8 +112,8 @@
     <Compile Include="Modeling\ModelingModel.cs" />
     <Compile Include="Modeling\ModelsCreator\LicenceInfo.cs" />
     <Compile Include="Modeling\ModelsCreator\ModelsCreator.cs" />
+    <Compile Include="Modeling\ModelsCreator\ModelsCreatorConfigState.cs" />
     <Compile Include="Modeling\ModelsCreator\ModelsCreatorProxy.cs" />
-    <Compile Include="Modeling\ModelsCreator\ModelsCreatorState.cs" />
     <Compile Include="Modeling\Statistics\ElementsNameWithElementsValue.cs" />
     <Compile Include="Modeling\Statistics\ModelingReport.cs" />
     <Compile Include="Modeling\ModelingRules\AdvanceOperation.cs" />

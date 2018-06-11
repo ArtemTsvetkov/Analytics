@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Analytics.Modeling.ModelsCreator
 {
-    class ModelsCreator : DataWorker<ModelsCreatorState, List<string>>
+    class ModelsCreator : DataWorker<ModelsCreatorConfigState, List<string>>
     {
-        private ModelsCreatorState fields;
+        private ModelsCreatorConfigState fields;
         private List<string> result;
 
 
@@ -111,7 +111,7 @@ namespace Analytics.Modeling.ModelsCreator
             return result;
         }
 
-        public void setConfig(ModelsCreatorState fields)
+        public void setConfig(ModelsCreatorConfigState fields)
         {
             result = new List<string>();
             this.fields = fields;
