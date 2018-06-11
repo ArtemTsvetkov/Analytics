@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Analytics.Modeling.GroupByTypes;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -41,6 +42,57 @@ namespace Analytics.CommonComponents
         public static string getPartsInPersentOfPurchasedLicenses()
         {
             return "SELECT type, percent FROM PercentageOfLicense";
+        }
+
+        //Получение времени отдачи сервером лицензии
+        public static string getTimesGiveLicense(string licenseName, GropByType type)
+        {
+            if (type.getType().Equals("year"))
+            {
+                return "SELECT i.year_in FROM Information i WHERE  i.year_in <> "+
+                    "null AND i.software='86451BDSPRM_2016_0F' AND i.user_name<>'"+
+                    "RevitSystem' ORDER BY i.year_in";
+            }
+            if (type.getType().Equals("month"))
+            {
+                return "SELECT CStr((CInt(i.year_in)*12)+CInt(i.month_in)) FROM "+
+                    "Information i WHERE  i.year_in <> null AND i.software='86451B"+
+                    "DSPRM_2016_0F' AND i.user_name<>'RevitSystem' ORDER BY i.year_in"+
+                    ", i.month_in";
+            }
+            if (type.getType().Equals("day"))
+            {
+                return "SELECT CStr((CInt(i.year_in)*360)+(CInt(i.month_in)*30)+"+
+                    "CInt(i.day_in)) FROM Information i WHERE  i.year_in <> null "+
+                    "AND i.software='86451BDSPRM_2016_0F' AND i.user_name<>'Revit"+
+                    "System' ORDER BY i.year_in, i.month_in, i.day_in";
+            }
+            if (type.getType().Equals("hour"))
+            {
+                return "SELECT CStr((CInt(i.year_in)*8640)+(CInt(i.month_in)*720)+"+
+                    "(CInt(i.day_in)*24)+CInt(i.hours_in)) FROM Information i WHERE  "+
+                    "i.year_in <> null AND i.software='86451BDSPRM_2016_0F' AND i."+
+                    "user_name<>'RevitSystem' ORDER BY i.year_in, i.month_in, i.day_in, "+
+                    "i.hours_in";
+            }
+            if (type.getType().Equals("minute"))
+            {
+                return "SELECT CStr((CInt(i.year_in)*518400)+(CInt(i.month_in)*43200)+"+
+                    "(CInt(i.day_in)*1440)+(CInt(i.hours_in)*60)+CInt(i.minute_in)) FROM "+
+                    "Information i WHERE  i.year_in <> null AND i.software="+
+                    "'86451BDSPRM_2016_0F' AND i.user_name<>'RevitSystem' ORDER BY i.year_in,"+
+                    " i.month_in, i.day_in, i.hours_in, i.minute_in";
+            }
+            if (type.getType().Equals("second"))
+            {
+                return "SELECT CStr((CInt(i.year_in)*3110400)+(CInt(i.month_in)*2592000)+" +
+                    "(CInt(i.day_in)*86400)+(CInt(i.hours_in)*3600)+(CInt(i.minute_in)*60)+" +
+                    "CInt(i.second_in)) FROM Information i WHERE  i.year_in <> null AND " +
+                    "i.software='86451BDSPRM_2016_0F' AND i.user_name<>'RevitSystem' ORDER BY i.year_in, i.month_in, " +
+                    "i.day_in, i.hours_in, i.minute_in, i.second_in";
+            }
+            //ДОБАВИТЬ ИСКЛЛЮЧЕНИЕ-НЕИЗВЕСТНЫЙ ТИП
+            throw new Exception();
         }
     }
 }
