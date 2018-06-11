@@ -94,7 +94,10 @@ namespace Analytics.CommonComponents.Views
             {
                 control = new ModelingModel();
                 control.subscribe(this);
-                ModelingConfig config = new ModelingConfig(form.textBox1Elem.Text, false);
+                ModelingConfig config = new ModelingConfig(form.textBox1Elem.Text,
+                    "D:\\Files\\MsVisualProjects\\Diplom\\Логи\\testlogs\\Database3.accdb",
+                    "Information");
+                config.setWithKovar(false);
                 control.setConfig(config);
                 control.loadStore();
                 ModelsState backupModel = control.copySelf();

@@ -11,7 +11,7 @@ namespace Analytics
     {
         public List<MarcovitsDataTable> convert(DataSet data)
         {
-            DataSet ds = (DataSet)data;
+            DataSet ds = data;
             List<MarcovitsDataTable> newData = new List<MarcovitsDataTable>();
             DataTable table = ds.Tables[0];
             for (int i = 0; i < table.Rows.Count; i++)

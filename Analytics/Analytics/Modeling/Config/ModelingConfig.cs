@@ -12,22 +12,19 @@ namespace Analytics.Modeling.Config
         //Путь до файла с моделью
         private string configData;
         //Флаг, указывающий сброс всего стейта
-        private bool resetAllState;
+        private bool resetAllState = false;
         //Путь до БД
         private string pathOfDataBase;
         //Название теблицы в БД
         private string tableOfDataBase;
         //Флаг использования корелляции между запроса на лицензии
-        private bool withKovar;
+        private bool withKovar = false;
         //Модификатор группировки для нализа(по дням/минутам и тд)
-        private GropByType groupType;
+        private GropByType groupType = new HourType();
 
-
-        public ModelingConfig(string configData, bool resetAllState, 
-            string pathOfDataBase, string tableOfDataBase)
+        public ModelingConfig(string configData, string pathOfDataBase, string tableOfDataBase)
         {
             this.configData = configData;
-            this.resetAllState = resetAllState;
             this.pathOfDataBase = pathOfDataBase;
             this.tableOfDataBase = tableOfDataBase;
         }
@@ -70,12 +67,6 @@ namespace Analytics.Modeling.Config
         public void setTableOfDataBase(string tableOfDataBase)
         {
             this.tableOfDataBase = tableOfDataBase;
-        }
-
-        public ModelingConfig(string configData, bool resetAllState)
-        {
-            this.configData = configData;
-            this.resetAllState = resetAllState;
         }
 
         public bool getResetAllState()
