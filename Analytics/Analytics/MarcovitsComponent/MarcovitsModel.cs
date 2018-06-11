@@ -1,5 +1,6 @@
 ﻿using Analytics.CommonComponents.BasicObjects;
 using Analytics.CommonComponents.Interfaces.Data;
+using Analytics.CommonComponents.Math;
 using Analytics.CommonComponents.WorkWithMSAccess;
 using Analytics.MarcovitsComponent.Config;
 using System;
@@ -108,10 +109,10 @@ namespace Analytics
                         matrixA[m] = state.data.ElementAt(m).licenses[i];
                         matrixB[m] = state.data.ElementAt(m).licenses[j];
                     }
-                    covarMas[i, j] = covar(matrixA, matrixB);
+                    covarMas[i, j] = MathWorker.covar(matrixA, matrixB);
 
                     //Для рассчета доходности считаю доходность по каждой отдельной лицензии
-                    state.avgDeviationFromPurchasedNumber[i] = (1 - Math.Abs(avg(matrixA)));
+                    state.avgDeviationFromPurchasedNumber[i] = (1 - Math.Abs(MathWorker.avg(matrixA)));
                 }
             }
             //Пока для тестов соотношения в процентах читается из таблицы PercentageOfLicense
@@ -129,7 +130,7 @@ namespace Analytics
             }
 
             //Подсчет общего риска
-            state.risk = MultiplyMatrix(covarMas, state.percents);
+            state.risk = MathWorker.multiplyMatrix(covarMas, state.percents);
 
             double[,] transpPercents = new double[1, 5];
             for (int i = 0; i < 5; i++)
@@ -137,7 +138,7 @@ namespace Analytics
                 transpPercents[0, i] = state.percents[i, 0];
             }
 
-            state.risk = MultiplyMatrix(transpPercents, state.risk);
+            state.risk = MathWorker.multiplyMatrix(transpPercents, state.risk);
 
             //Подсчет общего дохода
             state.income = 0;
@@ -162,62 +163,6 @@ namespace Analytics
             DataSet ds = accessProxy.getResult();
             state.data = converter.convert(ds);
             notifyObservers();
-        }
-
-        double avg(double[] matrix)//Расчет среднего значения
-        {
-            double sum = 0;
-            for (int i = 0; i < matrix.Length; i++)
-            {
-                sum += matrix[i];
-            }
-            return (sum / (double)matrix.Length);
-        }
-
-        double covar(double[] matrixA, double[] matrixB)//Расчет ковариации
-        {
-            double avgMatrixA = avg(matrixA);
-            double avgMatrixB = avg(matrixB);
-
-            if (matrixA.Length == matrixB.Length)
-            {
-                double kovar = 0;
-                for (int i = 0; i < matrixA.Length; i++)
-                {
-                    kovar += (matrixA[i] - avgMatrixA) * (matrixB[i] - avgMatrixB);
-                }
-                kovar = kovar / (matrixA.Length - 1);
-                return kovar;
-            }
-            else//Должно совпадать, иначе нет смысла сравнивать
-            {
-                throw new Exception();
-            }
-        }
-
-        double[,] MultiplyMatrix(double[,] aMatrix, double[,] bMatrix)//Умножение матриц
-        {
-            if (aMatrix.GetLength(1) == bMatrix.GetLength(0))
-            {
-                double[,] product = new double[aMatrix.GetLength(0), bMatrix.GetLength(1)];
-
-
-                for (int row = 0; row < aMatrix.GetLength(0); row++)
-                {
-                    for (int col = 0; col < bMatrix.GetLength(1); col++)
-                    {
-                        for (int inner = 0; inner < aMatrix.GetLength(1); inner++)
-                        {
-                            product[row, col] += aMatrix[row, inner] * bMatrix[inner, col];
-                        }
-                    }
-                }
-                return product;
-            }
-            else//Должно совпадать, иначе нет смысла считать
-            {
-                throw new Exception();
-            }
         }
 
         public override ModelsState copySelf()
