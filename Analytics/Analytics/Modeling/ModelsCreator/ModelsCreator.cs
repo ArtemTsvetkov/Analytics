@@ -35,7 +35,9 @@ namespace Analytics.Modeling.ModelsCreator
                         info.getNumberOfTranzactsOnStart());
                     result.Add("ASSIGN 1,0");
                     result.Add("TRANSFER ,SkipIncrement"+ info.getName());
-                    result.Add("OnStart" + info.getName() + " ASSIGN 1,1");
+                    result.Add("OnStart" + info.getName() + " ADVANCE 0,0");
+                    result.Add("ASSIGN 1,1");
+                    //result.Add("OnStart" + info.getName() + " ASSIGN 1,1");
                     result.Add("SkipIncrement" + info.getName() + " QUEUE " + queueName);
                     result.Add("TEST NE P1,1,OnStart" + info.getName() + "SkipBoth");
                     result.Add("TRANSFER BOTH,,ExitFrom" + queueName);
@@ -61,7 +63,7 @@ namespace Analytics.Modeling.ModelsCreator
                                 //по-этому ставлю безуслвоный переход
                                 if (fields.korellation[m, i] == -1)
                                 {
-                                    result.Add("TRANSFER ,OnStartLN2");
+                                    result.Add("TRANSFER ,OnStart" + fields.licenceInfo.ElementAt(m).getName());
                                     continue;
                                 }
                                 //Если больше нуля, но меньше единицы, то для
@@ -83,7 +85,6 @@ namespace Analytics.Modeling.ModelsCreator
                     result.Add("TRANSFER ,OnStart"+ info.getName());
                     result.Add("Exit"+ info.getName() + " TERMINATE 1");
                 }
-                int fgdgd = 0;
             }
             else
             {

@@ -332,15 +332,15 @@ namespace Analytics
             DataWorker<ModelsCreatorConfigState, List<string>> loader = 
                 new ModelsCreatorProxy();
             ModelsCreatorConfigState config = new ModelsCreatorConfigState();
-            /*config.korellation = new double[2, 2];
+            config.korellation = new double[2, 2];
             config.korellation[0, 0] = 1;
-            config.korellation[0, 1] = -0.70;
-            config.korellation[1, 0] = -0.70;
+            config.korellation[0, 1] = -1;
+            config.korellation[1, 0] = -1;
             config.korellation[1, 1] = 1;
             config.withKovar = true;
             config.licenceInfo = new List<LicenceInfo>();
             config.licenceInfo.Add(new LicenceInfo("OCH","OCH",4,1000,1,400,5,1));
-            config.licenceInfo.Add(new LicenceInfo("OCH2", "OCH2", 2, 10, 2, 400, 10, 5));*/
+            config.licenceInfo.Add(new LicenceInfo("OCH2", "OCH2", 2, 10, 2, 400, 10, 5));
             loader.setConfig(config);
             loader.execute();
             state.originalRules = loader.getResult();
