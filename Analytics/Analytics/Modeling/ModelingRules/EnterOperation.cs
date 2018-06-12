@@ -88,6 +88,8 @@ namespace Analytics.Modeling.ModelingRules
                             Parse(parameters[1]));
                         model.getState().tranzakts.ElementAt(model.getState().
                             idProcessingTranzact).my_place++;//передвинул по программе дальше
+                        model.getState().tranzakts.ElementAt(model.getState().
+                            idProcessingTranzact).sparePlace = 0;
                         return;
                     }
                     if (parameters.Count() == 1 && model.getState().storages.ElementAt(n).
@@ -96,6 +98,34 @@ namespace Analytics.Modeling.ModelingRules
                         model.getState().storages.ElementAt(n).enterStorage(1);
                         model.getState().tranzakts.ElementAt(model.getState().
                             idProcessingTranzact).my_place++;//передвинул по программе дальше
+                        model.getState().tranzakts.ElementAt(model.getState().
+                            idProcessingTranzact).sparePlace = 0;
+                        return;
+                    }
+                    //проверка, возможно, использовался режим both у операции Transfer
+                    //и у транзакта есть запасное место перехода, для случая занятости основного
+                    //(основной-в данном случае операция enter)
+                    if(model.getState().tranzakts.ElementAt(model.getState().
+                            idProcessingTranzact).sparePlace != 0)
+                    {
+                        //Убрал один переход из метки, что по ней был переход, так как транзакт не смог 
+                        //войти, а значит переход не должен быть зафиксирован
+                        for (int i = 0; i < model.getState().lables.Count; i++)
+                        {
+                            if (model.getState().lables.ElementAt(i).get_my_plase() == model.getState().
+                                tranzakts.ElementAt(model.getState().idProcessingTranzact).my_place)
+                            {
+                                model.getState().lables.ElementAt(i).decrementEntriesNumber();
+                            }
+                        }
+                        //Переместил транзакт на запасное место
+                        model.getState().tranzakts.ElementAt(model.getState().
+                            idProcessingTranzact).my_place = 
+                            model.getState().tranzakts.ElementAt(model.getState().
+                            idProcessingTranzact).sparePlace;
+                        //Обнулил запасное место
+                        model.getState().tranzakts.ElementAt(model.getState().
+                            idProcessingTranzact).sparePlace = 0;
                         return;
                     }
                     //иначе заносим в очередь, внутри устройства и блокируем перемещение

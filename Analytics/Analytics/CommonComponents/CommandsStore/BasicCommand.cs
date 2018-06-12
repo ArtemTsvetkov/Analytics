@@ -7,21 +7,20 @@ using System.Threading.Tasks;
 
 namespace Analytics.CommandsStore
 {
-    abstract class BasicCommand<TModelsTypeOfResult, TModelsTypeState> : 
-        Command<TModelsTypeOfResult, TModelsTypeState>
-        where TModelsTypeState : ModelsState
+    abstract class BasicCommand<TModelsTypeOfResult, TConfigType> : 
+        Command<TModelsTypeOfResult, TConfigType>
     {
-        protected TModelsTypeState modelsState;
-        protected BasicModel<TModelsTypeOfResult, TModelsTypeState> model;
+        protected ModelsState modelsState;
+        protected BasicModel<TModelsTypeOfResult, TConfigType> model;
 
         abstract public void execute();
 
-        public BasicCommand(BasicModel<TModelsTypeOfResult, TModelsTypeState> model)
+        public BasicCommand(BasicModel<TModelsTypeOfResult, TConfigType> model)
         {
             setModel(model);
         }
 
-        public TModelsTypeState getModelState()
+        public ModelsState getModelState()
         {
             return modelsState;
         }
@@ -31,7 +30,7 @@ namespace Analytics.CommandsStore
             model.recoverySelf(modelsState);
         }
 
-        public void setModel(BasicModel<TModelsTypeOfResult, TModelsTypeState> model)
+        public void setModel(BasicModel<TModelsTypeOfResult, TConfigType> model)
         {
             this.model = model;
         }

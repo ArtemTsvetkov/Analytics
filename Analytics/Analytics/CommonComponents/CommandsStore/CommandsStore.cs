@@ -7,15 +7,14 @@ using System.Threading.Tasks;
 
 namespace Analytics
 {
-    interface CommandsStore<TModelsTypeOfResult, TModelsTypeState>
-        where TModelsTypeState : ModelsState
+    interface CommandsStore<TModelsTypeOfResult, TConfigType>
     {
         //Добавление команды в стек
-        void push(BasicCommand<TModelsTypeOfResult, TModelsTypeState> command);
+        void push(BasicCommand<TModelsTypeOfResult, TConfigType> command);
         //Извлечение команды из стека
-        BasicCommand<TModelsTypeOfResult, TModelsTypeState> pop();
+        BasicCommand<TModelsTypeOfResult, TConfigType> pop();
         //Выполнение команды
-        void executeCommand(BasicCommand<TModelsTypeOfResult, TModelsTypeState> command);
+        void executeCommand(BasicCommand<TModelsTypeOfResult, TConfigType> command);
         void recoveryModel();//Откат изменений модели
     }
 }

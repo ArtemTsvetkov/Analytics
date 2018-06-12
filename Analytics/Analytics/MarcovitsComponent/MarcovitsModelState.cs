@@ -8,8 +8,6 @@ namespace Analytics
 {
     class MarcovitsModelState : ModelsState
     {
-        public string pathOfDataBase = "";
-        public string tableOfDataBase = "";
         //Хранит уникальные названия software
         public string[] unicSoftwareNames;
         public double[] avgNumbersUseLicense;//среднее кол-во использований лицензий

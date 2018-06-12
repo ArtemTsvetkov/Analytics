@@ -10,7 +10,7 @@ namespace Analytics
 {
     class ReadWriteTextFile
     {
-        public static bool Write_to_file(List<String> buf_of_file_lines, string file_path, int action)
+        public static bool Write_to_file(List<string> buf_of_file_lines, string file_path, int action)
         {
             try
             {
@@ -63,6 +63,19 @@ namespace Analytics
             }
         }
 
+        public static bool testExistFile(string filePath)//проверка, существует ли файл или можно ли его открыть
+        {
+            try
+            {
+                FileStream file1 = new FileStream(filePath, FileMode.Open);
+                file1.Close();
+                return true;
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+        }
 
         public static List<String> Read_from_file(string file_path)//обычное чтение файла
         {

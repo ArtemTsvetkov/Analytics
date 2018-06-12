@@ -8,16 +8,14 @@ using Analytics.CommonComponents.Interfaces.Data;
 
 namespace Analytics
 {
-    interface Model<TTypeOfResult, TTypeState> where TTypeState : ModelsState
+    interface Model<TTypeOfResult, TConfigType>
     {
-        TTypeState copySelf();//Создание копии модели для возможного ее восстановления
-        void recoverySelf(TTypeState state);//восстановление модели
-        void loadStore();//загрузка данных откуда-то
+        ModelsState copySelf();//Создание копии модели для возможного ее восстановления
+        void recoverySelf(ModelsState state);//восстановление модели
+        void setConfig(TConfigType configData);
+        void loadStore();//загрузка исходных данных откуда-то
         void subscribe(Observer newObserver);//подписка на модель
         void calculationStatistics();//рассчет статистических параметров
-        //Конвертер для получения результата
-        void setResultConverter(DataConverter<TTypeState, TTypeOfResult> dataConverter);
         TTypeOfResult getResult();
-        //void setDataLoader(DataWorker dataWorker);
     }
 }

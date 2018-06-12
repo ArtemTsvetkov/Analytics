@@ -1,6 +1,10 @@
-﻿using Analytics.CommonComponents.BasicObjects;
+﻿using Analytics.CommonComponents;
+using Analytics.CommonComponents.BasicObjects;
+using Analytics.CommonComponents.DataConverters;
 using Analytics.CommonComponents.Interfaces.Data;
+using Analytics.CommonComponents.Math;
 using Analytics.CommonComponents.WorkWithMSAccess;
+using Analytics.MarcovitsComponent.Config;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,44 +14,28 @@ using System.Threading.Tasks;
 
 namespace Analytics
 {
-    class MarcovitsModel : BasicModel<MarcovitsModelState, MarcovitsModelState>
+    class MarcovitsModel : BasicModel<MarcovitsModelState, MarcovitsConfig>
     {
+        private MarcovitsModelState state;
         DataConverter<DataSet, List<MarcovitsDataTable>> converter = 
             new MarcovitsDataTableConverter();
         DataConverter<DataSet, string[]> unucNamesConverter = 
-            new MarcovitsDistinctSoftwareNamesConverter();
+            new DistinctSoftwareNamesConverter();
 
-        public MarcovitsModel(string pathOfDataBase, string tableOfDataBase)
+        public MarcovitsModel()
         {
             state = new MarcovitsModelState();
-            state.pathOfDataBase = pathOfDataBase;
-            state.tableOfDataBase = tableOfDataBase;
         }
 
         public override void calculationStatistics()
         {
             //Получение уникальных имен лицензий
-            DataWorker<List<string>, string, DataSet> accessProxy = new MSAccessProxy();
-            StorageForData<DataSet> newData = new MSAccessStorageForData();
-            accessProxy.setConfig(state.pathOfDataBase, "SELECT DISTINCT software FROM " + state.
-                tableOfDataBase, newData);
-            accessProxy.execute();
-            DataSet ds = newData.getData();
-            state.unicSoftwareNames = (string[])unucNamesConverter.convert(ds);
+            DataSet ds = configProxyForLoadDataFromBDAndExecute(
+                QueryConfigurator.getUnicLicensesName(config.getTableOfDataBase()));
+            state.unicSoftwareNames = unucNamesConverter.convert(ds);
             //Формирование запроса на получение данных
-            string query = "SELECT  i.year_in, i.month_in, i.day_in, i.hours_in";
-            for(int i=0; i<state.unicSoftwareNames.Length; i++)
-            {
-                query += ", (SELECT COUNT(*) FROM Information ii WHERE ii.software='"+ state.
-                    unicSoftwareNames[i]+ "' AND ii.year_in = i.year_in  AND ii.month_in =  "+
-                    "i.month_in AND ii.day_in =  i.day_in AND ii.hours_in = i.hours_in)";
-            }
-            query += "FROM Information i WHERE hours_in IS NOT NULL GROUP BY hours_in, day_in, "+
-                "month_in, year_in ORDER BY year_in, month_in, day_in, hours_in";
-            //Получение данных об использовании
-            accessProxy.setConfig(state.pathOfDataBase, query, newData);
-            accessProxy.execute();
-            ds = newData.getData();
+            ds = configProxyForLoadDataFromBDAndExecute(QueryConfigurator.
+                getDataOfUseAllLicenses(state.unicSoftwareNames));
             state.data = converter.convert(ds);
 
             //Рассчет средних значений кол-ва лицензий
@@ -64,11 +52,9 @@ namespace Analytics
                 state.avgNumbersUseLicense[j] = state.avgNumbersUseLicense[j] / state.data.Count;        
             }
 
-            //Пока для тестов число закупленных лицензий читается из таблицы PurchasedLicenses
-            accessProxy.setConfig(state.pathOfDataBase, "SELECT type, count FROM PurchasedLicenses",
-                newData);
-            accessProxy.execute();
-            ds = newData.getData();
+            //Число закупленных лицензий читается из таблицы PurchasedLicenses
+            ds = configProxyForLoadDataFromBDAndExecute(
+                QueryConfigurator.getNumberOfPurchasedLicenses());
             DataTable table = ds.Tables[0];
             state.numberBuyLicense = new double[state.unicSoftwareNames.Count()];
             for (int i=0;i<state.unicSoftwareNames.Count();i++)
@@ -100,17 +86,15 @@ namespace Analytics
                         matrixA[m] = state.data.ElementAt(m).licenses[i];
                         matrixB[m] = state.data.ElementAt(m).licenses[j];
                     }
-                    covarMas[i, j] = covar(matrixA, matrixB);
+                    covarMas[i, j] = MathWorker.covar(matrixA, matrixB);
 
                     //Для рассчета доходности считаю доходность по каждой отдельной лицензии
-                    state.avgDeviationFromPurchasedNumber[i] = (1 - Math.Abs(avg(matrixA)));
+                    state.avgDeviationFromPurchasedNumber[i] = (1 - Math.Abs(MathWorker.avg(matrixA)));
                 }
             }
-            //Пока для тестов соотношения в процентах читается из таблицы PercentageOfLicense
-            accessProxy.setConfig(state.pathOfDataBase, "SELECT type, percent FROM PercentageOf"+
-                "License", newData);
-            accessProxy.execute();
-            ds = newData.getData();
+            //Cоотношения в процентах читается из таблицы PercentageOfLicense
+            ds = configProxyForLoadDataFromBDAndExecute(
+                QueryConfigurator.getPartsInPersentOfPurchasedLicenses());
             table = ds.Tables[0];
             state.percents = new double[state.unicSoftwareNames.Count(),1];
             for (int i = 0; i < state.unicSoftwareNames.Count(); i++)
@@ -119,7 +103,7 @@ namespace Analytics
             }
 
             //Подсчет общего риска
-            state.risk = MultiplyMatrix(covarMas, state.percents);
+            state.risk = MathWorker.multiplyMatrix(covarMas, state.percents);
 
             double[,] transpPercents = new double[1, 5];
             for (int i = 0; i < 5; i++)
@@ -127,7 +111,7 @@ namespace Analytics
                 transpPercents[0, i] = state.percents[i, 0];
             }
 
-            state.risk = MultiplyMatrix(transpPercents, state.risk);
+            state.risk = MathWorker.multiplyMatrix(transpPercents, state.risk);
 
             //Подсчет общего дохода
             state.income = 0;
@@ -139,81 +123,39 @@ namespace Analytics
             notifyObservers();
         }
 
-        public override void loadStore()//загрузка данных из базы данных
+        public DataSet configProxyForLoadDataFromBDAndExecute(string query)
         {
-            DataWorker<List<string>, string, DataSet> accessProxy = new MSAccessProxy();
-            StorageForData<DataSet> newData = new MSAccessStorageForData();
-            //получение значения id
-            accessProxy.setConfig(state.pathOfDataBase, "SELECT user_name, user_host, software FROM " +
-                state.tableOfDataBase, newData);
+            DataWorker<MSAccessStateFields, DataSet> accessProxy = new MSAccessProxy();
+            List<string> list = new List<string>();
+            list.Add(query);
+            MSAccessStateFields configProxy =
+                new MSAccessStateFields(config.getPathOfDataBase(), list);
+            accessProxy.setConfig(configProxy);
             accessProxy.execute();
-            DataSet ds = newData.getData();
-            state.data = (List<MarcovitsDataTable>)converter.convert(ds);
+            list.Clear();
+            return accessProxy.getResult();
+        }
+
+        public override void loadStore()//загрузка данных
+        {
+            DataWorker<MSAccessStateFields, DataSet> accessProxy = new MSAccessProxy();
+            //получение значения id
+            List<string> list = new List<string>();
+            list.Add("SELECT user_name, user_host, software FROM " + config.getTableOfDataBase());
+            MSAccessStateFields configProxy =
+                new MSAccessStateFields(config.getPathOfDataBase(), list);
+            accessProxy.setConfig(configProxy);
+            accessProxy.execute();
+            DataSet ds = accessProxy.getResult();
+            state.data = converter.convert(ds);
             notifyObservers();
         }
 
-        double avg(double[] matrix)//Расчет среднего значения
-        {
-            double sum = 0;
-            for (int i = 0; i < matrix.Length; i++)
-            {
-                sum += matrix[i];
-            }
-            return (sum / (double)matrix.Length);
-        }
-
-        double covar(double[] matrixA, double[] matrixB)//Расчет ковариации
-        {
-            double avgMatrixA = avg(matrixA);
-            double avgMatrixB = avg(matrixB);
-
-            if (matrixA.Length == matrixB.Length)
-            {
-                double kovar = 0;
-                for (int i = 0; i < matrixA.Length; i++)
-                {
-                    kovar += (matrixA[i] - avgMatrixA) * (matrixB[i] - avgMatrixB);
-                }
-                kovar = kovar / (matrixA.Length - 1);
-                return kovar;
-            }
-            else//Должно совпадать, иначе нет смысла сравнивать
-            {
-                throw new Exception();
-            }
-        }
-
-
-        double[,] MultiplyMatrix(double[,] aMatrix, double[,] bMatrix)//Умножение матриц
-        {
-            if (aMatrix.GetLength(1) == bMatrix.GetLength(0))
-            {
-                double[,] product = new double[aMatrix.GetLength(0), bMatrix.GetLength(1)];
-
-
-                for (int row = 0; row < aMatrix.GetLength(0); row++)
-                {
-                    for (int col = 0; col < bMatrix.GetLength(1); col++)
-                    {
-                        for (int inner = 0; inner < aMatrix.GetLength(1); inner++)
-                        {
-                            product[row, col] += aMatrix[row, inner] * bMatrix[inner, col];
-                        }
-                    }
-                }
-                return product;
-            }
-            else//Должно совпадать, иначе нет смысла считать
-            {
-                throw new Exception();
-            }
-        }
-
-        public override MarcovitsModelState copySelf()
+        public override ModelsState copySelf()
         {
             MarcovitsModelState copy = new MarcovitsModelState();
-            copy.pathOfDataBase = state.pathOfDataBase;
-            copy.tableOfDataBase = state.tableOfDataBase;
+            //copy.pathOfDataBase = state.pathOfDataBase;
+            //copy.tableOfDataBase = config.getTableOfDataBase();
             copy.income = state.income;
 
             if (state.unicSoftwareNames != null)
@@ -255,47 +197,58 @@ namespace Analytics
             return copy;
         }
 
-        public override void recoverySelf(MarcovitsModelState oldState)
+        public override void recoverySelf(ModelsState oldState)
         {
-            state.pathOfDataBase = oldState.pathOfDataBase;
-            state.tableOfDataBase = oldState.tableOfDataBase;
-            state.income = oldState.income;
+            //state.pathOfDataBase = oldState.pathOfDataBase;
+            //config.setTableOfDataBase(oldState.tableOfDataBase);
+            MarcovitsModelState oldMarcovitsState = (MarcovitsModelState)oldState;
+            state.income = oldMarcovitsState.income;
 
-            if (oldState.unicSoftwareNames != null)
+            if (oldMarcovitsState.unicSoftwareNames != null)
             {
-                state.unicSoftwareNames = (string[])oldState.unicSoftwareNames.Clone();
+                state.unicSoftwareNames = (string[])oldMarcovitsState.unicSoftwareNames.Clone();
             }
 
-            if (oldState.avgNumbersUseLicense != null)
+            if (oldMarcovitsState.avgNumbersUseLicense != null)
             {
-                state.avgNumbersUseLicense = (double[])oldState.avgNumbersUseLicense.Clone();
+                state.avgNumbersUseLicense = (double[])oldMarcovitsState.avgNumbersUseLicense.Clone();
             }
 
-            if (oldState.avgDeviationFromPurchasedNumber != null)
+            if (oldMarcovitsState.avgDeviationFromPurchasedNumber != null)
             {
-                state.avgDeviationFromPurchasedNumber = (double[])oldState.
+                state.avgDeviationFromPurchasedNumber = (double[])oldMarcovitsState.
                     avgDeviationFromPurchasedNumber.Clone();
             }
 
-            if (oldState.numberBuyLicense != null)
+            if (oldMarcovitsState.numberBuyLicense != null)
             {
-                state.numberBuyLicense = (double[])oldState.numberBuyLicense.Clone();
+                state.numberBuyLicense = (double[])oldMarcovitsState.numberBuyLicense.Clone();
             }
 
-            if (oldState.percents != null)
+            if (oldMarcovitsState.percents != null)
             {
-                state.percents = (double[,])oldState.percents.Clone();
+                state.percents = (double[,])oldMarcovitsState.percents.Clone();
             }
 
-            if (oldState.risk != null)
+            if (oldMarcovitsState.risk != null)
             {
-                state.risk = (double[,])oldState.risk.Clone();
+                state.risk = (double[,])oldMarcovitsState.risk.Clone();
             }
 
-            for (int i = 0; i < oldState.data.Count; i++)
+            for (int i = 0; i < oldMarcovitsState.data.Count; i++)
             {
-                state.data.Add(oldState.data.ElementAt(i).copy());
+                state.data.Add(oldMarcovitsState.data.ElementAt(i).copy());
             }
+        }
+
+        public override void setConfig(MarcovitsConfig configData)
+        {
+            config = configData;
+        }
+
+        public override MarcovitsModelState getResult()
+        {
+            return state;
         }
     }
 }

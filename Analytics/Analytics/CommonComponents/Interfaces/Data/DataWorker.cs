@@ -6,16 +6,14 @@ using System.Threading.Tasks;
 
 namespace Analytics.CommonComponents.Interfaces.Data
 {
-    interface DataWorker<TDataType1, TDataType2, TStorage>
+    interface DataWorker<TStateWithConfigFields, TStorage>
     {
-        void setConfig(string host, TDataType1 data, StorageForData<TStorage> resultStorage);
-        void setConfig(string host, TDataType2 data, StorageForData<TStorage> resultStorage);
+        void setConfig(TStateWithConfigFields fields);
         void execute();
         bool connect();
+        TStorage getResult();
     }
 }
 /*
- * Позволяет выгрузить данные, например, в БД.
- * Два типа - TDataType1, TDataType2 понадобится, в случае, если, например, при взаимодействии
- * с БД можно слать либо один запрос, либос разу несколько
+ * Позволяет работать с данными
  */

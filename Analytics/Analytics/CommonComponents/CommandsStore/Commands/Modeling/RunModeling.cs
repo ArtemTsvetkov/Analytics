@@ -1,17 +1,17 @@
-﻿using Analytics.CommandsStore;
-using Analytics.CommonComponents.BasicObjects;
+﻿using Analytics.CommonComponents.BasicObjects;
+using Analytics.Modeling;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Analytics
+namespace Analytics.CommandsStore.Commands.Modeling
 {
-    class GetMarcovitsStatistcCommand : BasicCommand<MarcovitsModelState, MarcovitsModelState>
+    class RunModeling<TConfigType> : BasicCommand<ModelingReport, TConfigType>
     {
 
-        public GetMarcovitsStatistcCommand(BasicModel<MarcovitsModelState, MarcovitsModelState>
+        public RunModeling(BasicModel<ModelingReport, TConfigType>
             model) : base(model)
         {
             
@@ -21,6 +21,7 @@ namespace Analytics
         {
             modelsState = model.copySelf();
             model.calculationStatistics();
+            model.recoverySelf(modelsState);
         }
     }
 }

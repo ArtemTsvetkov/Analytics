@@ -47,17 +47,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandsStore\BasicCommand.cs" />
-    <Compile Include="CommandsStore\Command.cs" />
-    <Compile Include="CommandsStore\CommandsStore.cs" />
-    <Compile Include="CommandsStore\Commands\Modeling\RunModeling.cs" />
-    <Compile Include="CommandsStore\Stores\ConcreteCommandStore.cs" />
+    <Compile Include="CommonComponents\CommandsStore\BasicCommand.cs" />
+    <Compile Include="CommonComponents\CommandsStore\Command.cs" />
+    <Compile Include="CommonComponents\CommandsStore\CommandsStore.cs" />
+    <Compile Include="CommonComponents\CommandsStore\Commands\Modeling\RunModeling.cs" />
+    <Compile Include="CommonComponents\CommandsStore\Stores\ConcreteCommandStore.cs" />
     <Compile Include="CommonComponents\BasicObjects\BasicModel.cs" />
+    <Compile Include="CommonComponents\DataConverters\DistinctSoftwareNamesConverter.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\DataConverter.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\DataWorker.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\StorageForData.cs" />
+    <Compile Include="CommonComponents\Math\MathWorker.cs" />
+    <Compile Include="CommonComponents\QueryConfigurator.cs" />
     <Compile Include="CommonComponents\Views\MarcovitsView.cs" />
     <Compile Include="CommonComponents\Views\ModelingView.cs" />
+    <Compile Include="CommonComponents\WorkWithFiles\Load\TextFilesConfigFieldsOnLoad.cs" />
+    <Compile Include="CommonComponents\WorkWithFiles\Load\TextFilesDataLoader.cs" />
+    <Compile Include="CommonComponents\WorkWithFiles\Save\TextFilesConfigFieldsOnSave.cs" />
+    <Compile Include="CommonComponents\WorkWithFiles\Save\TextFilesDataSaver.cs" />
+    <Compile Include="CommonComponents\WorkWithMSAccess\MSAccessStateFields.cs" />
     <Compile Include="CommonComponents\WorkWithMSAccess\MSAccessStorageForData.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -65,12 +73,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="CommandsStore\Commands\Marcovits\GetMarcovitsStatistcCommand.cs" />
-    <Compile Include="CommandsStore\Commands\Marcovits\LoadDataCommand.cs" />
+    <Compile Include="CommonComponents\CommandsStore\Commands\Marcovits\GetMarcovitsStatistcCommand.cs" />
+    <Compile Include="CommonComponents\CommandsStore\Commands\Marcovits\LoadDataCommand.cs" />
+    <Compile Include="MarcovitsComponent\Config\MarcovitsConfig.cs" />
+    <Compile Include="MarcovitsComponent\Converters\MarcovitsDataTableConverter.cs" />
     <Compile Include="MarcovitsComponent\Converters\ResultConverter.cs" />
     <Compile Include="MarcovitsComponent\MarcovitsDataTable.cs" />
-    <Compile Include="MarcovitsComponent\Converters\MarcovitsDataTableConverter.cs" />
-    <Compile Include="MarcovitsComponent\Converters\MarcovitsDistinctSoftwareNamesConverter.cs" />
     <Compile Include="MarcovitsComponent\MarcovitsModel.cs" />
     <Compile Include="MarcovitsComponent\MarcovitsModelState.cs" />
     <Compile Include="CommonComponents\Interfaces\Model.cs" />
@@ -79,7 +87,20 @@
     <Compile Include="CommonComponents\WorkWithMSAccess\MSAccessProxy.cs" />
     <Compile Include="CommonComponents\Interfaces\Observer.cs" />
     <Compile Include="Modeling\CheinPartOfOperationCreator.cs" />
+    <Compile Include="Modeling\Config\ModelingConfig.cs" />
+    <Compile Include="Modeling\Converters\ModelCreatorConfigCreator.cs" />
     <Compile Include="Modeling\Converters\ResultConverter.cs" />
+    <Compile Include="Modeling\GroupByTypes\BasicType.cs" />
+    <Compile Include="Modeling\GroupByTypes\DayType.cs" />
+    <Compile Include="Modeling\GroupByTypes\GropByType.cs" />
+    <Compile Include="Modeling\GroupByTypes\HourType.cs" />
+    <Compile Include="Modeling\GroupByTypes\MinuteType.cs" />
+    <Compile Include="Modeling\GroupByTypes\MonthType.cs" />
+    <Compile Include="Modeling\GroupByTypes\SecondType.cs" />
+    <Compile Include="Modeling\GroupByTypes\YearType.cs" />
+    <Compile Include="Modeling\IntermediateStates\ModelsCreatorConfig\MappingLicenseResult.cs" />
+    <Compile Include="Modeling\IntermediateStates\ModelsCreatorConfig\ReturnStateForConverterOfModelCreatorConfig.cs" />
+    <Compile Include="Modeling\IntermediateStates\ModelsCreatorConfig\StateForConverterOfModelCreatorConfig.cs" />
     <Compile Include="Modeling\ModelingExceptions\IncorrectFormatOperation.cs" />
     <Compile Include="Modeling\ModelingExceptions\ModelingException.cs" />
     <Compile Include="Modeling\ModelingFunctionParser.cs" />
@@ -93,6 +114,12 @@
     <Compile Include="Modeling\ModelingInstruments\Tranzakt.cs" />
     <Compile Include="Modeling\ModelingInstruments\Variable.cs" />
     <Compile Include="Modeling\ModelingModel.cs" />
+    <Compile Include="Modeling\ModelsCreator\LicenceInfo.cs" />
+    <Compile Include="Modeling\ModelsCreator\ModelsCreator.cs" />
+    <Compile Include="Modeling\ModelsCreator\ModelsCreatorConfigState.cs" />
+    <Compile Include="Modeling\ModelsCreator\ModelsCreatorProxy.cs" />
+    <Compile Include="Modeling\Statistics\ElementsNameWithElementsValue.cs" />
+    <Compile Include="Modeling\Statistics\ModelingReport.cs" />
     <Compile Include="Modeling\ModelingRules\AdvanceOperation.cs" />
     <Compile Include="Modeling\ModelingRules\AssignOperation.cs" />
     <Compile Include="Modeling\ModelingRules\BasicOperation.cs" />
@@ -158,9 +185,7 @@
   <ItemGroup>
     <None Include="Resources\gear4.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Modeling\Statistics\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

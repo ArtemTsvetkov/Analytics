@@ -9,6 +9,9 @@ namespace Analytics.Modeling.ModelingRules
 {
     class TransferOperation : BasicOperation
     {
+        //Он должен создаваться один раз, иначе распределение не то получится
+        private Random rand;
+
         public TransferOperation(ModelingModel model) : base(model)//Пустой для функции check
         {
 
@@ -30,7 +33,8 @@ namespace Analytics.Modeling.ModelingRules
 
             if (words.Length > 0 && words[0] == "TRANSFER")
             {
-                //только обработчик режима безуслвоной передачи, при необходимости дополнить
+                //только обработчик режима безуслвоной и статистической
+                //передачи, при необходимости дополнить
                 string[] param = words[1].Split(new char[] { ',' });
                 string A = "";
                 string B = "";
@@ -68,7 +72,8 @@ namespace Analytics.Modeling.ModelingRules
             {
                 Lable lable = new Lable(model.getState().newRules.Count, words[0]);//создание метки
                 model.getState().lables.Add(lable);
-                //только обработчик режима безуслвоной передачи, при необходимости дополнить
+                //только обработчик режима безусловной, статистической и BOTH
+                //передачи, при необходимости дополнить
                 string[] param = words[2].Split(new char[] { ',' });
                 string A = "";
                 string B = "";
@@ -113,7 +118,8 @@ namespace Analytics.Modeling.ModelingRules
 
         public override void processing()
         {
-            //только обработчик режима безуслвоной передачи, при необходимости дополнить
+            //только обработчик режима безусловной, статистической и BOTH передачи, при 
+            //необходимости дополнить
             //проверка на режим безусловной передачи
             if (parameters[0] == "" & parameters[1] != "" & parameters[2] == "" 
                 & parameters[3] == "")
@@ -130,6 +136,58 @@ namespace Analytics.Modeling.ModelingRules
                         break;
                     }
                 }
+            }
+            //проверка на режим статистической передачи передачи, поддержка трех разрядов
+            //после запятой
+            if (parameters[0] != "" & parameters[1] == "" & parameters[2] != ""
+                & parameters[3] == "" && !parameters[0].Equals("BOTH"))
+            {
+                if(rand == null)
+                {
+                    rand = new Random();
+                }
+                int check = rand.Next(1, 1000);
+                //Если true, то переход по указанной метке, иначе переход к следующему шагу
+                string correctFormat = "0,"+parameters[0].Split(new char[] { '.' },
+                    StringSplitOptions.RemoveEmptyEntries)[0];
+                if (check<double.Parse(correctFormat) *1000)
+                {
+                    //ищем нужную метку
+                    for (int n = 0; n < model.getState().lables.Count; n++)
+                    {
+                        if (model.getState().lables.ElementAt(n).get_name() == parameters[2])
+                        {
+                            model.getState().tranzakts.ElementAt(model.getState().
+                                idProcessingTranzact).my_place =
+                                model.getState().lables.ElementAt(n).get_my_plase();
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    model.getState().tranzakts.ElementAt(model.getState().
+                                idProcessingTranzact).my_place++;
+                }
+            }
+            //проверка на режим BOTH передачи передачи, поддержка трех разрядов
+            //после запятой
+            if (parameters[0] != "" & parameters[1] == "" & parameters[2] != ""
+                & parameters[3] == "" && parameters[0].Equals("BOTH"))
+            {
+                //ищем нужную метку
+                for (int n = 0; n < model.getState().lables.Count; n++)
+                {
+                    if (model.getState().lables.ElementAt(n).get_name() == parameters[2])
+                    {
+                        model.getState().tranzakts.ElementAt(model.getState().
+                            idProcessingTranzact).sparePlace =
+                            model.getState().lables.ElementAt(n).get_my_plase();
+                        break;
+                    }
+                }
+                model.getState().tranzakts.ElementAt(model.getState().
+                               idProcessingTranzact).my_place++;
             }
         }
     }

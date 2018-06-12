@@ -8,57 +8,44 @@ using System.Data;
 using System.Windows.Forms;
 using System.IO;
 using Analytics.CommonComponents.Interfaces.Data;
+using Analytics.CommonComponents.WorkWithMSAccess;
 
 namespace Analytics
 {
-    class MSAccessProxy : DataWorker<List<string>, string, DataSet>
+    class MSAccessProxy : DataWorker<MSAccessStateFields, DataSet>
     {
-        private DataWorker<List<string>, string, DataSet> saver = new MSAccessDataSaver();
-        private string host;//пример хоста:C:\\Users\\Artem\\Documents\\Database3.accdb
-        private string query;//Для выполненения 1 запроса
-        private List<string> querys;//Для выполнения сразу нескольких запросов
+        private DataWorker<MSAccessStateFields, DataSet> saver = new MSAccessDataSaver();
+        private MSAccessStateFields config;
 
-        public void setConfig(string host, List<string> querys, StorageForData<DataSet> resultStorage)
+        public void setConfig(MSAccessStateFields config)
         {
-            this.host = host;
-            this.querys = querys;
-            this.query = null;
-            saver.setConfig(host, querys, resultStorage);
-        }
-
-        public void setConfig(string host, string query, StorageForData<DataSet> resultStorage)
-        {
-            this.host = host;
-            this.query = query;
-            this.querys = null;
-            saver.setConfig(host, query, resultStorage);
+            this.config = config;
+            saver.setConfig(config);
         }
 
         public void execute()
         {
             if (connect())
             {
-                //return saver.execute();
                 saver.execute();
             }
             else
             {
-                //return null;
                 //ДОБАВИТЬ СЮДА ВЫЗОВ ИСКЛЮЧЕНИЯ
             }
         }
 
-        //Пока для простоты, будем считать, что если запрос выполнился, значит подключение есть
+        //если запрос выполнился, значит подключение есть
         public bool connect()
         {
             List<string> currentQuerys = new List<string>();
-            currentQuerys.Add("SELECT count(*) FROM Information");
-            string connStr = String.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + host + 
+            currentQuerys.Add("SELECT 1 FROM Information");
+            string connStr = string.Format(
+                "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + config.getHost() + 
                 ";Persist Security Info=True;");
             DataSet dataSet = new DataSet();
             OleDbConnection conn;
             conn = null;
-
 
             try
             {
@@ -66,23 +53,16 @@ namespace Analytics
                 conn.Open();
                 for (int i = 0; i < currentQuerys.Count; i++)
                 {
-                    OleDbDataAdapter adapter = new OleDbDataAdapter(currentQuerys.ElementAt(i), conn);
+                    OleDbDataAdapter adapter = new OleDbDataAdapter(currentQuerys.ElementAt(i), 
+                        conn);
                     adapter.Fill(dataSet, selectTableNameFromQuery(currentQuerys.ElementAt(i)));
                 }
                 return true;
             }
             catch (Exception ex)
             {
-                ReadWriteTextFile rwtf = new ReadWriteTextFile();
-                List<string> buf = new List<string>();
-                buf.Add("-----------------------------------------------");
-                buf.Add("Module: Form1");
-                DateTime thisDay = DateTime.Now;
-                buf.Add("Time: " + thisDay.ToString());
-                buf.Add("Exception: " + ex.Message);
-                ReadWriteTextFile.Write_to_file(buf, Directory.GetCurrentDirectory() + "\\Errors.txt",
-                    0);
-                return false;
+                //ДОБАВИТЬ СЮДА ВЫЗОВ ИСКЛЮЧЕНИЯ
+                throw new Exception();
             }
             finally
             {
@@ -93,7 +73,7 @@ namespace Analytics
         //функция поиска названия таблицы базы данных
         private string selectTableNameFromQuery(string query)
         {
-            String[] buf_of_substrings = query.Split(new char[] { ' ' }, StringSplitOptions.
+            string[] buf_of_substrings = query.Split(new char[] { ' ' }, StringSplitOptions.
                 RemoveEmptyEntries);
             if (buf_of_substrings[0].Equals("SELECT", StringComparison.CurrentCultureIgnoreCase) == 
                 true)
@@ -116,6 +96,11 @@ namespace Analytics
                 return buf_of_substrings[2];
             }
             return null;
+        }
+
+        public DataSet getResult()
+        {
+            return saver.getResult();
         }
     }
 }

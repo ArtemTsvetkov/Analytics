@@ -1,90 +1,109 @@
 ﻿using Analytics;
+using Analytics.CommonComponents;
 using Analytics.CommonComponents.BasicObjects;
+using Analytics.CommonComponents.DataConverters;
+using Analytics.CommonComponents.Interfaces.Data;
+using Analytics.CommonComponents.Math;
+using Analytics.CommonComponents.WorkWithFiles.Load;
+using Analytics.CommonComponents.WorkWithMSAccess;
+using Analytics.Modeling;
+using Analytics.Modeling.Config;
+using Analytics.Modeling.Converters;
+using Analytics.Modeling.GroupByTypes;
+using Analytics.Modeling.IntermediateStates;
+using Analytics.Modeling.IntermediateStates.ModelsCreatorConfig;
+using Analytics.Modeling.ModelsCreator;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Analytics
 {
-    class ModelingModel : BasicModel<ModelingState, ModelingState>
+    class ModelingModel : BasicModel<ModelingReport, ModelingConfig>
     {
-        public void setConfiguration(string path_rules_file)
-        {
-            //чтение файла с конфигурацией модели
-            state = new ModelingState();
-            //ReadWriteTextFile RWTF = new ReadWriteTextFile();
-            state.originalRules = ReadWriteTextFile.Read_from_file(path_rules_file);
-            //создание всех очередей, устройств, меток и тд
-            RulesParser rules_parser = new RulesParser();
-            rules_parser.go_parse(this);
-        }
+        private ModelingState state;
+        //Отчет по моделированию
+        private ModelingReport report;
+        private int numberOfStartsModel = 0;
 
         public ModelingState getState()
         {
             return state;
         }
 
-        public override void recoverySelf(ModelingState backUpState)
+        //Данная функция, следуя флагу resetAllState, либо полностью
+        //откатит все изменения стейта, либо только те объекты, которые участвуют
+        //непосредственно в моделировании(очереди, устройства и тд), но оставит
+        //количество запусков моделирования и отчет
+        public override void recoverySelf(ModelsState backUpState)
         {
+            ModelingState oldState = (ModelingState)backUpState;
             state = new ModelingState();
-            state.last_tranzaktions_id = backUpState.last_tranzaktions_id;
-            state.result = backUpState.result;
-            state.time_of_modeling = backUpState.time_of_modeling;
-            state.idProcessingTranzact = backUpState.idProcessingTranzact;
-            state.numberOfStartsModel = backUpState.numberOfStartsModel;
-            state.rand = backUpState.rand;
+            state.last_tranzaktions_id = oldState.last_tranzaktions_id;
+            state.result = oldState.result;
+            state.time_of_modeling = oldState.time_of_modeling;
+            state.idProcessingTranzact = oldState.idProcessingTranzact;
+            state.numberOfStartsModel = oldState.numberOfStartsModel;
+            state.rand = oldState.rand;
 
-            string[] originalRulesC = new string[backUpState.originalRules.Count];
-            backUpState.originalRules.CopyTo(originalRulesC);
+            string[] originalRulesC = new string[oldState.originalRules.Count];
+            oldState.originalRules.CopyTo(originalRulesC);
             for (int i = 0; i < originalRulesC.Length; i++)
             {
                 state.originalRules.Add(originalRulesC[i]);
             }
 
-            for (int i = 0; i < backUpState.queues.Count; i++)
+            for (int i = 0; i < oldState.queues.Count; i++)
             {
-                state.queues.Add(backUpState.queues.ElementAt(i).clone());
+                state.queues.Add(oldState.queues.ElementAt(i).clone());
             }
 
-            for (int i = 0; i < backUpState.tranzakts.Count; i++)
+            for (int i = 0; i < oldState.tranzakts.Count; i++)
             {
-                state.tranzakts.Add(backUpState.tranzakts.ElementAt(i).clone());
+                state.tranzakts.Add(oldState.tranzakts.ElementAt(i).clone());
             }
 
-            for (int i = 0; i < backUpState.lables.Count; i++)
+            for (int i = 0; i < oldState.lables.Count; i++)
             {
-                state.lables.Add(backUpState.lables.ElementAt(i).clone());
+                state.lables.Add(oldState.lables.ElementAt(i).clone());
             }
 
-            for (int i = 0; i < backUpState.devices.Count; i++)
+            for (int i = 0; i < oldState.devices.Count; i++)
             {
-                state.devices.Add(backUpState.devices.ElementAt(i).clone());
+                state.devices.Add(oldState.devices.ElementAt(i).clone());
             }
 
-            for (int i = 0; i < backUpState.storages.Count; i++)
+            for (int i = 0; i < oldState.storages.Count; i++)
             {
-                state.storages.Add(backUpState.storages.ElementAt(i).clone());
+                state.storages.Add(oldState.storages.ElementAt(i).clone());
             }
 
-            for (int i = 0; i < backUpState.variables.Count; i++)
+            for (int i = 0; i < oldState.variables.Count; i++)
             {
-                state.variables.Add(backUpState.variables.ElementAt(i).clone());
+                state.variables.Add(oldState.variables.ElementAt(i).clone());
             }
 
-            for (int i = 0; i < backUpState.tranzation_generators.Count; i++)
+            for (int i = 0; i < oldState.tranzation_generators.Count; i++)
             {
-                state.tranzation_generators.Add(backUpState.tranzation_generators.ElementAt(i).clone());
+                state.tranzation_generators.Add(oldState.tranzation_generators.ElementAt(i).clone());
             }
 
-            for (int i = 0; i < backUpState.newRules.Count; i++)
+            for (int i = 0; i < oldState.newRules.Count; i++)
             {
-                state.newRules.Add(backUpState.newRules.ElementAt(i).clone());
+                state.newRules.Add(oldState.newRules.ElementAt(i).clone());
+            }
+
+            if(!config.getResetAllState())
+            {
+                state.numberOfStartsModel = numberOfStartsModel;
+                state.report = report;
             }
         }
 
-        public override ModelingState copySelf()
+        public override ModelsState copySelf()
         {
             ModelingState copy = new ModelingState();
             copy.last_tranzaktions_id = state.last_tranzaktions_id;
@@ -142,11 +161,6 @@ namespace Analytics
             }
 
             return copy;
-        }
-
-        public void reset()
-        {
-
         }
 
         //основная функция моделирования
@@ -244,26 +258,26 @@ namespace Analytics
                                 time_until_the_next_tranzaction--;
                         }
                     }
-                    //инкремент системного времени
-                    system_time++;
-                    //декремент оставшегося времени задержки в транзактах
-                    for (int j = 0; j < state.tranzakts.Count; j++)
+                    
+                }
+                //инкремент системного времени
+                system_time++;
+                //декремент оставшегося времени задержки в транзактах
+                for (int j = 0; j < state.tranzakts.Count; j++)
+                {
+                    //инкремент времени нахождения транзакта в системе
+                    state.tranzakts.ElementAt(j).time_in_system++;
+                    if (state.tranzakts.ElementAt(j).remaining_time_delay > 0)
                     {
-                        //инкремент времени нахождения транзакта в системе
-                        state.tranzakts.ElementAt(j).time_in_system++;
-                        if (state.tranzakts.ElementAt(j).remaining_time_delay > 0)
+                        state.tranzakts.ElementAt(j).remaining_time_delay--;
+                        //проверка, возможно, транзакт можно снова разблокировать
+                        if (state.tranzakts.ElementAt(j).remaining_time_delay == 0)
                         {
-                            state.tranzakts.ElementAt(j).remaining_time_delay--;
-                            //проверка, возможно, транзакт можно снова разблокировать
-                            if (state.tranzakts.ElementAt(j).remaining_time_delay == 0)
-                            {
-                                state.tranzakts.ElementAt(j).blocked = false;
-                                state.tranzakts.ElementAt(j).my_place++;
-                            }
+                            state.tranzakts.ElementAt(j).blocked = false;
+                            state.tranzakts.ElementAt(j).my_place++;
                         }
                     }
                 }
-
 
                 //проверка на завершенность моделирования
                 //изменится на true, в случае, если хотя бы
@@ -286,10 +300,6 @@ namespace Analytics
             state.result = "Успех!";
         }
 
-
-
-
-
         //функция создания времени задержки, принимает разброс возможных значений
         private int create_assign(int min_number, int max_number, Random rand)
         {
@@ -300,12 +310,190 @@ namespace Analytics
         public override void calculationStatistics()
         {
             run_simulation();
+
+            state.numberOfStartsModel++;
+            numberOfStartsModel = state.numberOfStartsModel;
+            if (state.numberOfStartsModel == 1)
+            {
+                state.report = new ModelingReport(state);
+            }
+            state.report.updateReport(state);
+            report = state.report;
+
             notifyObservers();
         }
 
         public override void loadStore()
         {
-            throw new NotImplementedException();
+            state = new ModelingState();
+
+            //чтение файла с конфигурацией модели
+            /*TextFilesDataLoader loader = new TextFilesDataLoader();
+            TextFilesConfigFieldsOnLoad loadersConfig =
+                new TextFilesConfigFieldsOnLoad(config.getConfigData());
+            loader.setConfig(loadersConfig);
+            loader.execute();
+            state.originalRules = loader.getResult();*/
+            //Создание модели в реалтайме
+            DataWorker<ModelsCreatorConfigState, List<string>> loader = 
+                new ModelsCreatorProxy();
+            ModelsCreatorConfigState config = new ModelsCreatorConfigState();
+            //Сбор необходимых данных
+            DataSet unicNamesDS = getDataToConfigModelCreator(
+                QueryConfigurator.getUnicLicensesName("Information"));
+            DataConverter<DataSet, string[]> unicNamesConverter = 
+                new DistinctSoftwareNamesConverter();
+            string[] unicNames = unicNamesConverter.convert(unicNamesDS);
+            StateForConverterOfModelCreatorConfig stateForConverter = 
+                new StateForConverterOfModelCreatorConfig();
+
+            stateForConverter.unicNames = unicNames;
+
+            stateForConverter.numberBuyLicenses = getDataToConfigModelCreator(
+                QueryConfigurator.getNumberOfPurchasedLicenses());
+
+            for (int i=0;i<unicNames.Length;i++)
+            {
+                stateForConverter.bufOftimeBetweenQueryToGetLicenses.Add(
+                    getDataToConfigModelCreator(QueryConfigurator.getTimesGiveLicense(
+                    unicNames[i], BasicType.hour)));
+                stateForConverter.bufOfTimesOfInBetweenOutLicenses.Add(
+                    getDataToConfigModelCreator(QueryConfigurator.getInBetweenOutLicenses(
+                    unicNames[i], BasicType.hour)));
+                stateForConverter.numberOfGetingLicensesPerTime.Add(
+                    getDataToConfigModelCreator(QueryConfigurator.getNumberOfLicenesForTime(
+                        unicNames[i], BasicType.hour)));
+            }
+
+            //Перевод типа DataSet к нужному формату
+            DataConverter<StateForConverterOfModelCreatorConfig,
+                ReturnStateForConverterOfModelCreatorConfig> convertData = 
+                new ModelCreatorConfigCreator();
+            ReturnStateForConverterOfModelCreatorConfig licencesInfo = 
+                convertData.convert(stateForConverter);
+            //Создание конфига
+            config.licenceInfo = new List<LicenceInfo>();
+            for (int i=0; i<unicNames.Length; i++)
+            {
+                if(licencesInfo.bufOfTimesOfInBetweenOutLicenses.ElementAt(i).
+                    characteristic.Count() > 1 & 
+                    licencesInfo.bufOftimeBetweenQueryToGetLicenses.ElementAt(i).
+                    characteristic.Count() > 1)
+                {
+                    int numberBuyLicense = licencesInfo.numberBuyLicenses[i];
+                    int avgDelayTimeInTheProcessing = Convert.ToInt32(MathWorker.avg(
+                        licencesInfo.bufOfTimesOfInBetweenOutLicenses.ElementAt(i).characteristic));
+                    int avgSquereDelayTimeInTheProcessing = Convert.ToInt32(MathWorker.
+                        standardDeviation(licencesInfo.bufOfTimesOfInBetweenOutLicenses.
+                        ElementAt(i).characteristic));
+                    if(avgSquereDelayTimeInTheProcessing> avgDelayTimeInTheProcessing)
+                    {
+                        avgDelayTimeInTheProcessing = (avgSquereDelayTimeInTheProcessing + 
+                            avgDelayTimeInTheProcessing) / 2;
+                        if(avgDelayTimeInTheProcessing - avgSquereDelayTimeInTheProcessing < 0)
+                        {
+                            avgDelayTimeInTheProcessing++;
+                        }
+                    }
+                    int avgRequestedTime = Convert.ToInt32(MathWorker.avg(
+                        licencesInfo.bufOftimeBetweenQueryToGetLicenses.ElementAt(i).characteristic));
+                    int avgSquereRequestedTime = Convert.ToInt32(MathWorker.
+                        standardDeviation(licencesInfo.bufOftimeBetweenQueryToGetLicenses.
+                        ElementAt(i).characteristic));
+                    if(avgSquereRequestedTime > avgRequestedTime)
+                    {
+                        avgRequestedTime = (avgSquereRequestedTime + avgRequestedTime) / 2;
+                        if(avgRequestedTime - avgSquereRequestedTime<0)
+                        {
+                            avgRequestedTime++;
+                        }
+                    }
+                    config.licenceInfo.Add(new LicenceInfo(unicNames[i], numberBuyLicense,
+                        avgDelayTimeInTheProcessing, avgSquereDelayTimeInTheProcessing, 400,
+                        avgRequestedTime, avgSquereRequestedTime));
+                }  
+            }
+            //Вычисление матрицы корреляций
+            int size = config.licenceInfo.Count;
+            config.korellation = new double[size, size];
+            for (int i=0; i<size; i++)
+            {
+                for (int m=i; m<size; m++)
+                {
+                    if (licencesInfo.numberOfGetingLicensesPerTime.ElementAt(i).
+                    characteristic.Count() != 0 &
+                    licencesInfo.numberOfGetingLicensesPerTime.ElementAt(m).
+                    characteristic.Count() != 0)
+                    {
+                        //Перед вычислением корелляции необходимо выяснить, не состоят ли
+                        //проверяемые массивы из одинаковых элементов
+                        bool countCorell = true;
+                        if(MathWorker.standardDeviation(licencesInfo.
+                            numberOfGetingLicensesPerTime.ElementAt(i).characteristic) == 0 ||
+                            MathWorker.standardDeviation(licencesInfo.
+                            numberOfGetingLicensesPerTime.ElementAt(m).characteristic) == 0)
+                        {
+                            countCorell = false;
+                        }
+                        if (countCorell)
+                        {
+                            double currentCorellation = MathWorker.corellation(
+                            licencesInfo.numberOfGetingLicensesPerTime.ElementAt(i).characteristic,
+                            licencesInfo.numberOfGetingLicensesPerTime.ElementAt(m).characteristic);
+                            config.korellation[i, m] = currentCorellation;
+                            config.korellation[m, i] = currentCorellation;
+                        }
+                        else
+                        {
+                            config.korellation[i, m] = 0;
+                            config.korellation[m, i] = 0;
+                        }
+                    }
+                }
+            }
+            /*config.korellation = new double[2, 2];
+            config.korellation[0, 0] = 1;
+            config.korellation[0, 1] = -1;
+            config.korellation[1, 0] = -1;
+            config.korellation[1, 1] = 1;*/
+            config.withKovar = true;
+            /*config.licenceInfo = new List<LicenceInfo>();
+            config.licenceInfo.Add(new LicenceInfo("OCH",4,1000,1,400,5,1));
+            config.licenceInfo.Add(new LicenceInfo("OCH2", 2, 10, 2, 400, 10, 5));*/
+            loader.setConfig(config);
+            loader.execute();
+            state.originalRules = loader.getResult();
+
+            //создание всех очередей, устройств, меток и тд
+            RulesParser rules_parser = new RulesParser();
+            rules_parser.go_parse(this);
+        }
+
+        //Получение исходных данных для дальнейшей конфигурации конфигуратора 
+        //модели для моделирования
+        private DataSet getDataToConfigModelCreator(string query)
+        {
+            DataWorker<MSAccessStateFields, DataSet> accessProxy = new MSAccessProxy();
+            List<string> list = new List<string>();
+            list.Add(query);
+            MSAccessStateFields configProxy =
+                new MSAccessStateFields(config.getPathOfDataBase(), list);
+            accessProxy.setConfig(configProxy);
+            accessProxy.execute();
+            list.Clear();
+            return accessProxy.getResult();
+        }
+
+        public override void setConfig(ModelingConfig configData)
+        {
+            config = configData;
+        }
+
+        public override ModelingReport getResult()
+        {
+            DataConverter<ModelingState, ModelingReport> converter =
+                new ResultConverter();
+            return converter.convert(state);
         }
     }
 }

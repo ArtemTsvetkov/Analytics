@@ -16,15 +16,15 @@ namespace Analytics
             DataTable table = ds.Tables[0];
             for (int i = 0; i < table.Rows.Count; i++)
             {
-                double[] licenses = new double[table.Columns.Count-4];
-                for(int j = 0;j< table.Columns.Count - 4; j++)
+                double[] licenses = new double[table.Columns.Count - 4];
+                for (int j = 0; j < table.Columns.Count - 4; j++)
                 {
-                    licenses[j] = convertFromItemToInt(table.Rows[i][j+4]);
+                    licenses[j] = convertFromItemToInt(table.Rows[i][j + 4]);
                 }
 
                 MarcovitsDataTable resultTableRow = new MarcovitsDataTable(convertFromItemToInt(table.
                     Rows[i][0]), convertFromItemToInt(table.Rows[i][1]),
-                    convertFromItemToInt(table.Rows[i][2]), convertFromItemToInt(table.Rows[i][3]), 
+                    convertFromItemToInt(table.Rows[i][2]), convertFromItemToInt(table.Rows[i][3]),
                     licenses);
                 newData.Add(resultTableRow);
             }

@@ -6,22 +6,20 @@ using System.Threading.Tasks;
 
 namespace Analytics.CommonComponents.BasicObjects
 {
-    abstract class BasicModel<TTypeOfResult, TTypeState> : Model<TTypeOfResult, TTypeState> 
-        where TTypeState : ModelsState
+    abstract class BasicModel<TTypeOfResult, TConfigType> : 
+        Model<TTypeOfResult, TConfigType> 
     {
-        protected TTypeState state;
-        private DataConverter<TTypeState, TTypeOfResult> dataConverter;
         private List<Observer> observers = new List<Observer>();
+        //Для создания конфигурации, может быть как String, так и 
+        //классом с габором полей, например
+        protected TConfigType config;
 
         abstract public void calculationStatistics();
         abstract public void loadStore();
-        abstract public TTypeState copySelf();
-        abstract public void recoverySelf(TTypeState state);
-
-        public TTypeOfResult getResult()
-        {
-            return dataConverter.convert(state);
-        }
+        abstract public ModelsState copySelf();
+        abstract public void recoverySelf(ModelsState state);
+        abstract public void setConfig(TConfigType configData);
+        abstract public TTypeOfResult getResult();
 
         //Уведомление подписчиков о изменении стэйта
         protected void notifyObservers()
@@ -30,11 +28,6 @@ namespace Analytics.CommonComponents.BasicObjects
             {
                 observers.ElementAt(i).notify();
             }
-        }
-
-        public void setResultConverter(DataConverter<TTypeState, TTypeOfResult> dataConverter)
-        {
-            this.dataConverter = dataConverter;
         }
 
         public void subscribe(Observer newObserver)

@@ -1,4 +1,5 @@
-﻿using Analytics.Modeling.ModelingInstruments;
+﻿using Analytics.Modeling;
+using Analytics.Modeling.ModelingInstruments;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,8 +29,12 @@ namespace Analytics
         public int idProcessingTranzact;//Индекс текущего обрабатываемого транзакта
         //Он должен создаваться один раз, иначе распределение не то получится
         public Random rand = new Random();
-        //Количество прогонов модели
-        public int numberOfStartsModel = 0;
+        //Количество прогонов модели, объявлено здесь, только чтобы в 
+        //конвертор результата пересылать
+        public int numberOfStartsModel;
+        //Текущий отчет по моделированию, объявлено здесь, только чтобы в 
+        //конвертор результата пересылать
+        public ModelingReport report;
     }
 }
 /*
