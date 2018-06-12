@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Analytics.Modeling.GroupByTypes
 {
-    class BasicType
+    static class BasicType
     {
-        public SecondType second = new SecondType();
-        public MinuteType minute = new MinuteType();
-        public HourType hour = new HourType();
-        public DayType day = new DayType();
-        public MonthType month = new MonthType();
-        public YearType year = new YearType();
+        public static SecondType second = new SecondType();
+        public static MinuteType minute = new MinuteType();
+        public static HourType hour = new HourType();
+        public static DayType day = new DayType();
+        public static MonthType month = new MonthType();
+        public static YearType year = new YearType();
     }
 }

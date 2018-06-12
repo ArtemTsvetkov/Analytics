@@ -11,7 +11,7 @@ namespace Analytics.Modeling.ModelsCreator
         //Название
         private string name;
         //Производитель
-        private string vendor;
+        //private string vendor;
         //Количество
         private int count;
         //Среднее время обработки
@@ -25,12 +25,12 @@ namespace Analytics.Modeling.ModelsCreator
         //Среднее квадратичное отклонение генаратора транзактов
         private int avgSquereRequestedTime;
 
-        public LicenceInfo(string name, string vendor, int count, 
+        public LicenceInfo(string name, /*string vendor,*/ int count, 
             int avgDelayTimeInTheProcessing, int avgSquereDelayTimeInTheProcessing,
             int numberOfTranzactsOnStart, int avgRequestedTime, int avgSquereRequestedTime)
         {
             this.name = name;
-            this.vendor = vendor;
+            //this.vendor = vendor;
             this.count = count;
             this.avgDelayTimeInTheProcessing = avgDelayTimeInTheProcessing;
             this.avgSquereDelayTimeInTheProcessing = avgSquereDelayTimeInTheProcessing;
@@ -44,10 +44,10 @@ namespace Analytics.Modeling.ModelsCreator
             return name;
         }
 
-        public string getVendor()
+        /*public string getVendor()
         {
             return vendor;
-        }
+        }*/
 
         public int getCount()
         {

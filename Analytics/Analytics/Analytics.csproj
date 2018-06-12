@@ -53,6 +53,7 @@
     <Compile Include="CommonComponents\CommandsStore\Commands\Modeling\RunModeling.cs" />
     <Compile Include="CommonComponents\CommandsStore\Stores\ConcreteCommandStore.cs" />
     <Compile Include="CommonComponents\BasicObjects\BasicModel.cs" />
+    <Compile Include="CommonComponents\DataConverters\DistinctSoftwareNamesConverter.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\DataConverter.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\DataWorker.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\StorageForData.cs" />
@@ -75,10 +76,9 @@
     <Compile Include="CommonComponents\CommandsStore\Commands\Marcovits\GetMarcovitsStatistcCommand.cs" />
     <Compile Include="CommonComponents\CommandsStore\Commands\Marcovits\LoadDataCommand.cs" />
     <Compile Include="MarcovitsComponent\Config\MarcovitsConfig.cs" />
+    <Compile Include="MarcovitsComponent\Converters\MarcovitsDataTableConverter.cs" />
     <Compile Include="MarcovitsComponent\Converters\ResultConverter.cs" />
     <Compile Include="MarcovitsComponent\MarcovitsDataTable.cs" />
-    <Compile Include="MarcovitsComponent\Converters\MarcovitsDataTableConverter.cs" />
-    <Compile Include="MarcovitsComponent\Converters\MarcovitsDistinctSoftwareNamesConverter.cs" />
     <Compile Include="MarcovitsComponent\MarcovitsModel.cs" />
     <Compile Include="MarcovitsComponent\MarcovitsModelState.cs" />
     <Compile Include="CommonComponents\Interfaces\Model.cs" />
@@ -98,6 +98,9 @@
     <Compile Include="Modeling\GroupByTypes\MonthType.cs" />
     <Compile Include="Modeling\GroupByTypes\SecondType.cs" />
     <Compile Include="Modeling\GroupByTypes\YearType.cs" />
+    <Compile Include="Modeling\IntermediateStates\ModelsCreatorConfig\MappingLicenseResult.cs" />
+    <Compile Include="Modeling\IntermediateStates\ModelsCreatorConfig\ReturnStateForConverterOfModelCreatorConfig.cs" />
+    <Compile Include="Modeling\IntermediateStates\ModelsCreatorConfig\StateForConverterOfModelCreatorConfig.cs" />
     <Compile Include="Modeling\ModelingExceptions\IncorrectFormatOperation.cs" />
     <Compile Include="Modeling\ModelingExceptions\ModelingException.cs" />
     <Compile Include="Modeling\ModelingFunctionParser.cs" />

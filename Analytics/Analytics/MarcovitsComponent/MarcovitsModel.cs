@@ -1,5 +1,6 @@
 ﻿using Analytics.CommonComponents;
 using Analytics.CommonComponents.BasicObjects;
+using Analytics.CommonComponents.DataConverters;
 using Analytics.CommonComponents.Interfaces.Data;
 using Analytics.CommonComponents.Math;
 using Analytics.CommonComponents.WorkWithMSAccess;
@@ -19,7 +20,7 @@ namespace Analytics
         DataConverter<DataSet, List<MarcovitsDataTable>> converter = 
             new MarcovitsDataTableConverter();
         DataConverter<DataSet, string[]> unucNamesConverter = 
-            new MarcovitsDistinctSoftwareNamesConverter();
+            new DistinctSoftwareNamesConverter();
 
         public MarcovitsModel()
         {

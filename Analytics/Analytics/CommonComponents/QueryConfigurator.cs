@@ -50,27 +50,27 @@ namespace Analytics.CommonComponents
             if (type.getType().Equals("year"))
             {
                 return "SELECT i.year_in FROM Information i WHERE  i.year_in <> "+
-                    "null AND i.software='86451BDSPRM_2016_0F' AND i.user_name<>'"+
+                    "null AND i.software='" + licenseName + "' AND i.user_name<>'" +
                     "RevitSystem' ORDER BY i.year_in";
             }
             if (type.getType().Equals("month"))
             {
                 return "SELECT CStr(i.year_in*12+i.month_in) FROM Information i WHERE " +
-                    "i.year_in <> null AND i.software='86451BDSPRM_2016_0F' " + 
+                    "i.year_in <> null AND i.software='" + licenseName + "' " + 
                     "AND i.user_name<>'RevitSystem' ORDER BY i.year_in, i.month_in";
             }
             if (type.getType().Equals("day"))
             {
                 return "SELECT CStr(i.year_in*360+i.month_in*30+i.day_in) FROM " +
                     "Information i WHERE  i.year_in <> null AND i.software=" +
-                    "'86451BDSPRM_2016_0F' AND i.user_name<>'RevitSystem' " + 
+                    "'" + licenseName + "' AND i.user_name<>'RevitSystem' " + 
                     "ORDER BY i.year_in, i.month_in, i.day_in";
             }
             if (type.getType().Equals("hour"))
             {
                 return "SELECT CStr(i.year_in*8640+i.month_in*720+i.day_in*24+" +
                     "i.hours_in) FROM Information i WHERE i.year_in <> null " +
-                    "AND i.software='86451BDSPRM_2016_0F' AND i.user_name<>" +
+                    "AND i.software='" + licenseName + "' AND i.user_name<>" +
                     "'RevitSystem' ORDER BY i.year_in, i.month_in, " + 
                     "i.day_in, i.hours_in";
             }
@@ -78,7 +78,7 @@ namespace Analytics.CommonComponents
             {
                 return "SELECT CStr(i.year_in*518400+i.month_in*43200+i.day_in*" +
                     "1440+i.hours_in*60+i.minute_in) FROM Information i  WHERE  " +
-                    "i.year_in <> null AND i.software='86451BDSPRM_2016_0F' AND " +
+                    "i.year_in <> null AND i.software='" + licenseName + "' AND " +
                     "i.user_name<>'RevitSystem' ORDER BY i.year_in, i.month_in, " + 
                     "i.day_in, i.hours_in, i.minute_in";
             }
@@ -86,7 +86,7 @@ namespace Analytics.CommonComponents
             {
                 return "SELECT CStr(i.year_in*3110400+i.month_in*2592000+i.day_in*" +
                     "86400+i.hours_in*3600+i.minute_in*60+i.second_in) FROM Information " +
-                    "i  WHERE i.year_in <> null AND i.software='86451BDSPRM_2016_0F' " +
+                    "i  WHERE i.year_in <> null AND i.software='" + licenseName + "' " +
                     "AND i.user_name<>'RevitSystem' ORDER BY i.year_in, i.month_in, " + 
                     "i.day_in, i.hours_in, i.minute_in, i.second_in";
             }
@@ -101,7 +101,7 @@ namespace Analytics.CommonComponents
             {
                 return "SELECT i.year_out-i.year_in FROM Information i WHERE " +
                     "i.year_in <> null AND i.year_out <> null AND i.software=" +
-                    "'86451BDSPRM_2016_0F' AND i.user_name<>'RevitSystem'  " +
+                    "'" + licenseName + "' AND i.user_name<>'RevitSystem'  " +
                     "AND i.year_out-i.year_in <> 0 ORDER BY i.year_in, " +
                     "i.month_in, i.day_in, i.hours_in, i.minute_in, " + 
                     "i.second_in";
@@ -110,7 +110,7 @@ namespace Analytics.CommonComponents
             {
                 return "SELECT (i.year_out-i.year_in)*12+i.month_out-i.month_in FROM " +
                     "Information i WHERE  i.year_in <> null AND i.year_out <> null AND " +
-                    "i.software='86451BDSPRM_2016_0F' AND i.user_name<>'RevitSystem' " +
+                    "i.software='" + licenseName + "' AND i.user_name<>'RevitSystem' " +
                     "AND (i.year_out-i.year_in)*12+i.month_out-i.month_in <> 0 ORDER " +
                     "BY i.year_in, i.month_in, i.day_in, i.hours_in, i.minute_in, " + 
                     "i.second_in";
@@ -119,7 +119,7 @@ namespace Analytics.CommonComponents
             {
                 return "SELECT (i.year_out-i.year_in)*360+(i.month_out-i.month_in)*30+" +
                     "i.day_out-i.day_in FROM Information i WHERE  i.year_in <> null AND " +
-                    "i.year_out <> null AND i.software='86451BDSPRM_2016_0F' AND " +
+                    "i.year_out <> null AND i.software='" + licenseName + "' AND " +
                     "i.user_name<>'RevitSystem'  AND (i.year_out-i.year_in)*360+(" +
                     "i.month_out-i.month_in)*30+i.day_out-i.day_in <> 0 ORDER BY " +
                     "i.year_in, i.month_in, i.day_in, i.hours_in, i.minute_in, " + 
@@ -130,7 +130,7 @@ namespace Analytics.CommonComponents
                 return "SELECT (i.year_out-i.year_in)*8640+(i.month_out-i.month_in)*" +
                     "720+(i.day_out-i.day_in)*24+i.hours_out-i.hours_in FROM Information " +
                     "i WHERE  i.year_in <> null AND i.year_out <> null AND i.software=" +
-                    "'86451BDSPRM_2016_0F' AND i.user_name<>'RevitSystem'  AND " +
+                    "'" + licenseName + "' AND i.user_name<>'RevitSystem'  AND " +
                     "(i.year_out-i.year_in)*8640+(i.month_out-i.month_in)*720+(i.day_out" +
                     "-i.day_in)*24+i.hours_out-i.hours_in <> 0 ORDER BY i.year_in, " + 
                     "i.month_in, i.day_in, i.hours_in, i.minute_in, i.second_in";
@@ -140,7 +140,7 @@ namespace Analytics.CommonComponents
                 return "SELECT (i.year_out-i.year_in)*518400+(i.month_out-i.month_in)*43200+" +
                     "(i.day_out-i.day_in)*1440+(i.hours_out-i.hours_in)*60+i.minute_out-" +
                     "i.minute_in FROM Information i WHERE  i.year_in <> null AND i.year_out" +
-                    " <> null AND i.software='86451BDSPRM_2016_0F' AND i.user_name<>" +
+                    " <> null AND i.software='" + licenseName + "' AND i.user_name<>" +
                     "'RevitSystem'  AND (i.year_out-i.year_in)*518400+(i.month_out-" +
                     "i.month_in)*43200+(i.day_out-i.day_in)*1440+(i.hours_out-i.hours_in)" +
                     "*60+i.minute_out-i.minute_in <> 0 ORDER BY i.year_in, i.month_in, " + 
@@ -152,7 +152,7 @@ namespace Analytics.CommonComponents
                 "2592000+(i.day_out-i.day_in)*86400+(i.hours_out-i.hours_in)*3600+" +
                 "(i.minute_out-i.minute_in)*60+i.second_out-i.second_in FROM Information " +
                 "i WHERE  i.year_in <> null AND i.year_out <> null AND i.software=" +
-                "'86451BDSPRM_2016_0F' AND i.user_name<>'RevitSystem'  AND (i.year_out-" +
+                "'" + licenseName + "' AND i.user_name<>'RevitSystem'  AND (i.year_out-" +
                 "i.year_in)*31104000+(i.month_out-i.month_in)*2592000+(i.day_out-i.day_in)" +
                 "*86400+(i.hours_out-i.hours_in)*3600+(i.minute_out-i.minute_in)*60+" +
                 "i.second_out-i.second_in <> 0 ORDER BY i.year_in, i.month_in, " +

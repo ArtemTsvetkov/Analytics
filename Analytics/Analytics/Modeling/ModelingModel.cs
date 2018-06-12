@@ -1,11 +1,17 @@
 ﻿using Analytics;
+using Analytics.CommonComponents;
 using Analytics.CommonComponents.BasicObjects;
+using Analytics.CommonComponents.DataConverters;
 using Analytics.CommonComponents.Interfaces.Data;
+using Analytics.CommonComponents.Math;
 using Analytics.CommonComponents.WorkWithFiles.Load;
 using Analytics.CommonComponents.WorkWithMSAccess;
 using Analytics.Modeling;
 using Analytics.Modeling.Config;
 using Analytics.Modeling.Converters;
+using Analytics.Modeling.GroupByTypes;
+using Analytics.Modeling.IntermediateStates;
+using Analytics.Modeling.IntermediateStates.ModelsCreatorConfig;
 using Analytics.Modeling.ModelsCreator;
 using System;
 using System.Collections.Generic;
@@ -332,6 +338,66 @@ namespace Analytics
             DataWorker<ModelsCreatorConfigState, List<string>> loader = 
                 new ModelsCreatorProxy();
             ModelsCreatorConfigState config = new ModelsCreatorConfigState();
+            //Сбор необходимых данных
+            DataSet unicNamesDS = getDataToConfigModelCreator(
+                QueryConfigurator.getUnicLicensesName("Information"));
+            DataConverter<DataSet, string[]> unicNamesConverter = 
+                new DistinctSoftwareNamesConverter();
+            string[] unicNames = unicNamesConverter.convert(unicNamesDS);
+            StateForConverterOfModelCreatorConfig stateForConverter = 
+                new StateForConverterOfModelCreatorConfig();
+
+            stateForConverter.unicNames = unicNames;
+
+            stateForConverter.numberBuyLicenses = getDataToConfigModelCreator(
+                QueryConfigurator.getNumberOfPurchasedLicenses());
+
+            for (int i=0;i<unicNames.Length;i++)
+            {
+                stateForConverter.bufOftimeBetweenQueryToGetLicenses.Add(
+                    getDataToConfigModelCreator(QueryConfigurator.getTimesGiveLicense(
+                    unicNames[i], BasicType.minute)));
+            }
+
+            for (int i = 0; i < unicNames.Length; i++)
+            {
+                stateForConverter.bufOfTimesOfInBetweenOutLicenses.Add(
+                    getDataToConfigModelCreator(QueryConfigurator.getInBetweenOutLicenses(
+                    unicNames[i], BasicType.minute)));
+            }
+
+            //Перевод типа DataSet к нужному формату
+            DataConverter<StateForConverterOfModelCreatorConfig,
+                ReturnStateForConverterOfModelCreatorConfig> convertData = 
+                new ModelCreatorConfigCreator();
+            ReturnStateForConverterOfModelCreatorConfig licencesInfo = 
+                convertData.convert(stateForConverter);
+            //Создание конфига
+            config.licenceInfo = new List<LicenceInfo>();
+            for (int i=0; i<unicNames.Length; i++)
+            {
+                if(licencesInfo.bufOfTimesOfInBetweenOutLicenses.ElementAt(i).
+                    characteristic.Count() != 0 & 
+                    licencesInfo.bufOftimeBetweenQueryToGetLicenses.ElementAt(i).
+                    characteristic.Count() != 0)
+                {
+                    int numberBuyLicense = licencesInfo.numberBuyLicenses[i];
+                    int avgDelayTimeInTheProcessing = Convert.ToInt32(MathWorker.avg(
+                        licencesInfo.bufOfTimesOfInBetweenOutLicenses.ElementAt(i).characteristic));
+                    int avgSquereDelayTimeInTheProcessing = Convert.ToInt32(MathWorker.
+                        standardDeviation(licencesInfo.bufOfTimesOfInBetweenOutLicenses.
+                        ElementAt(i).characteristic));
+                    int avgRequestedTime = Convert.ToInt32(MathWorker.avg(
+                        licencesInfo.bufOftimeBetweenQueryToGetLicenses.ElementAt(i).characteristic));
+                    int avgSquereRequestedTime = Convert.ToInt32(MathWorker.
+                        standardDeviation(licencesInfo.bufOftimeBetweenQueryToGetLicenses.
+                        ElementAt(i).characteristic));
+                    config.licenceInfo.Add(new LicenceInfo(unicNames[i], numberBuyLicense,
+                        avgDelayTimeInTheProcessing, avgSquereDelayTimeInTheProcessing, 400,
+                        avgRequestedTime, avgSquereRequestedTime));
+                }  
+            }
+            
             config.korellation = new double[2, 2];
             config.korellation[0, 0] = 1;
             config.korellation[0, 1] = -1;
@@ -339,8 +405,8 @@ namespace Analytics
             config.korellation[1, 1] = 1;
             config.withKovar = true;
             config.licenceInfo = new List<LicenceInfo>();
-            config.licenceInfo.Add(new LicenceInfo("OCH","OCH",4,1000,1,400,5,1));
-            config.licenceInfo.Add(new LicenceInfo("OCH2", "OCH2", 2, 10, 2, 400, 10, 5));
+            config.licenceInfo.Add(new LicenceInfo("OCH",4,1000,1,400,5,1));
+            config.licenceInfo.Add(new LicenceInfo("OCH2", 2, 10, 2, 400, 10, 5));
             loader.setConfig(config);
             loader.execute();
             state.originalRules = loader.getResult();
