@@ -13,5 +13,7 @@ namespace Analytics.Modeling.IntermediateStates
         public List<DataSet> bufOfTimesOfInBetweenOutLicenses = new List<DataSet>();
         public string[] unicNames = new string[0];
         public DataSet numberBuyLicenses = new DataSet();
+        public List<DataSet> numberOfGetingLicensesPerTime =
+            new List<DataSet>();
     }
 }

@@ -46,6 +46,38 @@ namespace Analytics.Modeling.Converters
                 answer.bufOfTimesOfInBetweenOutLicenses.Add(licence);
             }
 
+            //Далее следует блок для получения данных, которые потом будут 
+            //проверены на корелляцию и нужно, чтобы все массивы бли одинаковой длинны
+            int minLength = 0;
+            for (int i = 0; i < data.numberOfGetingLicensesPerTime.Count(); i++)
+            {
+                DataSet ds = data.numberOfGetingLicensesPerTime.ElementAt(i);
+                if (minLength == 0)
+                {
+                    minLength = ds.Tables[0].Rows.Count;
+                    continue;
+                }
+                if(ds.Tables[0].Rows.Count < minLength & ds.Tables[0].Rows.Count > 1)
+                {
+                    minLength = ds.Tables[0].Rows.Count;
+                }
+            }
+            for (int i = 0; i < data.numberOfGetingLicensesPerTime.Count(); i++)
+            {
+
+                DataSet ds = data.numberOfGetingLicensesPerTime.ElementAt(i);
+                if (ds.Tables[0].Rows.Count > 1)
+                {
+                    MappingLicenseResult licence =
+                    new MappingLicenseResult(data.unicNames.ElementAt(i), minLength);
+                    for (int m = 0; m < minLength; m++)
+                    {
+                        licence.characteristic[m] = int.Parse(ds.Tables[0].Rows[m][0].ToString());
+                    }
+                    answer.numberOfGetingLicensesPerTime.Add(licence);
+                }
+            }
+
             DataSet numberOfBuyLicensesds = data.numberBuyLicenses;
             answer.numberBuyLicenses = new int[numberOfBuyLicensesds.Tables[0].Rows.Count];
             for (int m = 0; m < numberOfBuyLicensesds.Tables[0].Rows.Count; m++)

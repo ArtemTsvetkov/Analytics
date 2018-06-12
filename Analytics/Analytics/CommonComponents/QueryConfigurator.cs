@@ -161,5 +161,47 @@ namespace Analytics.CommonComponents
             //ДОБАВИТЬ ИСКЛЛЮЧЕНИЕ-НЕИЗВЕСТНЫЙ ТИП
             throw new Exception();
         }
+
+        //Получение данных о количестве полученных лицензий за определенный промежуток времени
+        public static string getNumberOfLicenesForTime(string licenseName, GropByType type)
+        {
+            if (type.getType().Equals("year"))
+            {
+                return "SELECT COUNT(*) FROM INFORMATION i WHERE i.year_in <> 0 AND " +
+                    "i.year_out AND i.software='" + licenseName + "' GROUP BY i.year_in";
+            }
+            if (type.getType().Equals("month"))
+            {
+                return "SELECT COUNT(*) FROM INFORMATION i WHERE i.year_in <> 0 AND " +
+                    "i.year_out AND i.software='" + licenseName + "' GROUP BY i.year_in, " +
+                    "i.month_in";
+            }
+            if (type.getType().Equals("day"))
+            {
+                return "SELECT COUNT(*) FROM INFORMATION i WHERE i.year_in <> 0 AND " +
+                    "i.year_out AND i.software='" + licenseName + "' GROUP BY i.year_in, " +
+                    "i.month_in, i.day_in";
+            }
+            if (type.getType().Equals("hour"))
+            {
+                return "SELECT COUNT(*) FROM INFORMATION i WHERE i.year_in <> 0 AND " +
+                    "i.year_out AND i.software='" + licenseName + "' GROUP BY i.year_in, " +
+                    "i.month_in, i.day_in, i.hours_in";
+            }
+            if (type.getType().Equals("minute"))
+            {
+                return "SELECT COUNT(*) FROM INFORMATION i WHERE i.year_in <> 0 AND " +
+                    "i.year_out AND i.software='" + licenseName + "' GROUP BY i.year_in, " +
+                    "i.month_in, i.day_in, i.hours_in, i.minute_in";
+            }
+            if (type.getType().Equals("second"))
+            {
+                return "SELECT COUNT(*) FROM INFORMATION i WHERE i.year_in <> 0 AND " +
+                    "i.year_out AND i.software='" + licenseName + "' GROUP BY i.year_in, " + 
+                    "i.month_in, i.day_in, i.hours_in, i.minute_in, i.second_in";
+            }
+            //ДОБАВИТЬ ИСКЛЛЮЧЕНИЕ-НЕИЗВЕСТНЫЙ ТИП
+            throw new Exception();
+        }
     }
 }

@@ -356,14 +356,13 @@ namespace Analytics
             {
                 stateForConverter.bufOftimeBetweenQueryToGetLicenses.Add(
                     getDataToConfigModelCreator(QueryConfigurator.getTimesGiveLicense(
-                    unicNames[i], BasicType.minute)));
-            }
-
-            for (int i = 0; i < unicNames.Length; i++)
-            {
+                    unicNames[i], BasicType.hour)));
                 stateForConverter.bufOfTimesOfInBetweenOutLicenses.Add(
                     getDataToConfigModelCreator(QueryConfigurator.getInBetweenOutLicenses(
-                    unicNames[i], BasicType.minute)));
+                    unicNames[i], BasicType.hour)));
+                stateForConverter.numberOfGetingLicensesPerTime.Add(
+                    getDataToConfigModelCreator(QueryConfigurator.getNumberOfLicenesForTime(
+                        unicNames[i], BasicType.hour)));
             }
 
             //Перевод типа DataSet к нужному формату
@@ -377,9 +376,9 @@ namespace Analytics
             for (int i=0; i<unicNames.Length; i++)
             {
                 if(licencesInfo.bufOfTimesOfInBetweenOutLicenses.ElementAt(i).
-                    characteristic.Count() != 0 & 
+                    characteristic.Count() > 1 & 
                     licencesInfo.bufOftimeBetweenQueryToGetLicenses.ElementAt(i).
-                    characteristic.Count() != 0)
+                    characteristic.Count() > 1)
                 {
                     int numberBuyLicense = licencesInfo.numberBuyLicenses[i];
                     int avgDelayTimeInTheProcessing = Convert.ToInt32(MathWorker.avg(
@@ -397,16 +396,53 @@ namespace Analytics
                         avgRequestedTime, avgSquereRequestedTime));
                 }  
             }
-            
-            config.korellation = new double[2, 2];
+            //Вычисление матрицы корреляций
+            int size = config.licenceInfo.Count;
+            config.korellation = new double[size, size];
+            for (int i=0; i<size; i++)
+            {
+                for (int m=i; m<size; m++)
+                {
+                    if (licencesInfo.numberOfGetingLicensesPerTime.ElementAt(i).
+                    characteristic.Count() != 0 &
+                    licencesInfo.numberOfGetingLicensesPerTime.ElementAt(m).
+                    characteristic.Count() != 0)
+                    {
+                        //Перед вычислением корелляции необходимо выяснить, не состоят ли
+                        //проверяемые массивы из одинаковых элементов
+                        bool countCorell = true;
+                        if(MathWorker.standardDeviation(licencesInfo.
+                            numberOfGetingLicensesPerTime.ElementAt(i).characteristic) == 0 ||
+                            MathWorker.standardDeviation(licencesInfo.
+                            numberOfGetingLicensesPerTime.ElementAt(m).characteristic) == 0)
+                        {
+                            countCorell = false;
+                        }
+                        if (countCorell)
+                        {
+                            double currentCorellation = MathWorker.corellation(
+                            licencesInfo.numberOfGetingLicensesPerTime.ElementAt(i).characteristic,
+                            licencesInfo.numberOfGetingLicensesPerTime.ElementAt(m).characteristic);
+                            config.korellation[i, m] = currentCorellation;
+                            config.korellation[m, i] = currentCorellation;
+                        }
+                        else
+                        {
+                            config.korellation[i, m] = 0;
+                            config.korellation[m, i] = 0;
+                        }
+                    }
+                }
+            }
+            /*config.korellation = new double[2, 2];
             config.korellation[0, 0] = 1;
             config.korellation[0, 1] = -1;
             config.korellation[1, 0] = -1;
-            config.korellation[1, 1] = 1;
+            config.korellation[1, 1] = 1;*/
             config.withKovar = true;
-            config.licenceInfo = new List<LicenceInfo>();
+            /*config.licenceInfo = new List<LicenceInfo>();
             config.licenceInfo.Add(new LicenceInfo("OCH",4,1000,1,400,5,1));
-            config.licenceInfo.Add(new LicenceInfo("OCH2", 2, 10, 2, 400, 10, 5));
+            config.licenceInfo.Add(new LicenceInfo("OCH2", 2, 10, 2, 400, 10, 5));*/
             loader.setConfig(config);
             loader.execute();
             state.originalRules = loader.getResult();
