@@ -386,11 +386,28 @@ namespace Analytics
                     int avgSquereDelayTimeInTheProcessing = Convert.ToInt32(MathWorker.
                         standardDeviation(licencesInfo.bufOfTimesOfInBetweenOutLicenses.
                         ElementAt(i).characteristic));
+                    if(avgSquereDelayTimeInTheProcessing> avgDelayTimeInTheProcessing)
+                    {
+                        avgDelayTimeInTheProcessing = (avgSquereDelayTimeInTheProcessing + 
+                            avgDelayTimeInTheProcessing) / 2;
+                        if(avgDelayTimeInTheProcessing - avgSquereDelayTimeInTheProcessing < 0)
+                        {
+                            avgDelayTimeInTheProcessing++;
+                        }
+                    }
                     int avgRequestedTime = Convert.ToInt32(MathWorker.avg(
                         licencesInfo.bufOftimeBetweenQueryToGetLicenses.ElementAt(i).characteristic));
                     int avgSquereRequestedTime = Convert.ToInt32(MathWorker.
                         standardDeviation(licencesInfo.bufOftimeBetweenQueryToGetLicenses.
                         ElementAt(i).characteristic));
+                    if(avgSquereRequestedTime > avgRequestedTime)
+                    {
+                        avgRequestedTime = (avgSquereRequestedTime + avgRequestedTime) / 2;
+                        if(avgRequestedTime - avgSquereRequestedTime<0)
+                        {
+                            avgRequestedTime++;
+                        }
+                    }
                     config.licenceInfo.Add(new LicenceInfo(unicNames[i], numberBuyLicense,
                         avgDelayTimeInTheProcessing, avgSquereDelayTimeInTheProcessing, 400,
                         avgRequestedTime, avgSquereRequestedTime));
