@@ -1,6 +1,7 @@
 ﻿using Analytics.CommonComponents.BasicObjects;
 using Analytics.MarcovitsComponent.Config;
 using Analytics.MarcovitsComponent.Converters;
+using Analytics.Modeling.GroupByTypes;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -28,7 +29,7 @@ namespace Analytics.CommonComponents.Views
             model = new MarcovitsModel();
             MarcovitsConfig config = new MarcovitsConfig(
                 "D:\\Files\\MsVisualProjects\\Diplom\\Логи\\testlogs\\Database3.accdb",
-                "Information");
+                BasicType.hour);
             model.setConfig(config);
             model.subscribe(this);
             commandsStore.executeCommand(new GetMarcovitsStatistcCommand<MarcovitsConfig>(model));

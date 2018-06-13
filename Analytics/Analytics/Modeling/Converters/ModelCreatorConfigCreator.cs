@@ -28,8 +28,8 @@ namespace Analytics.Modeling.Converters
                     new MappingLicenseResult(data.unicNames.ElementAt(i), ds.Tables[0].Rows.Count);
                 for (int m = 0; m < (ds.Tables[0].Rows.Count-1); m++)
                 {
-                    licence.characteristic[m] = int.Parse(ds.Tables[0].Rows[m+1][0].ToString()) - 
-                        int.Parse(ds.Tables[0].Rows[m][0].ToString());
+                    licence.characteristic[m] = double.Parse(ds.Tables[0].Rows[m+1][0].ToString()) -
+                        double.Parse(ds.Tables[0].Rows[m][0].ToString());
                 }
                 answer.bufOftimeBetweenQueryToGetLicenses.Add(licence);
             }
@@ -41,7 +41,7 @@ namespace Analytics.Modeling.Converters
                     new MappingLicenseResult(data.unicNames.ElementAt(i), ds.Tables[0].Rows.Count);
                 for (int m = 0; m < ds.Tables[0].Rows.Count; m++)
                 {
-                    licence.characteristic[m]=int.Parse(ds.Tables[0].Rows[m][0].ToString());
+                    licence.characteristic[m] = double.Parse(ds.Tables[0].Rows[m][0].ToString());
                 }
                 answer.bufOfTimesOfInBetweenOutLicenses.Add(licence);
             }
@@ -72,7 +72,7 @@ namespace Analytics.Modeling.Converters
                     new MappingLicenseResult(data.unicNames.ElementAt(i), minLength);
                     for (int m = 0; m < minLength; m++)
                     {
-                        licence.characteristic[m] = int.Parse(ds.Tables[0].Rows[m][0].ToString());
+                        licence.characteristic[m] = double.Parse(ds.Tables[0].Rows[m][0].ToString());
                     }
                     answer.numberOfGetingLicensesPerTime.Add(licence);
                 }

@@ -121,8 +121,8 @@ namespace Analytics.Modeling
             for (int i = 0; i < state.queues.Count(); i++)
             {
                 avgTranzactsInQueue.ElementAt(i).value +=
-                    state.queues.ElementAt(i).get_sum_tranzacts_in_queue();/* /
-                    (double)state.time_of_modeling;*/
+                    state.queues.ElementAt(i).get_sum_tranzacts_in_queue()/
+                    (double)state.time_of_modeling;
             }
 
             for (int i = 0; i < state.lables.Count(); i++)

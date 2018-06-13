@@ -2,6 +2,7 @@
 using Analytics.Modeling;
 using Analytics.Modeling.Config;
 using Analytics.Modeling.Converters;
+using Analytics.Modeling.GroupByTypes;
 using Modelirovanie;
 using System;
 using System.Collections.Generic;
@@ -96,7 +97,7 @@ namespace Analytics.CommonComponents.Views
                 control.subscribe(this);
                 ModelingConfig config = new ModelingConfig(form.textBox1Elem.Text,
                     "D:\\Files\\MsVisualProjects\\Diplom\\Логи\\testlogs\\Database3.accdb",
-                    "Information");
+                    BasicType.hour);
                 config.setWithKovar(false);
                 control.setConfig(config);
                 control.loadStore();

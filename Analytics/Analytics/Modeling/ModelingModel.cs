@@ -337,10 +337,10 @@ namespace Analytics
             //Создание модели в реалтайме
             DataWorker<ModelsCreatorConfigState, List<string>> loader = 
                 new ModelsCreatorProxy();
-            ModelsCreatorConfigState config = new ModelsCreatorConfigState();
+            ModelsCreatorConfigState creatorsConfig = new ModelsCreatorConfigState();
             //Сбор необходимых данных
             DataSet unicNamesDS = getDataToConfigModelCreator(
-                QueryConfigurator.getUnicLicensesName("Information"));
+                QueryConfigurator.getUnicLicensesName());
             DataConverter<DataSet, string[]> unicNamesConverter = 
                 new DistinctSoftwareNamesConverter();
             string[] unicNames = unicNamesConverter.convert(unicNamesDS);
@@ -356,13 +356,13 @@ namespace Analytics
             {
                 stateForConverter.bufOftimeBetweenQueryToGetLicenses.Add(
                     getDataToConfigModelCreator(QueryConfigurator.getTimesGiveLicense(
-                    unicNames[i], BasicType.hour)));
+                    unicNames[i], config.getInterval())));
                 stateForConverter.bufOfTimesOfInBetweenOutLicenses.Add(
                     getDataToConfigModelCreator(QueryConfigurator.getInBetweenOutLicenses(
-                    unicNames[i], BasicType.hour)));
+                    unicNames[i], config.getInterval())));
                 stateForConverter.numberOfGetingLicensesPerTime.Add(
                     getDataToConfigModelCreator(QueryConfigurator.getNumberOfLicenesForTime(
-                        unicNames[i], BasicType.hour)));
+                        unicNames[i], config.getInterval())));
             }
 
             //Перевод типа DataSet к нужному формату
@@ -372,7 +372,7 @@ namespace Analytics
             ReturnStateForConverterOfModelCreatorConfig licencesInfo = 
                 convertData.convert(stateForConverter);
             //Создание конфига
-            config.licenceInfo = new List<LicenceInfo>();
+            creatorsConfig.licenceInfo = new List<LicenceInfo>();
             for (int i=0; i<unicNames.Length; i++)
             {
                 if(licencesInfo.bufOfTimesOfInBetweenOutLicenses.ElementAt(i).
@@ -390,10 +390,7 @@ namespace Analytics
                     {
                         avgDelayTimeInTheProcessing = (avgSquereDelayTimeInTheProcessing + 
                             avgDelayTimeInTheProcessing) / 2;
-                        if(avgDelayTimeInTheProcessing - avgSquereDelayTimeInTheProcessing < 0)
-                        {
-                            avgDelayTimeInTheProcessing++;
-                        }
+                        avgSquereDelayTimeInTheProcessing = avgDelayTimeInTheProcessing;
                     }
                     int avgRequestedTime = Convert.ToInt32(MathWorker.avg(
                         licencesInfo.bufOftimeBetweenQueryToGetLicenses.ElementAt(i).characteristic));
@@ -403,19 +400,16 @@ namespace Analytics
                     if(avgSquereRequestedTime > avgRequestedTime)
                     {
                         avgRequestedTime = (avgSquereRequestedTime + avgRequestedTime) / 2;
-                        if(avgRequestedTime - avgSquereRequestedTime<0)
-                        {
-                            avgRequestedTime++;
-                        }
+                        avgSquereRequestedTime = avgRequestedTime;
                     }
-                    config.licenceInfo.Add(new LicenceInfo(unicNames[i], numberBuyLicense,
+                    creatorsConfig.licenceInfo.Add(new LicenceInfo(unicNames[i], numberBuyLicense,
                         avgDelayTimeInTheProcessing, avgSquereDelayTimeInTheProcessing, 400,
                         avgRequestedTime, avgSquereRequestedTime));
                 }  
             }
             //Вычисление матрицы корреляций
-            int size = config.licenceInfo.Count;
-            config.korellation = new double[size, size];
+            int size = creatorsConfig.licenceInfo.Count;
+            creatorsConfig.korellation = new double[size, size];
             for (int i=0; i<size; i++)
             {
                 for (int m=i; m<size; m++)
@@ -440,27 +434,19 @@ namespace Analytics
                             double currentCorellation = MathWorker.corellation(
                             licencesInfo.numberOfGetingLicensesPerTime.ElementAt(i).characteristic,
                             licencesInfo.numberOfGetingLicensesPerTime.ElementAt(m).characteristic);
-                            config.korellation[i, m] = currentCorellation;
-                            config.korellation[m, i] = currentCorellation;
+                            creatorsConfig.korellation[i, m] = currentCorellation;
+                            creatorsConfig.korellation[m, i] = currentCorellation;
                         }
                         else
                         {
-                            config.korellation[i, m] = 0;
-                            config.korellation[m, i] = 0;
+                            creatorsConfig.korellation[i, m] = 0;
+                            creatorsConfig.korellation[m, i] = 0;
                         }
                     }
                 }
             }
-            /*config.korellation = new double[2, 2];
-            config.korellation[0, 0] = 1;
-            config.korellation[0, 1] = -1;
-            config.korellation[1, 0] = -1;
-            config.korellation[1, 1] = 1;*/
-            config.withKovar = true;
-            /*config.licenceInfo = new List<LicenceInfo>();
-            config.licenceInfo.Add(new LicenceInfo("OCH",4,1000,1,400,5,1));
-            config.licenceInfo.Add(new LicenceInfo("OCH2", 2, 10, 2, 400, 10, 5));*/
-            loader.setConfig(config);
+            creatorsConfig.withKovar = true;
+            loader.setConfig(creatorsConfig);
             loader.execute();
             state.originalRules = loader.getResult();
 

@@ -11,25 +11,152 @@ namespace Analytics.CommonComponents
     static class QueryConfigurator
     {
         //Получение уникальных имен лицензий
-        public static string getUnicLicensesName(string dataBaseTable)
+        public static string getUnicLicensesName()
         {
-            return "SELECT DISTINCT software FROM " + dataBaseTable;
+            return "SELECT DISTINCT software FROM Information";
         }
 
-        //Получение данных об использовании для всех видов дицензий
-        public static string getDataOfUseAllLicenses(string[] unicLicenseNames)
+        //Получение данных об использовании лицензий пользователями
+        public static string getDataOfUsersUseLicenses()
         {
-            string query = "SELECT  i.year_in, i.month_in, i.day_in, i.hours_in";
-            for (int i = 0; i < unicLicenseNames.Length; i++)
-            {
-                query += ", (SELECT COUNT(*) FROM Information ii WHERE ii.software='" +
-                    unicLicenseNames[i] + "' AND ii.year_in = i.year_in  AND ii.month_in =  " +
-                    "i.month_in AND ii.day_in =  i.day_in AND ii.hours_in = i.hours_in)";
-            }
-            query += "FROM Information i WHERE hours_in IS NOT NULL GROUP BY hours_in, day_in, " +
-                "month_in, year_in ORDER BY year_in, month_in, day_in, hours_in";
+            return "SELECT user_name, user_host, software FROM Information";
+        }
 
-            return query;
+        //Получение данных об использовании для всех видов лицензий
+        public static string getDataOfUseAllLicenses(string[] unicLicenseNames, GropByType type)
+        {
+            if (type.getType().Equals("year"))
+            {
+                string query = "SELECT ";
+                for (int i = 0; i < unicLicenseNames.Length; i++)
+                {
+                    if (i == (unicLicenseNames.Length - 1))
+                    {
+                        query += "(SELECT COUNT(*) FROM Information ii WHERE ii.software='" +
+                        unicLicenseNames[i] + "' AND ii.year_in = i.year_in)";
+                        continue;
+                    }
+                    query += "(SELECT COUNT(*) FROM Information ii WHERE ii.software='" +
+                        unicLicenseNames[i] + "' AND ii.year_in = i.year_in),";
+                }
+                query += "FROM Information i WHERE hours_in IS NOT NULL GROUP BY " +
+                    "year_in ORDER BY year_in";
+
+                return query;
+            }
+            if (type.getType().Equals("month"))
+            {
+                string query = "SELECT ";
+                for (int i = 0; i < unicLicenseNames.Length; i++)
+                {
+                    if (i == (unicLicenseNames.Length - 1))
+                    {
+                        query += "(SELECT COUNT(*) FROM Information ii WHERE ii.software='" +
+                        unicLicenseNames[i] + "' AND ii.year_in = i.year_in  AND ii.month_in =  " +
+                        "i.month_in)";
+                        continue;
+                    }
+                    query += "(SELECT COUNT(*) FROM Information ii WHERE ii.software='" +
+                        unicLicenseNames[i] + "' AND ii.year_in = i.year_in  AND ii.month_in =  " +
+                        "i.month_in),";
+                }
+                query += "FROM Information i WHERE hours_in IS NOT NULL GROUP BY " +
+                    "month_in, year_in ORDER BY year_in, month_in";
+
+                return query;
+            }
+            if (type.getType().Equals("day"))
+            {
+                string query = "SELECT ";
+                for (int i = 0; i < unicLicenseNames.Length; i++)
+                {
+                    if (i == (unicLicenseNames.Length - 1))
+                    {
+                        query += "(SELECT COUNT(*) FROM Information ii WHERE ii.software='" +
+                        unicLicenseNames[i] + "' AND ii.year_in = i.year_in  AND ii.month_in =  " +
+                        "i.month_in AND ii.day_in =  i.day_in)";
+                        continue;
+                    }
+                    query += "(SELECT COUNT(*) FROM Information ii WHERE ii.software='" +
+                        unicLicenseNames[i] + "' AND ii.year_in = i.year_in  AND ii.month_in =  " +
+                        "i.month_in AND ii.day_in =  i.day_in),";
+                }
+                query += "FROM Information i WHERE hours_in IS NOT NULL GROUP BY day_in, " +
+                    "month_in, year_in ORDER BY year_in, month_in, day_in";
+
+                return query;
+            }
+            if (type.getType().Equals("hour"))
+            {
+                string query = "SELECT ";
+                for (int i = 0; i < unicLicenseNames.Length; i++)
+                {
+                    if (i == (unicLicenseNames.Length - 1))
+                    {
+                        query += "(SELECT COUNT(*) FROM Information ii WHERE ii.software='" +
+                        unicLicenseNames[i] + "' AND ii.year_in = i.year_in  AND ii.month_in =  " +
+                        "i.month_in AND ii.day_in =  i.day_in AND ii.hours_in = i.hours_in)";
+                        continue;
+                    }
+                    query += "(SELECT COUNT(*) FROM Information ii WHERE ii.software='" +
+                        unicLicenseNames[i] + "' AND ii.year_in = i.year_in  AND ii.month_in =  " +
+                        "i.month_in AND ii.day_in =  i.day_in AND ii.hours_in = i.hours_in),";
+                }
+                query += "FROM Information i WHERE hours_in IS NOT NULL GROUP BY hours_in, day_in, " +
+                    "month_in, year_in ORDER BY year_in, month_in, day_in, hours_in";
+
+                return query;
+            }
+            if (type.getType().Equals("minute"))
+            {
+                string query = "SELECT ";
+                for (int i = 0; i < unicLicenseNames.Length; i++)
+                {
+                    if (i == (unicLicenseNames.Length - 1))
+                    {
+                        query += "(SELECT COUNT(*) FROM Information ii WHERE ii.software='" +
+                        unicLicenseNames[i] + "' AND ii.year_in = i.year_in  AND ii.month_in =  " +
+                        "i.month_in AND ii.day_in =  i.day_in AND ii.hours_in = i.hours_in AND " +
+                        "ii.minute_in = i.minute_in)";
+                        continue;
+                    }
+                    query += "(SELECT COUNT(*) FROM Information ii WHERE ii.software='" +
+                        unicLicenseNames[i] + "' AND ii.year_in = i.year_in  AND ii.month_in =  " +
+                        "i.month_in AND ii.day_in =  i.day_in AND ii.hours_in = i.hours_in AND " +
+                        "ii.minute_in = i.minute_in),";
+                }
+                query += "FROM Information i WHERE hours_in IS NOT NULL GROUP BY minute_in, " + 
+                    "hours_in, day_in, month_in, year_in ORDER BY year_in, month_in, day_in," + 
+                    " hours_in, minute_in";
+
+                return query;
+            }
+            if (type.getType().Equals("second"))
+            {
+                string query = "SELECT ";
+                for (int i = 0; i < unicLicenseNames.Length; i++)
+                {
+                    if (i == (unicLicenseNames.Length - 1))
+                    {
+                        query += "(SELECT COUNT(*) FROM Information ii WHERE ii.software='" +
+                        unicLicenseNames[i] + "' AND ii.year_in = i.year_in  AND ii.month_in =  " +
+                        "i.month_in AND ii.day_in =  i.day_in AND ii.hours_in = i.hours_in AND " +
+                        "ii.minute_in = i.minute_in AND ii.second_in = i.second_in)";
+                        continue;
+                    }
+                    query += "(SELECT COUNT(*) FROM Information ii WHERE ii.software='" +
+                        unicLicenseNames[i] + "' AND ii.year_in = i.year_in  AND ii.month_in =  " +
+                        "i.month_in AND ii.day_in =  i.day_in AND ii.hours_in = i.hours_in AND " +
+                        "ii.minute_in = i.minute_in AND ii.second_in = i.second_in),";
+                }
+                query += "FROM Information i WHERE hours_in IS NOT NULL GROUP BY second_in, " + 
+                    "minute_in, hours_in, day_in, month_in, year_in ORDER BY year_in, " + 
+                    "month_in, day_in, hours_in, minute_in, second_in";
+
+                return query;
+            }
+            //ДОБАВИТЬ ИСКЛЛЮЧЕНИЕ-НЕИЗВЕСТНЫЙ ТИП
+            throw new Exception();
         }
 
         //Получение количества закупленых лицензий всех типов
