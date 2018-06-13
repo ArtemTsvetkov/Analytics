@@ -9,8 +9,6 @@ namespace Analytics.Modeling.Config
 {
     class ModelingConfig
     {
-        //Путь до файла с моделью
-        private string configData;
         //Флаг, указывающий сброс всего стейта
         private bool resetAllState = false;
         //Путь до БД
@@ -21,9 +19,8 @@ namespace Analytics.Modeling.Config
         //рассматриваемый промежуток времени
         private GropByType interval = new HourType();
 
-        public ModelingConfig(string configData, string pathOfDataBase, GropByType interval)
+        public ModelingConfig(string pathOfDataBase, GropByType interval)
         {
-            this.configData = configData;
             this.pathOfDataBase = pathOfDataBase;
             this.interval = interval;
         }
@@ -58,19 +55,9 @@ namespace Analytics.Modeling.Config
             return resetAllState;
         }
 
-        public string getConfigData()
-        {
-            return configData;
-        }
-
         public void setResetAllState(bool resetAllState)
         {
             this.resetAllState = resetAllState;
-        }
-
-        public void setConfigData(string configData)
-        {
-            this.configData = configData;
         }
     }
 }

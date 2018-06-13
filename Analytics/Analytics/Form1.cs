@@ -25,8 +25,6 @@ namespace Analytics
         {
             InitializeComponent();
             marcovitsView = new MarcovitsView(this);
-            timer1.Enabled = true;
-            timer1.Interval = timer1.Interval * 2;
             textBox1.Text = "D:\\Files\\MsVisualProjects\\Diplom\\AnaliticsMath\\rules2.txt";
         }
 
@@ -43,11 +41,6 @@ namespace Analytics
         public Chart chart3Elem
         {
             get { return chart3; }
-        }
-
-        public Chart chart4Elem
-        {
-            get { return chart4; }
         }
 
         public Label label5Elem

@@ -45,7 +45,12 @@ namespace Analytics.CommonComponents.Views
             form.chart1Elem.Series[0].Points.ElementAt(1).Color = Color.Black;
             double plus = state.income * 100;
             form.label5Elem.Visible = true;
-            form.label5Elem.Text = "Доходность:" + plus.ToString();
+            string plusStr = plus.ToString();
+            if (plusStr.Length > 4)
+            {
+                plusStr = plusStr.Remove(5, (plusStr.Length - 5));
+            }
+            form.label5Elem.Text = "Доходность:" + plusStr.ToString()+"%";
             //Вывод данных о риске
             form.chart2Elem.Series[0].Points.Clear();
             form.chart2Elem.Series[0].Points.AddXY(0, (state.risk[0, 0] * 100));
@@ -54,21 +59,26 @@ namespace Analytics.CommonComponents.Views
             form.chart2Elem.Series[0].Points.ElementAt(1).Color = Color.Black;
             double mines = state.risk[0, 0] * 100;
             form.label6Elem.Visible = true;
-            form.label6Elem.Text = "Риск:" + mines.ToString();
-            //Вывод данных о распределении бюджета по лицензиям
+            string minesStr = mines.ToString();
+            if(minesStr.Length > 4)
+            {
+                minesStr = minesStr.Remove(5, (minesStr.Length - 5));
+            }
+            form.label6Elem.Text = "Риск:" + minesStr+"%";
+            /*//Вывод данных о распределении бюджета по лицензиям
             form.chart3Elem.Series[0].Points.Clear();
             for (int i = 0; i < state.unicSoftwareNames.Length; i++)
             {
                 form.chart3Elem.Series[0].Points.AddXY(0, (state.percents[i, 0] * 100));
                 form.chart3Elem.Series[0].Points.ElementAt(i).Label = state.unicSoftwareNames[i];
                 form.chart3Elem.Legends.ElementAt(0).Title = "Лицензии:";
-            }
+            }*/
             //Вывод данных о средней доходности по каждой из лицензий
-            form.chart4Elem.Series[0].Points.Clear();
+            form.chart3Elem.Series[0].Points.Clear();
             for (int i = 0; i < state.unicSoftwareNames.Length; i++)
             {
-                form.chart4Elem.Series[0].Points.AddXY(0, (state.avgDeviationFromPurchasedNumber[i] * 100));
-                form.chart4Elem.Series[0].Points.ElementAt(i).Label = state.unicSoftwareNames[i];
+                form.chart3Elem.Series[0].Points.AddXY(0, (state.avgDeviationFromPurchasedNumber[i] * 100));
+                form.chart3Elem.Series[0].Points.ElementAt(i).Label = state.unicSoftwareNames[i];
             }
         }
     }

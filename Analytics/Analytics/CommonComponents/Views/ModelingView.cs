@@ -95,7 +95,7 @@ namespace Analytics.CommonComponents.Views
             {
                 control = new ModelingModel();
                 control.subscribe(this);
-                ModelingConfig config = new ModelingConfig(form.textBox1Elem.Text,
+                ModelingConfig config = new ModelingConfig(
                     "D:\\Files\\MsVisualProjects\\Diplom\\Логи\\testlogs\\Database3.accdb",
                     BasicType.hour);
                 config.setWithKovar(false);

@@ -59,6 +59,7 @@
     <Compile Include="CommonComponents\Interfaces\Data\StorageForData.cs" />
     <Compile Include="CommonComponents\Math\MathWorker.cs" />
     <Compile Include="CommonComponents\QueryConfigurator\QueryConfigurator.cs" />
+    <Compile Include="CommonComponents\Views\ControlView.cs" />
     <Compile Include="CommonComponents\Views\MarcovitsView.cs" />
     <Compile Include="CommonComponents\Views\ModelingView.cs" />
     <Compile Include="CommonComponents\WorkWithFiles\Load\TextFilesConfigFieldsOnLoad.cs" />
@@ -171,21 +172,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\bg.jpg" />
+    <None Include="Resources\BG.jpg" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\gear1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\gear2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\gear3.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\gear4.png" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
