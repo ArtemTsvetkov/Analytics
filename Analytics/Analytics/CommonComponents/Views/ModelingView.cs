@@ -64,8 +64,8 @@ namespace Analytics.CommonComponents.Views
             //добавили колонки
             DataGridViewTextBoxColumn coefficient5;
             coefficient5 = new DataGridViewTextBoxColumn();
-            coefficient5.Name = "Название очереди";
-            coefficient5.HeaderText = "Название очереди";
+            coefficient5.Name = "Тип лицензии";
+            coefficient5.HeaderText = "Тип лицензии";
             coefficient5.Width = 150;
             form.dataGridView2Elem.Columns.Add(coefficient5);
             DataGridViewTextBoxColumn coefficient6;
@@ -97,7 +97,7 @@ namespace Analytics.CommonComponents.Views
                 control.subscribe(this);
                 ModelingConfig config = new ModelingConfig(
                     "D:\\Files\\MsVisualProjects\\Diplom\\Логи\\testlogs\\Database3.accdb",
-                    BasicType.hour);
+                    BasicType.day);
                 config.setWithKovar(false);
                 control.setConfig(config);
                 control.loadStore();
@@ -109,7 +109,7 @@ namespace Analytics.CommonComponents.Views
             }
             else
             {
-                form.label1Elem.Text = "Ошибка моделирования";
+                form.label12Elem.Text = "Ошибка моделирования";
                 string message = "Ошибка чтения файла команд";
                 string caption = "Ошибка";
                 DialogResult result;

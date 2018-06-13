@@ -63,9 +63,9 @@ namespace Analytics.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap BG {
+        internal static System.Drawing.Bitmap BackGroundImage {
             get {
-                object obj = ResourceManager.GetObject("BG", resourceCulture);
+                object obj = ResourceManager.GetObject("BackGroundImage", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

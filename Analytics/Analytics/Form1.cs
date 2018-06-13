@@ -38,14 +38,14 @@ namespace Analytics
             get { return chart2; }
         }
 
-        public Chart chart3Elem
-        {
-            get { return chart3; }
-        }
-
         public Label label5Elem
         {
             get { return label5; }
+        }
+
+        public Label label12Elem
+        {
+            get { return label12; }
         }
 
         public Label label6Elem
@@ -83,40 +83,9 @@ namespace Analytics
             get { return progressBar1; }
         }
 
-        public Label label1Elem
-        {
-            get { return label1; }
-        }
-
         private void button2_Click(object sender, EventArgs e)
         {
             marcovitsView.button2_Click();
-        }
-
-        private void timer1_Tick_1(object sender, EventArgs e)
-        {
-            timer++;
-            if (timer == 0)
-            {
-                pictureBox2.Image = Properties.Resources.gear1;
-                pictureBox2.Update();
-            }
-            if (timer == 1)
-            {
-                pictureBox2.Image = Properties.Resources.gear2;
-                pictureBox2.Update();
-            }
-            if (timer == 2)
-            {
-                pictureBox2.Image = Properties.Resources.gear3;
-                pictureBox2.Update();
-            }
-            if (timer == 3)
-            {
-                pictureBox2.Image = Properties.Resources.gear4;
-                pictureBox2.Update();
-                timer = 0;
-            }
         }
 
         private void button1_Click(object sender, EventArgs e)

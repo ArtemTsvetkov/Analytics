@@ -65,21 +65,6 @@ namespace Analytics.CommonComponents.Views
                 minesStr = minesStr.Remove(5, (minesStr.Length - 5));
             }
             form.label6Elem.Text = "Риск:" + minesStr+"%";
-            /*//Вывод данных о распределении бюджета по лицензиям
-            form.chart3Elem.Series[0].Points.Clear();
-            for (int i = 0; i < state.unicSoftwareNames.Length; i++)
-            {
-                form.chart3Elem.Series[0].Points.AddXY(0, (state.percents[i, 0] * 100));
-                form.chart3Elem.Series[0].Points.ElementAt(i).Label = state.unicSoftwareNames[i];
-                form.chart3Elem.Legends.ElementAt(0).Title = "Лицензии:";
-            }*/
-            //Вывод данных о средней доходности по каждой из лицензий
-            form.chart3Elem.Series[0].Points.Clear();
-            for (int i = 0; i < state.unicSoftwareNames.Length; i++)
-            {
-                form.chart3Elem.Series[0].Points.AddXY(0, (state.avgDeviationFromPurchasedNumber[i] * 100));
-                form.chart3Elem.Series[0].Points.ElementAt(i).Label = state.unicSoftwareNames[i];
-            }
         }
     }
 }
