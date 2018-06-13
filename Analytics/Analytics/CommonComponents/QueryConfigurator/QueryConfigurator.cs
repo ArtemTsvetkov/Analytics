@@ -22,6 +22,52 @@ namespace Analytics.CommonComponents
             return "SELECT user_name, user_host, software FROM Information";
         }
 
+        //Получение среднего количества запросов на получение лицензии за промежуток времени
+        public static string getAvgLicesensePerTime(string licenseName, GropByType type)
+        {
+            if (type.getType().Equals("year"))
+            {
+                return "SELECT AVG(licenseCount) FROM(SELECT COUNT(*) AS licenseCount " +
+                    "FROM Information i WHERE i.software='" + licenseName +
+                    "' AND i.year_in<>0 GROUP BY i.year_in)";
+            }
+            if (type.getType().Equals("month"))
+            {
+                return "SELECT AVG(licenseCount) FROM(SELECT COUNT(*) AS licenseCount " +
+                    "FROM Information i WHERE i.software='" + licenseName +
+                    "' AND i.year_in<>0 GROUP BY i.year_in, i.month_in)";
+            }
+            if (type.getType().Equals("day"))
+            {
+                return "SELECT AVG(licenseCount) FROM(SELECT COUNT(*) AS licenseCount " +
+                    "FROM Information i WHERE i.software='" + licenseName +
+                    "' AND i.year_in<>0 GROUP BY i.year_in, i.month_in, i.day_in)";
+            }
+            if (type.getType().Equals("hour"))
+            {
+                return "SELECT AVG(licenseCount) FROM(SELECT COUNT(*) AS licenseCount " +
+                    "FROM Information i WHERE i.software='" + licenseName +
+                    "' AND i.year_in<>0 GROUP BY i.year_in, i.month_in, i.day_in, " +
+                    "i.hours_in)";
+            }
+            if (type.getType().Equals("minute"))
+            {
+                return "SELECT AVG(licenseCount) FROM(SELECT COUNT(*) AS licenseCount " +
+                    "FROM Information i WHERE i.software='" + licenseName +
+                    "' AND i.year_in<>0 GROUP BY i.year_in, i.month_in, i.day_in, " +
+                    "i.hours_in, i.minute_in)";
+            }
+            if (type.getType().Equals("second"))
+            {
+                return "SELECT AVG(licenseCount) FROM(SELECT COUNT(*) AS licenseCount " +
+                    "FROM Information i WHERE i.software='" + licenseName +
+                    "' AND i.year_in<>0 GROUP BY i.year_in, i.month_in, i.day_in, " + 
+                    "i.hours_in, i.minute_in, i.second_in)";
+            }
+            //ДОБАВИТЬ ИСКЛЛЮЧЕНИЕ-НЕИЗВЕСТНЫЙ ТИП
+            throw new Exception();
+        }
+
         //Получение данных об использовании для всех видов лицензий
         public static string getDataOfUseAllLicenses(string[] unicLicenseNames, GropByType type)
         {

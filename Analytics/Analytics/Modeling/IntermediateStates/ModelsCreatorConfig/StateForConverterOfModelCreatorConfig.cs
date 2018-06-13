@@ -15,5 +15,6 @@ namespace Analytics.Modeling.IntermediateStates
         public DataSet numberBuyLicenses = new DataSet();
         public List<DataSet> numberOfGetingLicensesPerTime =
             new List<DataSet>();
+        public List<DataSet> avgLicensePerTime = new List<DataSet>();
     }
 }

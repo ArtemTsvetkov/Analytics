@@ -363,7 +363,10 @@ namespace Analytics
                 stateForConverter.numberOfGetingLicensesPerTime.Add(
                     getDataToConfigModelCreator(QueryConfigurator.getNumberOfLicenesForTime(
                         unicNames[i], config.getInterval())));
-            }
+                stateForConverter.avgLicensePerTime.Add(
+                    getDataToConfigModelCreator(QueryConfigurator.getAvgLicesensePerTime(
+                        unicNames[i], config.getInterval())));
+        }
 
             //Перевод типа DataSet к нужному формату
             DataConverter<StateForConverterOfModelCreatorConfig,
@@ -403,8 +406,9 @@ namespace Analytics
                         avgSquereRequestedTime = avgRequestedTime;
                     }
                     creatorsConfig.licenceInfo.Add(new LicenceInfo(unicNames[i], numberBuyLicense,
-                        avgDelayTimeInTheProcessing, avgSquereDelayTimeInTheProcessing, 400,
-                        avgRequestedTime, avgSquereRequestedTime));
+                        avgDelayTimeInTheProcessing, avgSquereDelayTimeInTheProcessing, 
+                        licencesInfo.avgLicensePerTime[i], avgRequestedTime, 
+                        avgSquereRequestedTime));
                 }  
             }
             //Вычисление матрицы корреляций

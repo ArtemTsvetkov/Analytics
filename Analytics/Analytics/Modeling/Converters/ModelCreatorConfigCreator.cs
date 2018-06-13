@@ -46,6 +46,24 @@ namespace Analytics.Modeling.Converters
                 answer.bufOfTimesOfInBetweenOutLicenses.Add(licence);
             }
 
+            answer.avgLicensePerTime = new int[data.avgLicensePerTime.Count()];
+            for (int i = 0; i < data.avgLicensePerTime.Count(); i++)
+            {
+                DataSet ds = data.avgLicensePerTime.ElementAt(i);
+                for (int m = 0; m < ds.Tables[0].Rows.Count; m++)
+                {
+                    if(ds.Tables[0].Rows[m][0].ToString().Equals(""))
+                    {
+                        answer.avgLicensePerTime[i] = 0;
+                    }
+                    else
+                    {
+                        answer.avgLicensePerTime[i] = Convert.ToInt32(double.Parse(ds.Tables[0].Rows[m][0].ToString()));
+                    }
+                }
+                
+            }
+
             //Далее следует блок для получения данных, которые потом будут 
             //проверены на корелляцию и нужно, чтобы все массивы бли одинаковой длинны
             int minLength = 0;
