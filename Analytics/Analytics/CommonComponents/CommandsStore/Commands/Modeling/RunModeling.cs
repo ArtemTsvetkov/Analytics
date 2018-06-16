@@ -13,6 +13,7 @@ namespace Analytics.CommandsStore.Commands.Modeling
     class RunModeling<TConfigType> : BasicCommand<ModelingReport, TConfigType>
     {
         private TConfigType configWithNoResetFlag;
+        private ModelsState backUpModelState;
 
         public RunModeling(BasicModel<ModelingReport, TConfigType>
             model, TConfigType configWithNoResetFlag) : base(model)
@@ -22,11 +23,14 @@ namespace Analytics.CommandsStore.Commands.Modeling
 
         public override void execute()
         {
-            modelsState = model.copySelf();
+            //modelsState = model.copySelf();
+            backUpModelState = model.copySelf();
             model.setConfig(configWithNoResetFlag);
             model.loadStore();
             model.calculationStatistics();
-            model.recoverySelf(modelsState);
+            modelsState = model.copySelf();
+            //model.recoverySelf(modelsState);
+            model.recoverySelf(backUpModelState);
         }
     }
 }

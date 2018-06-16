@@ -213,6 +213,32 @@ namespace Analytics.CommonComponents.Views
             {
                 form.progressBar1Elem.Value += step;
             }
+
+            //Обновление управляющих элементов
+            switch (report.interval.getType())
+            {
+                case "year":
+                    form.comboBox1Elem.SelectedIndex = 0;
+                    break;
+                case "month":
+                    form.comboBox1Elem.SelectedIndex = 1;
+                    break;
+                case "day":
+                    form.comboBox1Elem.SelectedIndex = 2;
+                    break;
+                case "hour":
+                    form.comboBox1Elem.SelectedIndex = 3;
+                    break;
+                case "minute":
+                    form.comboBox1Elem.SelectedIndex = 4;
+                    break;
+                case "second":
+                    form.comboBox1Elem.SelectedIndex = 5;
+                    break;
+                default:
+                    //ДОБАВИТЬ СЮДА ИСКЛЮЧЕНИЕ - НЕИЗВЕСТНЫЙ ТИП ИНТЕРВАЛА
+                    throw new Exception();
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Analytics.Modeling.Statistics;
+﻿using Analytics.Modeling.GroupByTypes;
+using Analytics.Modeling.Statistics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,8 @@ namespace Analytics.Modeling
         List<ElementsNameWithElementsValue> numberRunTranzactsOnLable;
         //Значение переменных
         List<ElementsNameWithElementsValue> variablesValue;
+        //рассматриваемый промежуток времени
+        public GropByType interval;
 
         //В конструкторе только создается нужная структура, с именами элементов, но во всех
         //значения стоит 0

@@ -41,6 +41,7 @@ namespace Analytics.Modeling.Converters
                     (double)data.numberOfStartsModel;
             }
 
+            avgReport.interval = data.interval;
             return avgReport;
         }
     }

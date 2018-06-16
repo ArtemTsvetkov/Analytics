@@ -106,28 +106,46 @@ namespace Analytics
             switch (comboBox1.SelectedIndex)
             {
                 case 0:
-                    marcovitsView.intervalChange(BasicType.year);
-                    modelingView.intervalChange(BasicType.year);
+                    //marcovitsView.intervalChange(BasicType.year);
+                    if(modelingView!=null)
+                    {
+                        modelingView.intervalChange(BasicType.year);
+                    }
                     break;
                 case 1:
-                    marcovitsView.intervalChange(BasicType.month);
-                    modelingView.intervalChange(BasicType.month);
+                    //marcovitsView.intervalChange(BasicType.month);
+                    if (modelingView != null)
+                    {
+                        modelingView.intervalChange(BasicType.month);
+                    }
                     break;
                 case 2:
-                    marcovitsView.intervalChange(BasicType.day);
-                    modelingView.intervalChange(BasicType.day);
+                    //marcovitsView.intervalChange(BasicType.day);
+                    if (modelingView != null)
+                    {
+                        modelingView.intervalChange(BasicType.day);
+                    }
                     break;
                 case 3:
-                    marcovitsView.intervalChange(BasicType.hour);
-                    modelingView.intervalChange(BasicType.hour);
+                    //marcovitsView.intervalChange(BasicType.hour);
+                    if (modelingView != null)
+                    {
+                        modelingView.intervalChange(BasicType.hour);
+                    }
                     break;
                 case 4:
-                    marcovitsView.intervalChange(BasicType.minute);
-                    modelingView.intervalChange(BasicType.minute);
+                    //marcovitsView.intervalChange(BasicType.minute);
+                    if (modelingView != null)
+                    {
+                        modelingView.intervalChange(BasicType.minute);
+                    }
                     break;
                 case 5:
-                    marcovitsView.intervalChange(BasicType.second);
-                    modelingView.intervalChange(BasicType.second);
+                    //marcovitsView.intervalChange(BasicType.second);
+                    if (modelingView != null)
+                    {
+                        modelingView.intervalChange(BasicType.second);
+                    }
                     break;
                 default:
                     //ДОБАВИТЬ СЮДА ИСКЛЮЧЕНИЕ - НЕИЗВЕСТНЫЙ ТИП ИНТЕРВАЛА
