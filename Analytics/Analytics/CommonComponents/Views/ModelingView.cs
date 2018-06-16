@@ -24,6 +24,10 @@ namespace Analytics.CommonComponents.Views
         int i = 0;
         //Для отражения прогресса найду шаг обновления строки прогресса;
         int step = 1;
+        //Для корректного отображения мапинга значение времени/стейта
+        //Из-за особенностей работы внутреннего стейта данной модели каждый
+        //3 откат не всегда верно показывал этот папинг
+        int numberOfGetingPreviousState = 0;
 
         public ModelingView(Form1 form)
         {
@@ -135,109 +139,117 @@ namespace Analytics.CommonComponents.Views
 
         public void getPreviousState()
         {
+            numberOfGetingPreviousState++;
             commandsStore.recoveryModel();
         }
 
         public void notify()
         {
-            ModelingReport report = control.getResult();
-            //Проверка строк в таблицах
-            if(form.dataGridView1Elem.Rows.Count != report.getVariablesValue().Count()
-                && report.getVariablesValue().Count()>0)
+            if (numberOfGetingPreviousState != 3)
             {
-                form.dataGridView1Elem.Rows.Clear();
-                form.dataGridView1Elem.Rows.Add(report.getVariablesValue().Count());
-                form.dataGridView1Elem.Rows.RemoveAt(0);
-            }
-            if (form.dataGridView2Elem.Rows.Count != report.getAvgTranzactsInQueue().Count()
-                && report.getAvgTranzactsInQueue().Count() > 0)
-            {
-                form.dataGridView2Elem.Rows.Clear();
-                form.dataGridView2Elem.Rows.Add(report.getAvgTranzactsInQueue().Count());
-                form.dataGridView2Elem.Rows.RemoveAt(0);
-            }
-            if (form.dataGridView3Elem.Rows.Count != report.getNumberRunTranzactsOnLable().Count()
-                && report.getNumberRunTranzactsOnLable().Count() > 0)
-            {
-                form.dataGridView3Elem.Rows.Clear();
-                form.dataGridView3Elem.Rows.Add(report.getNumberRunTranzactsOnLable().Count());
-                form.dataGridView3Elem.Rows.RemoveAt(0);
-            }
-        
+                ModelingReport report = control.getResult();
+                //Проверка строк в таблицах
+                if (form.dataGridView1Elem.Rows.Count != report.getVariablesValue().Count()
+                    && report.getVariablesValue().Count() > 0)
+                {
+                    form.dataGridView1Elem.Rows.Clear();
+                    form.dataGridView1Elem.Rows.Add(report.getVariablesValue().Count());
+                    form.dataGridView1Elem.Rows.RemoveAt(0);
+                }
+                if (form.dataGridView2Elem.Rows.Count != report.getAvgTranzactsInQueue().Count()
+                    && report.getAvgTranzactsInQueue().Count() > 0)
+                {
+                    form.dataGridView2Elem.Rows.Clear();
+                    form.dataGridView2Elem.Rows.Add(report.getAvgTranzactsInQueue().Count());
+                    form.dataGridView2Elem.Rows.RemoveAt(0);
+                }
+                if (form.dataGridView3Elem.Rows.Count != report.getNumberRunTranzactsOnLable().Count()
+                    && report.getNumberRunTranzactsOnLable().Count() > 0)
+                {
+                    form.dataGridView3Elem.Rows.Clear();
+                    form.dataGridView3Elem.Rows.Add(report.getNumberRunTranzactsOnLable().Count());
+                    form.dataGridView3Elem.Rows.RemoveAt(0);
+                }
 
-            if (report.getVariablesValue().Count() == 0)
-            {
-                form.dataGridView1Elem.Rows.Clear();
-            }
-            if (report.getAvgTranzactsInQueue().Count == 0)
-            {
-                form.dataGridView2Elem.Rows.Clear();
-            }
-            if (report.getNumberRunTranzactsOnLable().Count == 0)
-            {
-                form.dataGridView3Elem.Rows.Clear();
-            }
 
-            //Заполнение таблиц
-            for (int i = 0; i < report.getVariablesValue().Count(); i++)
-            {
-                form.dataGridView1Elem.Rows[i].Cells[0].Value =
-                    report.getVariablesValue().ElementAt(i).name;
-                form.dataGridView1Elem.Rows[i].Cells[1].Value =
-                    report.getVariablesValue().ElementAt(i).value;
+                if (report.getVariablesValue().Count() == 0)
+                {
+                    form.dataGridView1Elem.Rows.Clear();
+                }
+                if (report.getAvgTranzactsInQueue().Count == 0)
+                {
+                    form.dataGridView2Elem.Rows.Clear();
+                }
+                if (report.getNumberRunTranzactsOnLable().Count == 0)
+                {
+                    form.dataGridView3Elem.Rows.Clear();
+                }
 
-                form.dataGridView1Elem.Update();
+                //Заполнение таблиц
+                for (int i = 0; i < report.getVariablesValue().Count(); i++)
+                {
+                    form.dataGridView1Elem.Rows[i].Cells[0].Value =
+                        report.getVariablesValue().ElementAt(i).name;
+                    form.dataGridView1Elem.Rows[i].Cells[1].Value =
+                        report.getVariablesValue().ElementAt(i).value;
+
+                    form.dataGridView1Elem.Update();
+                }
+                for (int i = 0; i < report.getAvgTranzactsInQueue().Count(); i++)
+                {
+                    form.dataGridView2Elem.Rows[i].Cells[0].Value =
+                        report.getMaxTranzactsInQueue().ElementAt(i).name;
+                    form.dataGridView2Elem.Rows[i].Cells[1].Value =
+                        report.getMaxTranzactsInQueue().ElementAt(i).value;
+                    form.dataGridView2Elem.Rows[i].Cells[2].Value =
+                        report.getAvgTranzactsInQueue().ElementAt(i).value;
+
+                    form.dataGridView2Elem.Update();
+                }
+                for (int i = 0; i < report.getNumberRunTranzactsOnLable().Count(); i++)
+                {
+                    form.dataGridView3Elem.Rows[i].Cells[0].Value =
+                        report.getNumberRunTranzactsOnLable().ElementAt(i).name;
+                    form.dataGridView3Elem.Rows[i].Cells[1].Value =
+                        report.getNumberRunTranzactsOnLable().ElementAt(i).value;
+
+                    form.dataGridView3Elem.Update();
+                }
+
+                if (form.progressBar1Elem.Value != 100)
+                {
+                    form.progressBar1Elem.Value += step;
+                }
+
+                //Обновление управляющих элементов
+                switch (report.interval.getType())
+                {
+                    case "year":
+                        form.comboBox1Elem.SelectedIndex = 0;
+                        break;
+                    case "month":
+                        form.comboBox1Elem.SelectedIndex = 1;
+                        break;
+                    case "day":
+                        form.comboBox1Elem.SelectedIndex = 2;
+                        break;
+                    case "hour":
+                        form.comboBox1Elem.SelectedIndex = 3;
+                        break;
+                    case "minute":
+                        form.comboBox1Elem.SelectedIndex = 4;
+                        break;
+                    case "second":
+                        form.comboBox1Elem.SelectedIndex = 5;
+                        break;
+                    default:
+                        //ДОБАВИТЬ СЮДА ИСКЛЮЧЕНИЕ - НЕИЗВЕСТНЫЙ ТИП ИНТЕРВАЛА
+                        throw new Exception();
+                }
             }
-            for (int i=0; i<report.getAvgTranzactsInQueue().Count(); i++)
+            else
             {
-                form.dataGridView2Elem.Rows[i].Cells[0].Value = 
-                    report.getMaxTranzactsInQueue().ElementAt(i).name;
-                form.dataGridView2Elem.Rows[i].Cells[1].Value =
-                    report.getMaxTranzactsInQueue().ElementAt(i).value;
-                form.dataGridView2Elem.Rows[i].Cells[2].Value =
-                    report.getAvgTranzactsInQueue().ElementAt(i).value;
-
-                form.dataGridView2Elem.Update();
-            }
-            for (int i = 0; i < report.getNumberRunTranzactsOnLable().Count(); i++)
-            {
-                form.dataGridView3Elem.Rows[i].Cells[0].Value =
-                    report.getNumberRunTranzactsOnLable().ElementAt(i).name;
-                form.dataGridView3Elem.Rows[i].Cells[1].Value =
-                    report.getNumberRunTranzactsOnLable().ElementAt(i).value;
-
-                form.dataGridView3Elem.Update();
-            }
-
-            if (form.progressBar1Elem.Value != 100)
-            {
-                form.progressBar1Elem.Value += step;
-            }
-
-            //Обновление управляющих элементов
-            switch (report.interval.getType())
-            {
-                case "year":
-                    form.comboBox1Elem.SelectedIndex = 0;
-                    break;
-                case "month":
-                    form.comboBox1Elem.SelectedIndex = 1;
-                    break;
-                case "day":
-                    form.comboBox1Elem.SelectedIndex = 2;
-                    break;
-                case "hour":
-                    form.comboBox1Elem.SelectedIndex = 3;
-                    break;
-                case "minute":
-                    form.comboBox1Elem.SelectedIndex = 4;
-                    break;
-                case "second":
-                    form.comboBox1Elem.SelectedIndex = 5;
-                    break;
-                default:
-                    //ДОБАВИТЬ СЮДА ИСКЛЮЧЕНИЕ - НЕИЗВЕСТНЫЙ ТИП ИНТЕРВАЛА
-                    throw new Exception();
+                numberOfGetingPreviousState = 0;
             }
         }
     }

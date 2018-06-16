@@ -23,13 +23,11 @@ namespace Analytics.CommandsStore.Commands.Modeling
 
         public override void execute()
         {
-            //modelsState = model.copySelf();
             backUpModelState = model.copySelf();
             model.setConfig(configWithNoResetFlag);
             model.loadStore();
             model.calculationStatistics();
             modelsState = model.copySelf();
-            //model.recoverySelf(modelsState);
             model.recoverySelf(backUpModelState);
         }
     }
