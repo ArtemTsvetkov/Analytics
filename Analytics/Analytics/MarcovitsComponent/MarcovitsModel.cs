@@ -156,9 +156,8 @@ namespace Analytics
         public override ModelsState copySelf()
         {
             MarcovitsModelState copy = new MarcovitsModelState();
-            //copy.pathOfDataBase = state.pathOfDataBase;
-            //copy.tableOfDataBase = config.getTableOfDataBase();
             copy.income = state.income;
+            copy.interval = state.interval;
 
             if (state.unicSoftwareNames != null)
             {
@@ -201,10 +200,9 @@ namespace Analytics
 
         public override void recoverySelf(ModelsState oldState)
         {
-            //state.pathOfDataBase = oldState.pathOfDataBase;
-            //config.setTableOfDataBase(oldState.tableOfDataBase);
             MarcovitsModelState oldMarcovitsState = (MarcovitsModelState)oldState;
             state.income = oldMarcovitsState.income;
+            state.interval = oldMarcovitsState.interval;
 
             if (oldMarcovitsState.unicSoftwareNames != null)
             {
@@ -241,11 +239,14 @@ namespace Analytics
             {
                 state.data.Add(oldMarcovitsState.data.ElementAt(i).copy());
             }
+
+            notifyObservers();
         }
 
         public override void setConfig(MarcovitsConfig configData)
         {
             config = configData;
+            state.interval = config.getInterval();
         }
 
         public override MarcovitsModelState getResult()

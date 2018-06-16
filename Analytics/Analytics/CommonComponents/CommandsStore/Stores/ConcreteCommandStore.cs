@@ -22,12 +22,24 @@ namespace Analytics
         public void recoveryModel()
         {
             BasicCommand<TModelsTypeOfResult, TConfigType> command = pop();
-            command.recoveryModel();
+            if (command != null)
+            {
+                command.recoveryModel();
+            }
         }
 
         public BasicCommand<TModelsTypeOfResult, TConfigType> pop()
         {
-            return history.Last();
+            if (history.Count > 0)
+            {
+                BasicCommand<TModelsTypeOfResult, TConfigType> command = history.Last();
+                history.RemoveAt(history.Count - 1);
+                return command;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public void push(BasicCommand<TModelsTypeOfResult, TConfigType> command)

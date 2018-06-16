@@ -48,6 +48,7 @@ namespace Analytics
             state.idProcessingTranzact = oldState.idProcessingTranzact;
             state.numberOfStartsModel = oldState.numberOfStartsModel;
             state.rand = oldState.rand;
+            state.interval = oldState.interval;
 
             string[] originalRulesC = new string[oldState.originalRules.Count];
             oldState.originalRules.CopyTo(originalRulesC);
@@ -96,11 +97,18 @@ namespace Analytics
                 state.newRules.Add(oldState.newRules.ElementAt(i).clone());
             }
 
-            if(!config.getResetAllState())
+            if(config.getResetAllState())
+            {
+                state.report = oldState.report;
+                report = oldState.report;
+            }
+            else
             {
                 state.numberOfStartsModel = numberOfStartsModel;
                 state.report = report;
             }
+
+            notifyObservers();
         }
 
         public override ModelsState copySelf()
@@ -112,6 +120,8 @@ namespace Analytics
             copy.idProcessingTranzact = state.idProcessingTranzact;
             copy.numberOfStartsModel = state.numberOfStartsModel;
             copy.rand = state.rand;
+            copy.interval = state.interval;
+            copy.report = state.report;
 
             string[] originalRulesC = new string[state.originalRules.Count];
             state.originalRules.CopyTo(originalRulesC);
@@ -325,8 +335,6 @@ namespace Analytics
 
         public override void loadStore()
         {
-            state = new ModelingState();
-
             //чтение файла с конфигурацией модели
             /*TextFilesDataLoader loader = new TextFilesDataLoader();
             TextFilesConfigFieldsOnLoad loadersConfig =
@@ -477,6 +485,11 @@ namespace Analytics
         public override void setConfig(ModelingConfig configData)
         {
             config = configData;
+            state = new ModelingState();
+            state.report = new ModelingReport(state);
+            report = state.report;
+            state.interval = config.getInterval();
+            notifyObservers();
         }
 
         public override ModelingReport getResult()

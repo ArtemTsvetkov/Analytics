@@ -1,4 +1,5 @@
 ﻿using Analytics.Modeling;
+using Analytics.Modeling.GroupByTypes;
 using Analytics.Modeling.ModelingInstruments;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,9 @@ namespace Analytics
         //Текущий отчет по моделированию, объявлено здесь, только чтобы в 
         //конвертор результата пересылать
         public ModelingReport report;
+        public GropByType interval;
+        //Флаг, указывающий сброс всего стейта
+        private bool resetAllState = true;
     }
 }
 /*

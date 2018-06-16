@@ -51,6 +51,7 @@
     <Compile Include="CommonComponents\CommandsStore\Command.cs" />
     <Compile Include="CommonComponents\CommandsStore\CommandsStore.cs" />
     <Compile Include="CommonComponents\CommandsStore\Commands\Modeling\RunModeling.cs" />
+    <Compile Include="CommonComponents\CommandsStore\Commands\UpdateConfigCommand.cs" />
     <Compile Include="CommonComponents\CommandsStore\Stores\ConcreteCommandStore.cs" />
     <Compile Include="CommonComponents\BasicObjects\BasicModel.cs" />
     <Compile Include="CommonComponents\DataConverters\DistinctSoftwareNamesConverter.cs" />
@@ -66,8 +67,8 @@
     <Compile Include="CommonComponents\WorkWithFiles\Load\TextFilesDataLoader.cs" />
     <Compile Include="CommonComponents\WorkWithFiles\Save\TextFilesConfigFieldsOnSave.cs" />
     <Compile Include="CommonComponents\WorkWithFiles\Save\TextFilesDataSaver.cs" />
-    <Compile Include="CommonComponents\WorkWithMSAccess\MSAccessStateFields.cs" />
-    <Compile Include="CommonComponents\WorkWithMSAccess\MSAccessStorageForData.cs" />
+    <Compile Include="CommonComponents\WorkWithDataBase\MSAccessStateFields.cs" />
+    <Compile Include="CommonComponents\WorkWithDataBase\MSAccessStorageForData.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -84,8 +85,8 @@
     <Compile Include="MarcovitsComponent\MarcovitsModelState.cs" />
     <Compile Include="CommonComponents\Interfaces\Model.cs" />
     <Compile Include="CommonComponents\Interfaces\ModelsState.cs" />
-    <Compile Include="CommonComponents\WorkWithMSAccess\MSAccessDataSaver.cs" />
-    <Compile Include="CommonComponents\WorkWithMSAccess\MSAccessProxy.cs" />
+    <Compile Include="CommonComponents\WorkWithDataBase\MSAccessDataSaver.cs" />
+    <Compile Include="CommonComponents\WorkWithDataBase\MSAccessProxy.cs" />
     <Compile Include="CommonComponents\Interfaces\Observer.cs" />
     <Compile Include="Modeling\CheinPartOfOperationCreator.cs" />
     <Compile Include="Modeling\Config\ModelingConfig.cs" />

@@ -1,4 +1,5 @@
 ﻿using Analytics.CommandsStore.Commands.Modeling;
+using Analytics.CommonComponents.CommandsStore.Commands.Modeling;
 using Analytics.Modeling;
 using Analytics.Modeling.Config;
 using Analytics.Modeling.Converters;
@@ -17,6 +18,9 @@ namespace Analytics.CommonComponents.Views
     {
         private Form1 form;
         private ModelingModel control;
+        CommandsStore<ModelingReport, ModelingConfig> commandsStore =
+                new ConcreteCommandStore<ModelingReport, ModelingConfig>();
+        private ModelingConfig config;
         int i = 0;
         //Для отражения прогресса найду шаг обновления строки прогресса;
         int step = 1;
@@ -81,30 +85,31 @@ namespace Analytics.CommonComponents.Views
             coefficient7.Width = 100;
             form.dataGridView2Elem.Columns.Add(coefficient7);
             form.progressBar1Elem.Value = 0;
+
+
+            control = new ModelingModel();
+            control.subscribe(this);
+            config = new ModelingConfig(
+                "D:\\Files\\MsVisualProjects\\Diplom\\Логи\\testlogs\\Database3.accdb",
+                BasicType.year);
+            config.setWithKovar(false);
+            control.setConfig(config);
+            control.loadStore();
         }
 
         public void button1_Click()
         {
-            CommandsStore<ModelingReport, ModelingConfig> commandsStore =
-                new ConcreteCommandStore<ModelingReport, ModelingConfig>();
-
+            form.progressBar1Elem.Value = 0;
             step = 100 / int.Parse(form.numericUpDown1Elem.Value.ToString());
             List<string> rules = new List<string>();
             rules = ReadWriteTextFile.Read_from_file(form.textBox1Elem.Text);
             if (rules.ElementAt(0) != "Ошибка чтения, файл не существует или не доступен!")
             {
-                control = new ModelingModel();
-                control.subscribe(this);
-                ModelingConfig config = new ModelingConfig(
-                    "D:\\Files\\MsVisualProjects\\Diplom\\Логи\\testlogs\\Database3.accdb",
-                    BasicType.day);
-                config.setWithKovar(false);
-                control.setConfig(config);
-                control.loadStore();
                 ModelsState backupModel = control.copySelf();
                 for (i = 0; i < form.numericUpDown1Elem.Value; i++)//моделирование в соответствии с количеством итераций
                 {
-                    commandsStore.executeCommand(new RunModeling<ModelingConfig>(control));
+                    config.setResetAllState(false);
+                    commandsStore.executeCommand(new RunModeling<ModelingConfig>(control, config));
                 }
             }
             else
@@ -116,6 +121,21 @@ namespace Analytics.CommonComponents.Views
                 result = MessageBox.Show(message, caption);
                 form.progressBar1Elem.Value = 100;
             }
+        }
+
+        public void intervalChange(GropByType interval)
+        {
+            config = new ModelingConfig(
+                "D:\\Files\\MsVisualProjects\\Diplom\\Логи\\testlogs\\Database3.accdb",
+                interval);
+            config.setWithKovar(false);
+            commandsStore.executeCommand(
+                new UpdateConfigCommand<ModelingReport, ModelingConfig>(control, config));
+        }
+
+        public void getPreviousState()
+        {
+            commandsStore.recoveryModel();
         }
 
         public void notify()
@@ -142,6 +162,20 @@ namespace Analytics.CommonComponents.Views
                 form.dataGridView3Elem.Rows.Clear();
                 form.dataGridView3Elem.Rows.Add(report.getNumberRunTranzactsOnLable().Count());
                 form.dataGridView3Elem.Rows.RemoveAt(0);
+            }
+        
+
+            if (report.getVariablesValue().Count() == 0)
+            {
+                form.dataGridView1Elem.Rows.Clear();
+            }
+            if (report.getAvgTranzactsInQueue().Count == 0)
+            {
+                form.dataGridView2Elem.Rows.Clear();
+            }
+            if (report.getNumberRunTranzactsOnLable().Count == 0)
+            {
+                form.dataGridView3Elem.Rows.Clear();
             }
 
             //Заполнение таблиц
@@ -174,8 +208,11 @@ namespace Analytics.CommonComponents.Views
 
                 form.dataGridView3Elem.Update();
             }
-            
-            form.progressBar1Elem.Value += step;
+
+            if (form.progressBar1Elem.Value != 100)
+            {
+                form.progressBar1Elem.Value += step;
+            }
         }
     }
 }

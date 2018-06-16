@@ -1,6 +1,7 @@
 ﻿using Analytics.CommonComponents.BasicObjects;
 using Analytics.CommonComponents.Views;
 using Analytics.MarcovitsComponent.Converters;
+using Analytics.Modeling.GroupByTypes;
 using Modelirovanie;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,9 @@ namespace Analytics
         {
             InitializeComponent();
             marcovitsView = new MarcovitsView(this);
+            modelingView = new ModelingView(this);
             textBox1.Text = "D:\\Files\\MsVisualProjects\\Diplom\\AnaliticsMath\\rules2.txt";
+            comboBox1.SelectedIndex = 0;
         }
 
         public Chart chart1Elem
@@ -83,6 +86,11 @@ namespace Analytics
             get { return progressBar1; }
         }
 
+        public ComboBox comboBox1Elem
+        {
+            get { return comboBox1; }
+        }
+
         private void button2_Click(object sender, EventArgs e)
         {
             marcovitsView.button2_Click();
@@ -90,8 +98,47 @@ namespace Analytics
 
         private void button1_Click(object sender, EventArgs e)
         {
-            modelingView = new ModelingView(this);
             modelingView.button1_Click();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (comboBox1.SelectedIndex)
+            {
+                case 0:
+                    marcovitsView.intervalChange(BasicType.year);
+                    modelingView.intervalChange(BasicType.year);
+                    break;
+                case 1:
+                    marcovitsView.intervalChange(BasicType.month);
+                    modelingView.intervalChange(BasicType.month);
+                    break;
+                case 2:
+                    marcovitsView.intervalChange(BasicType.day);
+                    modelingView.intervalChange(BasicType.day);
+                    break;
+                case 3:
+                    marcovitsView.intervalChange(BasicType.hour);
+                    modelingView.intervalChange(BasicType.hour);
+                    break;
+                case 4:
+                    marcovitsView.intervalChange(BasicType.minute);
+                    modelingView.intervalChange(BasicType.minute);
+                    break;
+                case 5:
+                    marcovitsView.intervalChange(BasicType.second);
+                    modelingView.intervalChange(BasicType.second);
+                    break;
+                default:
+                    //ДОБАВИТЬ СЮДА ИСКЛЮЧЕНИЕ - НЕИЗВЕСТНЫЙ ТИП ИНТЕРВАЛА
+                    throw new Exception();
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            marcovitsView.getPreviousState();
+            modelingView.getPreviousState();
         }
     }
 }

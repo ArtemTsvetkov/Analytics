@@ -1,4 +1,5 @@
 ﻿using Analytics.CommonComponents.BasicObjects;
+using Analytics.CommonComponents.CommandsStore.Commands.Modeling;
 using Analytics.MarcovitsComponent.Config;
 using Analytics.MarcovitsComponent.Converters;
 using Analytics.Modeling.GroupByTypes;
@@ -16,23 +17,37 @@ namespace Analytics.CommonComponents.Views
     {
         private Form1 form;
         private BasicModel<MarcovitsModelState, MarcovitsConfig> model;
+        CommandsStore<MarcovitsModelState, MarcovitsConfig> commandsStore =
+                new ConcreteCommandStore<MarcovitsModelState, MarcovitsConfig>();
 
         public MarcovitsView(Form1 form)
         {
             this.form = form;
+            model = new MarcovitsModel();
+            MarcovitsConfig config = new MarcovitsConfig(
+                "D:\\Files\\MsVisualProjects\\Diplom\\Логи\\testlogs\\Database3.accdb",
+                BasicType.year);
+            model.setConfig(config);
+            model.subscribe(this);
         }
 
         public void button2_Click()
         {
-            CommandsStore<MarcovitsModelState, MarcovitsConfig> commandsStore =
-                new ConcreteCommandStore<MarcovitsModelState, MarcovitsConfig>();
-            model = new MarcovitsModel();
+            commandsStore.executeCommand(new GetMarcovitsStatistcCommand<MarcovitsConfig>(model));
+        }
+
+        public void intervalChange(GropByType interval)
+        {
             MarcovitsConfig config = new MarcovitsConfig(
                 "D:\\Files\\MsVisualProjects\\Diplom\\Логи\\testlogs\\Database3.accdb",
-                BasicType.hour);
-            model.setConfig(config);
-            model.subscribe(this);
-            commandsStore.executeCommand(new GetMarcovitsStatistcCommand<MarcovitsConfig>(model));
+                interval);
+            commandsStore.executeCommand(
+                new UpdateConfigCommand<MarcovitsModelState, MarcovitsConfig>(model, config));
+        }
+
+        public void getPreviousState()
+        {
+            commandsStore.recoveryModel();
         }
 
         public void notify()
@@ -50,7 +65,7 @@ namespace Analytics.CommonComponents.Views
             {
                 plusStr = plusStr.Remove(5, (plusStr.Length - 5));
             }
-            form.label5Elem.Text = "Доходность:" + plusStr.ToString()+"%";
+            form.label5Elem.Text = "Доходность:" + plusStr.ToString() + "%";
             //Вывод данных о риске
             form.chart2Elem.Series[0].Points.Clear();
             form.chart2Elem.Series[0].Points.AddXY(0, (state.risk[0, 0] * 100));
@@ -60,11 +75,36 @@ namespace Analytics.CommonComponents.Views
             double mines = state.risk[0, 0] * 100;
             form.label6Elem.Visible = true;
             string minesStr = mines.ToString();
-            if(minesStr.Length > 4)
+            if (minesStr.Length > 4)
             {
                 minesStr = minesStr.Remove(5, (minesStr.Length - 5));
             }
-            form.label6Elem.Text = "Риск:" + minesStr+"%";
+            form.label6Elem.Text = "Риск:" + minesStr + "%";
+            //Обновление управляющих элементов
+            switch (state.interval.getType())
+            {
+                case "year":
+                    form.comboBox1Elem.SelectedIndex = 0;
+                    break;
+                case "month":
+                    form.comboBox1Elem.SelectedIndex = 1;
+                    break;
+                case "day":
+                    form.comboBox1Elem.SelectedIndex = 2;
+                    break;
+                case "hour":
+                    form.comboBox1Elem.SelectedIndex = 3;
+                    break;
+                case "minute":
+                    form.comboBox1Elem.SelectedIndex = 4;
+                    break;
+                case "second":
+                    form.comboBox1Elem.SelectedIndex = 5;
+                    break;
+                default:
+                    //ДОБАВИТЬ СЮДА ИСКЛЮЧЕНИЕ - НЕИЗВЕСТНЫЙ ТИП ИНТЕРВАЛА
+                    throw new Exception();
+            }
         }
     }
 }
