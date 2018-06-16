@@ -37,8 +37,6 @@ namespace Analytics
         //конвертор результата пересылать
         public ModelingReport report;
         public GropByType interval;
-        //Флаг, указывающий сброс всего стейта
-        private bool resetAllState = true;
     }
 }
 /*

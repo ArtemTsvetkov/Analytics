@@ -485,8 +485,11 @@ namespace Analytics
         public override void setConfig(ModelingConfig configData)
         {
             config = configData;
-            state = new ModelingState();
-            state.report = new ModelingReport(state);
+            if (configData.getResetAllState())
+            {
+                state = new ModelingState();
+                state.report = new ModelingReport(state);
+            }
             report = state.report;
             state.interval = config.getInterval();
             notifyObservers();

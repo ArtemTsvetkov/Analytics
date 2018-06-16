@@ -10,7 +10,7 @@ namespace Analytics.Modeling.Config
     class ModelingConfig
     {
         //Флаг, указывающий сброс всего стейта
-        private bool resetAllState = false;
+        private bool resetAllState = true;
         //Путь до БД
         private string pathOfDataBase;
         //Флаг использования корелляции между запроса на лицензии
