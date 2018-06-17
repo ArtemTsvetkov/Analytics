@@ -30,6 +30,8 @@ namespace Analytics
             textBox1.Text = "D:\\Files\\MsVisualProjects\\Diplom\\AnaliticsMath\\rules2.txt";
             comboBox1.SelectedIndex = 0;
             comboBox3.SelectedIndex = 0;
+            comboBox2.SelectedIndex = 0;
+            comboBox4.SelectedIndex = 0;
         }
 
         public Chart chart1Elem
@@ -207,6 +209,104 @@ namespace Analytics
         private void button3_Click(object sender, EventArgs e)
         {
             marcovitsView.getPreviousState();
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            modelingView.flagUseCovarChange(checkBox1.Checked);
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectTab(3);
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectTab(3);
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectTab(3);
+        }
+
+        private void button16_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectTab(0);
+        }
+
+        private void button23_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectTab(0);
+        }
+
+        private void button17_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectTab(1);
+        }
+
+        private void button21_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectTab(1);
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (comboBox2.SelectedIndex)
+            {
+                case 0:
+                    /*if (modelingView != null)
+                    {
+                        modelingView.intervalChange(BasicType.year);
+                    }*/
+                    break;
+                case 1:
+                    /*if (modelingView != null)
+                    {
+                        modelingView.intervalChange(BasicType.month);
+                    }*/
+                    break;
+                case 2:
+                    /*if (modelingView != null)
+                    {
+                        modelingView.intervalChange(BasicType.day);
+                    }*/
+                    tabControl1.SelectTab(2);
+                    break;
+                default:
+                    //ДОБАВИТЬ СЮДА ИСКЛЮЧЕНИЕ - НЕИЗВЕСТНЫЙ ТИП
+                    throw new Exception();
+            }
+        }
+
+        private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (comboBox4.SelectedIndex)
+            {
+                case 0:
+                    /*if (modelingView != null)
+                    {
+                        modelingView.intervalChange(BasicType.year);
+                    }*/
+                    break;
+                case 1:
+                    /*if (modelingView != null)
+                    {
+                        modelingView.intervalChange(BasicType.month);
+                    }*/
+                    break;
+                case 2:
+                    /*if (modelingView != null)
+                    {
+                        modelingView.intervalChange(BasicType.day);
+                    }*/
+                    tabControl1.SelectTab(2);
+                    break;
+                default:
+                    //ДОБАВИТЬ СЮДА ИСКЛЮЧЕНИЕ - НЕИЗВЕСТНЫЙ ТИП
+                    throw new Exception();
+            }
         }
     }
 }

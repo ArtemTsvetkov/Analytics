@@ -133,7 +133,14 @@ namespace Analytics.CommonComponents.Views
             config = new ModelingConfig(
                 "D:\\Files\\MsVisualProjects\\Diplom\\Логи\\testlogs\\Database3.accdb",
                 interval);
-            config.setWithKovar(false);
+            commandsStore.executeCommand(
+                new UpdateConfigCommand<ModelingReport, ModelingConfig>(control, config));
+            form.progressBar1Elem.Value = 0;
+        }
+
+        public void flagUseCovarChange(bool flag)
+        {
+            config.setWithKovar(flag);
             commandsStore.executeCommand(
                 new UpdateConfigCommand<ModelingReport, ModelingConfig>(control, config));
             form.progressBar1Elem.Value = 0;
