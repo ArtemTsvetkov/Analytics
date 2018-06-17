@@ -99,13 +99,13 @@ namespace Analytics
 
             if(config.getResetAllState())
             {
-                state.report = oldState.report;
-                report = oldState.report;
+                state.report = oldState.report.copyReport(oldState);
+                report = oldState.report.copyReport(oldState);
             }
             else
             {
                 state.numberOfStartsModel = numberOfStartsModel;
-                state.report = report;
+                state.report = report.copyReport(state);
             }
 
             notifyObservers();
@@ -121,7 +121,7 @@ namespace Analytics
             copy.numberOfStartsModel = state.numberOfStartsModel;
             copy.rand = state.rand;
             copy.interval = state.interval;
-            copy.report = state.report;
+            copy.report = state.report.copyReport(state);
 
             string[] originalRulesC = new string[state.originalRules.Count];
             state.originalRules.CopyTo(originalRulesC);
@@ -328,7 +328,7 @@ namespace Analytics
                 state.report = new ModelingReport(state);
             }
             state.report.updateReport(state);
-            report = state.report;
+            report = state.report.copyReport(state);
 
             notifyObservers();
         }
@@ -490,7 +490,7 @@ namespace Analytics
                 state = new ModelingState();
                 state.report = new ModelingReport(state);
             }
-            report = state.report;
+            report = state.report.copyReport(state);
             state.interval = config.getInterval();
             notifyObservers();
         }

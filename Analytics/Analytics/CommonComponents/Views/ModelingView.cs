@@ -99,12 +99,13 @@ namespace Analytics.CommonComponents.Views
             config.setWithKovar(false);
             control.setConfig(config);
             control.loadStore();
+            form.progressBar1Elem.Value = 0;
         }
 
         public void button1_Click()
         {
             form.progressBar1Elem.Value = 0;
-            step = 100 / int.Parse(form.numericUpDown1Elem.Value.ToString());
+            step = 100 / int.Parse(form.numericUpDown1Elem.Value.ToString())/3;
             List<string> rules = new List<string>();
             rules = ReadWriteTextFile.Read_from_file(form.textBox1Elem.Text);
             if (rules.ElementAt(0) != "Ошибка чтения, файл не существует или не доступен!")
@@ -135,11 +136,18 @@ namespace Analytics.CommonComponents.Views
             config.setWithKovar(false);
             commandsStore.executeCommand(
                 new UpdateConfigCommand<ModelingReport, ModelingConfig>(control, config));
+            form.progressBar1Elem.Value = 0;
         }
 
         public void getPreviousState()
         {
             numberOfGetingPreviousState++;
+            ModelingConfig configWithReset = new ModelingConfig(
+                        "D:\\Files\\MsVisualProjects\\Diplom\\Логи\\testlogs\\Database3.accdb",
+                        config.getInterval());
+            configWithReset.setWithKovar(config.getWithKovar());
+            configWithReset.setResetAllState(true);
+            control.setConfig(configWithReset);
             commandsStore.recoveryModel();
         }
 
@@ -216,9 +224,13 @@ namespace Analytics.CommonComponents.Views
                     form.dataGridView3Elem.Update();
                 }
 
-                if (form.progressBar1Elem.Value != 100)
+                if (form.progressBar1Elem.Value + step < 100)
                 {
                     form.progressBar1Elem.Value += step;
+                }
+                else
+                {
+                    form.progressBar1Elem.Value = 0;
                 }
 
                 //Обновление управляющих элементов

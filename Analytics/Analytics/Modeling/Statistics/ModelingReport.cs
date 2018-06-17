@@ -123,26 +123,56 @@ namespace Analytics.Modeling
             
             for(int i=0; i<maxTranzactsInQueue.Count(); i++)
             {
-                copy.maxTranzactsInQueue.RemoveAt(i);
-                copy.maxTranzactsInQueue.Insert(i, maxTranzactsInQueue.ElementAt(i).copy());
+                if((copy.maxTranzactsInQueue.Count - 1) >= i)
+                {
+                    copy.maxTranzactsInQueue.RemoveAt(i);
+                    copy.maxTranzactsInQueue.Insert(i, maxTranzactsInQueue.ElementAt(i).copy());
+                }
+                else
+                {
+                    copy.maxTranzactsInQueue.Add(maxTranzactsInQueue.ElementAt(i).copy());
+                }
             }
 
             for (int i = 0; i < avgTranzactsInQueue.Count(); i++)
             {
-                copy.avgTranzactsInQueue.RemoveAt(i);
-                copy.avgTranzactsInQueue.Insert(i, avgTranzactsInQueue.ElementAt(i).copy());
+                if ((copy.avgTranzactsInQueue.Count - 1) >= i)
+                {
+                    copy.avgTranzactsInQueue.RemoveAt(i);
+                    copy.avgTranzactsInQueue.Insert(i, avgTranzactsInQueue.ElementAt(i).copy());
+                }
+                else
+                {
+                    copy.avgTranzactsInQueue.Add(avgTranzactsInQueue.ElementAt(i).copy());
+                }
             }
 
             for (int i = 0; i < numberRunTranzactsOnLable.Count(); i++)
             {
-                copy.numberRunTranzactsOnLable.RemoveAt(i);
-                copy.numberRunTranzactsOnLable.Insert(i, numberRunTranzactsOnLable.ElementAt(i).copy());
+                if ((copy.numberRunTranzactsOnLable.Count - 1) >= i)
+                {
+                    copy.numberRunTranzactsOnLable.RemoveAt(i);
+                    copy.numberRunTranzactsOnLable.Insert(i, numberRunTranzactsOnLable.
+                        ElementAt(i).copy());
+                }
+                else
+                {
+                    copy.numberRunTranzactsOnLable.Add(numberRunTranzactsOnLable.
+                        ElementAt(i).copy());
+                }
             }
 
             for (int i = 0; i < variablesValue.Count(); i++)
             {
-                copy.variablesValue.RemoveAt(i);
-                copy.variablesValue.Insert(i, variablesValue.ElementAt(i).copy());
+                if ((copy.variablesValue.Count - 1) >= i)
+                {
+                    copy.variablesValue.RemoveAt(i);
+                    copy.variablesValue.Insert(i, variablesValue.ElementAt(i).copy());
+                }
+                else
+                {
+                    copy.variablesValue.Add(variablesValue.ElementAt(i).copy());
+                }
             }
 
             return copy;
