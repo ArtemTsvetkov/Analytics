@@ -1,5 +1,7 @@
 ﻿using Analytics.CommandsStore.Commands.Modeling;
 using Analytics.CommonComponents.CommandsStore.Commands.Modeling;
+using Analytics.CommonComponents.Interfaces.Data;
+using Analytics.CommonComponents.WorkWithFiles.Load;
 using Analytics.Modeling;
 using Analytics.Modeling.Config;
 using Analytics.Modeling.Converters;
@@ -106,26 +108,13 @@ namespace Analytics.CommonComponents.Views
         {
             form.progressBar1Elem.Value = 0;
             step = 100 / int.Parse(form.numericUpDown1Elem.Value.ToString())/3;
-            List<string> rules = new List<string>();
-            rules = ReadWriteTextFile.Read_from_file(form.textBox1Elem.Text);
-            if (rules.ElementAt(0) != "Ошибка чтения, файл не существует или не доступен!")
+            ModelsState backupModel = control.copySelf();
+            for (i = 0; i < form.numericUpDown1Elem.Value; i++)//моделирование в соответствии с количеством итераций
             {
-                ModelsState backupModel = control.copySelf();
-                for (i = 0; i < form.numericUpDown1Elem.Value; i++)//моделирование в соответствии с количеством итераций
-                {
-                    config.setResetAllState(false);
-                    commandsStore.executeCommand(new RunModeling<ModelingConfig>(control, config));
-                }
+                config.setResetAllState(false);
+                commandsStore.executeCommand(new RunModeling<ModelingConfig>(control, config));
             }
-            else
-            {
-                form.label12Elem.Text = "Ошибка моделирования";
-                string message = "Ошибка чтения файла команд";
-                string caption = "Ошибка";
-                DialogResult result;
-                result = MessageBox.Show(message, caption);
-                form.progressBar1Elem.Value = 100;
-            }
+            form.progressBar1Elem.Value = 100;
         }
 
         public void intervalChange(GropByType interval)
