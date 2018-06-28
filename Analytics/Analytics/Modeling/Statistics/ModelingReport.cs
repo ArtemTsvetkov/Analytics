@@ -1,4 +1,5 @@
-﻿using Analytics.Modeling.Statistics;
+﻿using Analytics.Modeling.GroupByTypes;
+using Analytics.Modeling.Statistics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,8 @@ namespace Analytics.Modeling
         List<ElementsNameWithElementsValue> numberRunTranzactsOnLable;
         //Значение переменных
         List<ElementsNameWithElementsValue> variablesValue;
+        //рассматриваемый промежуток времени
+        public GropByType interval;
 
         //В конструкторе только создается нужная структура, с именами элементов, но во всех
         //значения стоит 0
@@ -53,29 +56,64 @@ namespace Analytics.Modeling
             numberRunTranzactsOnLable = new List<ElementsNameWithElementsValue>();
             variablesValue = new List<ElementsNameWithElementsValue>();
 
-
-            for (int i = 0; i < state.queues.Count(); i++)
+            if (state.report != null && state.report.maxTranzactsInQueue.Count != 0
+                & state.report.avgTranzactsInQueue.Count != 0
+                & state.report.numberRunTranzactsOnLable.Count != 0
+                & state.report.numberRunTranzactsOnLable.Count != 0)
             {
-                maxTranzactsInQueue.Add(
-                    new ElementsNameWithElementsValue(state.queues.ElementAt(i).get_name(),0));
+                for (int i = 0; i < state.report.getMaxTranzactsInQueue().Count(); i++)
+                {
+                    maxTranzactsInQueue.Add(
+                        new ElementsNameWithElementsValue(
+                            state.report.getMaxTranzactsInQueue().ElementAt(i).name, 0));
+                }
+
+                for (int i = 0; i < state.report.getAvgTranzactsInQueue().Count(); i++)
+                {
+                    avgTranzactsInQueue.Add(
+                        new ElementsNameWithElementsValue(
+                            state.report.getAvgTranzactsInQueue().ElementAt(i).name, 0));
+                }
+
+                for (int i = 0; i < state.report.numberRunTranzactsOnLable.Count(); i++)
+                {
+                    numberRunTranzactsOnLable.Add(
+                        new ElementsNameWithElementsValue(
+                            state.report.numberRunTranzactsOnLable.ElementAt(i).name, 0));
+                }
+
+                for (int i = 0; i < state.report.getVariablesValue().Count(); i++)
+                {
+                    variablesValue.Add(
+                        new ElementsNameWithElementsValue(
+                            state.report.getVariablesValue().ElementAt(i).name, 0));
+                }
             }
-
-            for (int i = 0; i < state.queues.Count(); i++)
+            else
             {
-                avgTranzactsInQueue.Add(
-                    new ElementsNameWithElementsValue(state.queues.ElementAt(i).get_name(),0));
-            }
+                for (int i = 0; i < state.queues.Count(); i++)
+                {
+                    maxTranzactsInQueue.Add(
+                        new ElementsNameWithElementsValue(state.queues.ElementAt(i).get_name(), 0));
+                }
 
-            for (int i = 0; i < state.lables.Count(); i++)
-            {
-                numberRunTranzactsOnLable.Add(
-                    new ElementsNameWithElementsValue(state.lables.ElementAt(i).get_name(),0));
-            }
+                for (int i = 0; i < state.queues.Count(); i++)
+                {
+                    avgTranzactsInQueue.Add(
+                        new ElementsNameWithElementsValue(state.queues.ElementAt(i).get_name(), 0));
+                }
 
-            for (int i = 0; i < state.variables.Count(); i++)
-            {
-                variablesValue.Add(
-                    new ElementsNameWithElementsValue(state.variables.ElementAt(i).get_name(),0));
+                for (int i = 0; i < state.lables.Count(); i++)
+                {
+                    numberRunTranzactsOnLable.Add(
+                        new ElementsNameWithElementsValue(state.lables.ElementAt(i).get_name(), 0));
+                }
+
+                for (int i = 0; i < state.variables.Count(); i++)
+                {
+                    variablesValue.Add(
+                        new ElementsNameWithElementsValue(state.variables.ElementAt(i).get_name(), 0));
+                }
             }
         }
 
@@ -85,26 +123,56 @@ namespace Analytics.Modeling
             
             for(int i=0; i<maxTranzactsInQueue.Count(); i++)
             {
-                copy.maxTranzactsInQueue.RemoveAt(i);
-                copy.maxTranzactsInQueue.Insert(i, maxTranzactsInQueue.ElementAt(i).copy());
+                if((copy.maxTranzactsInQueue.Count - 1) >= i)
+                {
+                    copy.maxTranzactsInQueue.RemoveAt(i);
+                    copy.maxTranzactsInQueue.Insert(i, maxTranzactsInQueue.ElementAt(i).copy());
+                }
+                else
+                {
+                    copy.maxTranzactsInQueue.Add(maxTranzactsInQueue.ElementAt(i).copy());
+                }
             }
 
             for (int i = 0; i < avgTranzactsInQueue.Count(); i++)
             {
-                copy.avgTranzactsInQueue.RemoveAt(i);
-                copy.avgTranzactsInQueue.Insert(i, avgTranzactsInQueue.ElementAt(i).copy());
+                if ((copy.avgTranzactsInQueue.Count - 1) >= i)
+                {
+                    copy.avgTranzactsInQueue.RemoveAt(i);
+                    copy.avgTranzactsInQueue.Insert(i, avgTranzactsInQueue.ElementAt(i).copy());
+                }
+                else
+                {
+                    copy.avgTranzactsInQueue.Add(avgTranzactsInQueue.ElementAt(i).copy());
+                }
             }
 
             for (int i = 0; i < numberRunTranzactsOnLable.Count(); i++)
             {
-                copy.numberRunTranzactsOnLable.RemoveAt(i);
-                copy.numberRunTranzactsOnLable.Insert(i, numberRunTranzactsOnLable.ElementAt(i).copy());
+                if ((copy.numberRunTranzactsOnLable.Count - 1) >= i)
+                {
+                    copy.numberRunTranzactsOnLable.RemoveAt(i);
+                    copy.numberRunTranzactsOnLable.Insert(i, numberRunTranzactsOnLable.
+                        ElementAt(i).copy());
+                }
+                else
+                {
+                    copy.numberRunTranzactsOnLable.Add(numberRunTranzactsOnLable.
+                        ElementAt(i).copy());
+                }
             }
 
             for (int i = 0; i < variablesValue.Count(); i++)
             {
-                copy.variablesValue.RemoveAt(i);
-                copy.variablesValue.Insert(i, variablesValue.ElementAt(i).copy());
+                if ((copy.variablesValue.Count - 1) >= i)
+                {
+                    copy.variablesValue.RemoveAt(i);
+                    copy.variablesValue.Insert(i, variablesValue.ElementAt(i).copy());
+                }
+                else
+                {
+                    copy.variablesValue.Add(variablesValue.ElementAt(i).copy());
+                }
             }
 
             return copy;
@@ -121,8 +189,8 @@ namespace Analytics.Modeling
             for (int i = 0; i < state.queues.Count(); i++)
             {
                 avgTranzactsInQueue.ElementAt(i).value +=
-                    state.queues.ElementAt(i).get_sum_tranzacts_in_queue();/* /
-                    (double)state.time_of_modeling;*/
+                    state.queues.ElementAt(i).get_sum_tranzacts_in_queue()/
+                    (double)state.time_of_modeling;
             }
 
             for (int i = 0; i < state.lables.Count(); i++)

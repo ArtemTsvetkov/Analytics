@@ -5,6 +5,7 @@ using Analytics.CommonComponents.Interfaces.Data;
 using Analytics.CommonComponents.Math;
 using Analytics.CommonComponents.WorkWithMSAccess;
 using Analytics.MarcovitsComponent.Config;
+using Analytics.Modeling.GroupByTypes;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -31,12 +32,18 @@ namespace Analytics
         {
             //Получение уникальных имен лицензий
             DataSet ds = configProxyForLoadDataFromBDAndExecute(
-                QueryConfigurator.getUnicLicensesName(config.getTableOfDataBase()));
+                QueryConfigurator.getUnicLicensesName());
             state.unicSoftwareNames = unucNamesConverter.convert(ds);
             //Формирование запроса на получение данных
             ds = configProxyForLoadDataFromBDAndExecute(QueryConfigurator.
-                getDataOfUseAllLicenses(state.unicSoftwareNames));
+                getDataOfUseAllLicenses(state.unicSoftwareNames, config.getInterval()));
             state.data = converter.convert(ds);
+            if (state.data.Count < 5)
+            {
+                //ДОБАВИТЬ ВЫЗОВ ИСКЛЮЧЕНИЯ-НЕДОСТАТОЧНО ДАННЫХ ДЛЯ АНАЛИЗА
+                throw new Exception();
+            }
+
 
             //Рассчет средних значений кол-ва лицензий
             state.avgNumbersUseLicense = new double[state.unicSoftwareNames.Length];
@@ -140,13 +147,8 @@ namespace Analytics
         {
             DataWorker<MSAccessStateFields, DataSet> accessProxy = new MSAccessProxy();
             //получение значения id
-            List<string> list = new List<string>();
-            list.Add("SELECT user_name, user_host, software FROM " + config.getTableOfDataBase());
-            MSAccessStateFields configProxy =
-                new MSAccessStateFields(config.getPathOfDataBase(), list);
-            accessProxy.setConfig(configProxy);
-            accessProxy.execute();
-            DataSet ds = accessProxy.getResult();
+            DataSet ds = configProxyForLoadDataFromBDAndExecute(
+                QueryConfigurator.getDataOfUsersUseLicenses());
             state.data = converter.convert(ds);
             notifyObservers();
         }
@@ -154,9 +156,8 @@ namespace Analytics
         public override ModelsState copySelf()
         {
             MarcovitsModelState copy = new MarcovitsModelState();
-            //copy.pathOfDataBase = state.pathOfDataBase;
-            //copy.tableOfDataBase = config.getTableOfDataBase();
             copy.income = state.income;
+            copy.interval = state.interval;
 
             if (state.unicSoftwareNames != null)
             {
@@ -199,10 +200,9 @@ namespace Analytics
 
         public override void recoverySelf(ModelsState oldState)
         {
-            //state.pathOfDataBase = oldState.pathOfDataBase;
-            //config.setTableOfDataBase(oldState.tableOfDataBase);
             MarcovitsModelState oldMarcovitsState = (MarcovitsModelState)oldState;
             state.income = oldMarcovitsState.income;
+            state.interval = oldMarcovitsState.interval;
 
             if (oldMarcovitsState.unicSoftwareNames != null)
             {
@@ -239,11 +239,14 @@ namespace Analytics
             {
                 state.data.Add(oldMarcovitsState.data.ElementAt(i).copy());
             }
+
+            notifyObservers();
         }
 
         public override void setConfig(MarcovitsConfig configData)
         {
             config = configData;
+            state.interval = config.getInterval();
         }
 
         public override MarcovitsModelState getResult()

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Analytics.Modeling.GroupByTypes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,32 +10,28 @@ namespace Analytics.MarcovitsComponent.Config
     class MarcovitsConfig
     {
         private string pathOfDataBase;
-        private string tableOfDataBase;
+        //Рассматриваемый промежуток времени
+        private GropByType interval;
 
-        public MarcovitsConfig(string pathOfDataBase, string tableOfDataBase)
+        public MarcovitsConfig(string pathOfDataBase, GropByType interval)
         {
             this.pathOfDataBase = pathOfDataBase;
-            this.tableOfDataBase = tableOfDataBase;
+            this.interval = interval;
         }
         
+        public GropByType getInterval()
+        {
+            return interval;
+        }
+
         public string getPathOfDataBase()
         {
             return pathOfDataBase;
         }
 
-        public string getTableOfDataBase()
-        {
-            return tableOfDataBase;
-        }
-
         public void setPathOfDataBase(string pathOfDataBase)
         {
             this.pathOfDataBase = pathOfDataBase;
-        }
-
-        public void setTableOfDataBase(string tableOfDataBase)
-        {
-            this.tableOfDataBase = tableOfDataBase;
         }
     }
 }

@@ -28,8 +28,8 @@ namespace Analytics.Modeling.Converters
                     new MappingLicenseResult(data.unicNames.ElementAt(i), ds.Tables[0].Rows.Count);
                 for (int m = 0; m < (ds.Tables[0].Rows.Count-1); m++)
                 {
-                    licence.characteristic[m] = int.Parse(ds.Tables[0].Rows[m+1][0].ToString()) - 
-                        int.Parse(ds.Tables[0].Rows[m][0].ToString());
+                    licence.characteristic[m] = double.Parse(ds.Tables[0].Rows[m+1][0].ToString()) -
+                        double.Parse(ds.Tables[0].Rows[m][0].ToString());
                 }
                 answer.bufOftimeBetweenQueryToGetLicenses.Add(licence);
             }
@@ -41,9 +41,27 @@ namespace Analytics.Modeling.Converters
                     new MappingLicenseResult(data.unicNames.ElementAt(i), ds.Tables[0].Rows.Count);
                 for (int m = 0; m < ds.Tables[0].Rows.Count; m++)
                 {
-                    licence.characteristic[m]=int.Parse(ds.Tables[0].Rows[m][0].ToString());
+                    licence.characteristic[m] = double.Parse(ds.Tables[0].Rows[m][0].ToString());
                 }
                 answer.bufOfTimesOfInBetweenOutLicenses.Add(licence);
+            }
+
+            answer.avgLicensePerTime = new int[data.avgLicensePerTime.Count()];
+            for (int i = 0; i < data.avgLicensePerTime.Count(); i++)
+            {
+                DataSet ds = data.avgLicensePerTime.ElementAt(i);
+                for (int m = 0; m < ds.Tables[0].Rows.Count; m++)
+                {
+                    if(ds.Tables[0].Rows[m][0].ToString().Equals(""))
+                    {
+                        answer.avgLicensePerTime[i] = 0;
+                    }
+                    else
+                    {
+                        answer.avgLicensePerTime[i] = Convert.ToInt32(double.Parse(ds.Tables[0].Rows[m][0].ToString()));
+                    }
+                }
+                
             }
 
             //Далее следует блок для получения данных, которые потом будут 
@@ -72,7 +90,7 @@ namespace Analytics.Modeling.Converters
                     new MappingLicenseResult(data.unicNames.ElementAt(i), minLength);
                     for (int m = 0; m < minLength; m++)
                     {
-                        licence.characteristic[m] = int.Parse(ds.Tables[0].Rows[m][0].ToString());
+                        licence.characteristic[m] = double.Parse(ds.Tables[0].Rows[m][0].ToString());
                     }
                     answer.numberOfGetingLicensesPerTime.Add(licence);
                 }

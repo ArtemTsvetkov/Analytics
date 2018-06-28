@@ -19,5 +19,8 @@ namespace Analytics.Modeling.IntermediateStates.ModelsCreatorConfig
         //Количество полученных лицензий за определенный промежуток времени
         public List<MappingLicenseResult> numberOfGetingLicensesPerTime =
             new List<MappingLicenseResult>();
+        //Среднее количество запросов на получение лицензии в течении 
+        //заданного промежутка времени
+        public int[] avgLicensePerTime;
     }
 }

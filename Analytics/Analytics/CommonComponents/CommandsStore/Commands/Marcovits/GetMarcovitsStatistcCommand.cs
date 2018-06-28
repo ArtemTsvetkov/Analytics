@@ -19,9 +19,9 @@ namespace Analytics
         }
 
         public override void execute()
-        {
-            modelsState = model.copySelf();
+        {        
             model.calculationStatistics();
+            modelsState = model.copySelf();
         }
     }
 }

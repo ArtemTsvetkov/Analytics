@@ -21,7 +21,7 @@ namespace Analytics
         public override void execute()
         {
             state = model.copySelf();
-            model.loadStore();
+            //model.loadStore();
         }
     }
 }

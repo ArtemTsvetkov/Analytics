@@ -51,6 +51,7 @@
     <Compile Include="CommonComponents\CommandsStore\Command.cs" />
     <Compile Include="CommonComponents\CommandsStore\CommandsStore.cs" />
     <Compile Include="CommonComponents\CommandsStore\Commands\Modeling\RunModeling.cs" />
+    <Compile Include="CommonComponents\CommandsStore\Commands\UpdateConfigCommand.cs" />
     <Compile Include="CommonComponents\CommandsStore\Stores\ConcreteCommandStore.cs" />
     <Compile Include="CommonComponents\BasicObjects\BasicModel.cs" />
     <Compile Include="CommonComponents\DataConverters\DistinctSoftwareNamesConverter.cs" />
@@ -58,15 +59,16 @@
     <Compile Include="CommonComponents\Interfaces\Data\DataWorker.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\StorageForData.cs" />
     <Compile Include="CommonComponents\Math\MathWorker.cs" />
-    <Compile Include="CommonComponents\QueryConfigurator.cs" />
+    <Compile Include="CommonComponents\QueryConfigurator\QueryConfigurator.cs" />
+    <Compile Include="CommonComponents\Views\ControlView.cs" />
     <Compile Include="CommonComponents\Views\MarcovitsView.cs" />
     <Compile Include="CommonComponents\Views\ModelingView.cs" />
     <Compile Include="CommonComponents\WorkWithFiles\Load\TextFilesConfigFieldsOnLoad.cs" />
     <Compile Include="CommonComponents\WorkWithFiles\Load\TextFilesDataLoader.cs" />
     <Compile Include="CommonComponents\WorkWithFiles\Save\TextFilesConfigFieldsOnSave.cs" />
     <Compile Include="CommonComponents\WorkWithFiles\Save\TextFilesDataSaver.cs" />
-    <Compile Include="CommonComponents\WorkWithMSAccess\MSAccessStateFields.cs" />
-    <Compile Include="CommonComponents\WorkWithMSAccess\MSAccessStorageForData.cs" />
+    <Compile Include="CommonComponents\WorkWithDataBase\MSAccessStateFields.cs" />
+    <Compile Include="CommonComponents\WorkWithDataBase\MSAccessStorageForData.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -83,21 +85,21 @@
     <Compile Include="MarcovitsComponent\MarcovitsModelState.cs" />
     <Compile Include="CommonComponents\Interfaces\Model.cs" />
     <Compile Include="CommonComponents\Interfaces\ModelsState.cs" />
-    <Compile Include="CommonComponents\WorkWithMSAccess\MSAccessDataSaver.cs" />
-    <Compile Include="CommonComponents\WorkWithMSAccess\MSAccessProxy.cs" />
+    <Compile Include="CommonComponents\WorkWithDataBase\MSAccessDataSaver.cs" />
+    <Compile Include="CommonComponents\WorkWithDataBase\MSAccessProxy.cs" />
     <Compile Include="CommonComponents\Interfaces\Observer.cs" />
     <Compile Include="Modeling\CheinPartOfOperationCreator.cs" />
     <Compile Include="Modeling\Config\ModelingConfig.cs" />
     <Compile Include="Modeling\Converters\ModelCreatorConfigCreator.cs" />
     <Compile Include="Modeling\Converters\ResultConverter.cs" />
-    <Compile Include="Modeling\GroupByTypes\BasicType.cs" />
-    <Compile Include="Modeling\GroupByTypes\DayType.cs" />
-    <Compile Include="Modeling\GroupByTypes\GropByType.cs" />
-    <Compile Include="Modeling\GroupByTypes\HourType.cs" />
-    <Compile Include="Modeling\GroupByTypes\MinuteType.cs" />
-    <Compile Include="Modeling\GroupByTypes\MonthType.cs" />
-    <Compile Include="Modeling\GroupByTypes\SecondType.cs" />
-    <Compile Include="Modeling\GroupByTypes\YearType.cs" />
+    <Compile Include="CommonComponents\QueryConfigurator\GroupByTypes\BasicType.cs" />
+    <Compile Include="CommonComponents\QueryConfigurator\GroupByTypes\DayType.cs" />
+    <Compile Include="CommonComponents\QueryConfigurator\GroupByTypes\GropByType.cs" />
+    <Compile Include="CommonComponents\QueryConfigurator\GroupByTypes\HourType.cs" />
+    <Compile Include="CommonComponents\QueryConfigurator\GroupByTypes\MinuteType.cs" />
+    <Compile Include="CommonComponents\QueryConfigurator\GroupByTypes\MonthType.cs" />
+    <Compile Include="CommonComponents\QueryConfigurator\GroupByTypes\SecondType.cs" />
+    <Compile Include="CommonComponents\QueryConfigurator\GroupByTypes\YearType.cs" />
     <Compile Include="Modeling\IntermediateStates\ModelsCreatorConfig\MappingLicenseResult.cs" />
     <Compile Include="Modeling\IntermediateStates\ModelsCreatorConfig\ReturnStateForConverterOfModelCreatorConfig.cs" />
     <Compile Include="Modeling\IntermediateStates\ModelsCreatorConfig\StateForConverterOfModelCreatorConfig.cs" />
@@ -143,20 +145,20 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CommonComponents\WorkWithFiles\ReadWriteTextFile.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Statistics.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -171,21 +173,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\bg.jpg" />
+    <None Include="Resources\BackGroundImage.jpg" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\gear1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\gear2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\gear3.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\gear4.png" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

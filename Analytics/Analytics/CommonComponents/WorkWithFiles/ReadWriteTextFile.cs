@@ -10,7 +10,8 @@ namespace Analytics
 {
     class ReadWriteTextFile
     {
-        public static bool Write_to_file(List<string> buf_of_file_lines, string file_path, int action)
+        public static bool Write_to_file(List<string> buf_of_file_lines, 
+            string file_path, int action)
         {
             try
             {
@@ -63,7 +64,8 @@ namespace Analytics
             }
         }
 
-        public static bool testExistFile(string filePath)//проверка, существует ли файл или можно ли его открыть
+        //проверка, существует ли файл или можно ли его открыть
+        public static bool testExistFile(string filePath)
         {
             try
             {
@@ -77,9 +79,10 @@ namespace Analytics
             }
         }
 
-        public static List<String> Read_from_file(string file_path)//обычное чтение файла
+        //обычное чтение файла
+        public static List<string> Read_from_file(string file_path)
         {
-            List<String> buf_of_file_lines = new List<string>();
+            List<string> buf_of_file_lines = new List<string>();
             try
             {
                 FileStream file1 = new FileStream(file_path, FileMode.Open); //создаем файловый поток

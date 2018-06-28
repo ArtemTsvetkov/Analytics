@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Analytics.Modeling.GroupByTypes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,8 @@ namespace Analytics
         //Рассчитанная доходность
         public double income;
         //Рассчитанный риск, двойной массив для унификации функции перемножения
-        public double[,] risk;
+        public double[,] risk = new double[1, 1];
+        //Рассматриваемый промежуток времени
+        public GropByType interval;
     }
 }

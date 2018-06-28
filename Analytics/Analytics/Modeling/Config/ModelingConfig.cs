@@ -9,34 +9,25 @@ namespace Analytics.Modeling.Config
 {
     class ModelingConfig
     {
-        //Путь до файла с моделью
-        private string configData;
         //Флаг, указывающий сброс всего стейта
-        private bool resetAllState = false;
+        private bool resetAllState = true;
         //Путь до БД
         private string pathOfDataBase;
-        //Название теблицы в БД
-        private string tableOfDataBase;
         //Флаг использования корелляции между запроса на лицензии
         private bool withKovar = false;
         //Модификатор группировки для нализа(по дням/минутам и тд)
-        private GropByType groupType = new HourType();
+        //рассматриваемый промежуток времени
+        private GropByType interval = new HourType();
 
-        public ModelingConfig(string configData, string pathOfDataBase, string tableOfDataBase)
+        public ModelingConfig(string pathOfDataBase, GropByType interval)
         {
-            this.configData = configData;
             this.pathOfDataBase = pathOfDataBase;
-            this.tableOfDataBase = tableOfDataBase;
+            this.interval = interval;
         }
 
-        public void setGroupType(GropByType groupType)
+        public GropByType getInterval()
         {
-            this.groupType = groupType;
-        }
-
-        public GropByType getGroupType()
-        {
-            return groupType;
+            return interval;
         }
 
         public bool getWithKovar()
@@ -54,19 +45,9 @@ namespace Analytics.Modeling.Config
             return pathOfDataBase;
         }
 
-        public string getTableOfDataBase()
-        {
-            return tableOfDataBase;
-        }
-
         public void setPathOfDataBase(string pathOfDataBase)
         {
             this.pathOfDataBase = pathOfDataBase;
-        }
-
-        public void setTableOfDataBase(string tableOfDataBase)
-        {
-            this.tableOfDataBase = tableOfDataBase;
         }
 
         public bool getResetAllState()
@@ -74,19 +55,9 @@ namespace Analytics.Modeling.Config
             return resetAllState;
         }
 
-        public string getConfigData()
-        {
-            return configData;
-        }
-
         public void setResetAllState(bool resetAllState)
         {
             this.resetAllState = resetAllState;
-        }
-
-        public void setConfigData(string configData)
-        {
-            this.configData = configData;
         }
     }
 }
