@@ -59,16 +59,20 @@
     <Compile Include="CommonComponents\Interfaces\Data\DataWorker.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\StorageForData.cs" />
     <Compile Include="CommonComponents\Math\MathWorker.cs" />
+    <Compile Include="CommonComponents\QueryConfigurator\MsSqlServersQueryConfigurator.cs" />
     <Compile Include="CommonComponents\QueryConfigurator\QueryConfigurator.cs" />
     <Compile Include="CommonComponents\Views\ControlView.cs" />
     <Compile Include="CommonComponents\Views\MarcovitsView.cs" />
     <Compile Include="CommonComponents\Views\ModelingView.cs" />
+    <Compile Include="CommonComponents\WorkWithDataBase\MsSqlServer\MsSQLServerDataWorker.cs" />
+    <Compile Include="CommonComponents\WorkWithDataBase\MsSqlServer\MsSQLServerProxy.cs" />
+    <Compile Include="CommonComponents\WorkWithDataBase\MsSqlServer\MsSQLServerStateFields.cs" />
     <Compile Include="CommonComponents\WorkWithFiles\Load\TextFilesConfigFieldsOnLoad.cs" />
     <Compile Include="CommonComponents\WorkWithFiles\Load\TextFilesDataLoader.cs" />
     <Compile Include="CommonComponents\WorkWithFiles\Save\TextFilesConfigFieldsOnSave.cs" />
     <Compile Include="CommonComponents\WorkWithFiles\Save\TextFilesDataSaver.cs" />
-    <Compile Include="CommonComponents\WorkWithDataBase\MSAccessStateFields.cs" />
-    <Compile Include="CommonComponents\WorkWithDataBase\MSAccessStorageForData.cs" />
+    <Compile Include="CommonComponents\WorkWithDataBase\MSAccess\MSAccessStateFields.cs" />
+    <Compile Include="CommonComponents\WorkWithDataBase\MSAccess\MSAccessStorageForData.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -85,8 +89,8 @@
     <Compile Include="MarcovitsComponent\MarcovitsModelState.cs" />
     <Compile Include="CommonComponents\Interfaces\Model.cs" />
     <Compile Include="CommonComponents\Interfaces\ModelsState.cs" />
-    <Compile Include="CommonComponents\WorkWithDataBase\MSAccessDataSaver.cs" />
-    <Compile Include="CommonComponents\WorkWithDataBase\MSAccessProxy.cs" />
+    <Compile Include="CommonComponents\WorkWithDataBase\MSAccess\MSAccessDataSaver.cs" />
+    <Compile Include="CommonComponents\WorkWithDataBase\MSAccess\MSAccessProxy.cs" />
     <Compile Include="CommonComponents\Interfaces\Observer.cs" />
     <Compile Include="Modeling\CheinPartOfOperationCreator.cs" />
     <Compile Include="Modeling\Config\ModelingConfig.cs" />
