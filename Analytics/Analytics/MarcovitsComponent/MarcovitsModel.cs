@@ -40,7 +40,7 @@ namespace Analytics
                 MsSqlServersQueryConfigurator.getUnicLicensesName());
             state.unicSoftwareNames = unucNamesConverter.convert(ds);
             //Формирование запроса на получение данных
-            ds = configProxyForLoadDataFromBDAndExecute(QueryConfigurator.
+            ds = configProxyForLoadDataFromNewBDAndExecute(MsSqlServersQueryConfigurator.
                 getDataOfUseAllLicenses(state.unicSoftwareNames, config.getInterval()));
             state.data = converter.convert(ds);
             if (state.data.Count < 5)

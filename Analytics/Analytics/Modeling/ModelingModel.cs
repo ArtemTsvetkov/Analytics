@@ -365,16 +365,16 @@ namespace Analytics
             for (int i=0;i<unicNames.Length;i++)
             {
                 stateForConverter.bufOftimeBetweenQueryToGetLicenses.Add(
-                    getDataToConfigModelCreator(QueryConfigurator.getTimesGiveLicense(
+                    configProxyForLoadDataFromNewBDAndExecute(MsSqlServersQueryConfigurator.getTimesGiveLicense(
                     unicNames[i], config.getInterval())));
                 stateForConverter.bufOfTimesOfInBetweenOutLicenses.Add(
-                    getDataToConfigModelCreator(QueryConfigurator.getInBetweenOutLicenses(
+                    configProxyForLoadDataFromNewBDAndExecute(MsSqlServersQueryConfigurator.getInBetweenOutLicenses(
                     unicNames[i], config.getInterval())));
                 stateForConverter.numberOfGetingLicensesPerTime.Add(
-                    getDataToConfigModelCreator(QueryConfigurator.getNumberOfLicenesForTime(
+                    configProxyForLoadDataFromNewBDAndExecute(MsSqlServersQueryConfigurator.getNumberOfLicenesForTime(
                         unicNames[i], config.getInterval())));
                 stateForConverter.avgLicensePerTime.Add(
-                    getDataToConfigModelCreator(QueryConfigurator.getAvgLicesensePerTime(
+                    configProxyForLoadDataFromNewBDAndExecute(MsSqlServersQueryConfigurator.getAvgLicesensePerTime(
                         unicNames[i], config.getInterval())));
         }
 
