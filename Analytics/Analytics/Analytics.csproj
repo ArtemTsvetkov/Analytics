@@ -60,7 +60,6 @@
     <Compile Include="CommonComponents\Interfaces\Data\StorageForData.cs" />
     <Compile Include="CommonComponents\Math\MathWorker.cs" />
     <Compile Include="CommonComponents\QueryConfigurator\MsSqlServersQueryConfigurator.cs" />
-    <Compile Include="CommonComponents\QueryConfigurator\QueryConfigurator.cs" />
     <Compile Include="CommonComponents\Views\ControlView.cs" />
     <Compile Include="CommonComponents\Views\MarcovitsView.cs" />
     <Compile Include="CommonComponents\Views\ModelingView.cs" />
