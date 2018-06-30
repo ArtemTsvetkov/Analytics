@@ -4,6 +4,8 @@ using Analytics.CommonComponents.BasicObjects;
 using Analytics.CommonComponents.DataConverters;
 using Analytics.CommonComponents.Interfaces.Data;
 using Analytics.CommonComponents.Math;
+using Analytics.CommonComponents.MsSqlServersQueryConfigurator;
+using Analytics.CommonComponents.WorkWithDataBase.MsSqlServer;
 using Analytics.CommonComponents.WorkWithFiles.Load;
 using Analytics.CommonComponents.WorkWithMSAccess;
 using Analytics.Modeling;
@@ -347,8 +349,8 @@ namespace Analytics
                 new ModelsCreatorProxy();
             ModelsCreatorConfigState creatorsConfig = new ModelsCreatorConfigState();
             //Сбор необходимых данных
-            DataSet unicNamesDS = getDataToConfigModelCreator(
-                QueryConfigurator.getUnicLicensesName());
+            DataSet unicNamesDS = configProxyForLoadDataFromNewBDAndExecute(
+                MsSqlServersQueryConfigurator.getUnicLicensesName());
             DataConverter<DataSet, string[]> unicNamesConverter = 
                 new DistinctSoftwareNamesConverter();
             string[] unicNames = unicNamesConverter.convert(unicNamesDS);
@@ -357,22 +359,22 @@ namespace Analytics
 
             stateForConverter.unicNames = unicNames;
 
-            stateForConverter.numberBuyLicenses = getDataToConfigModelCreator(
-                QueryConfigurator.getNumberOfPurchasedLicenses());
+            stateForConverter.numberBuyLicenses = configProxyForLoadDataFromNewBDAndExecute(
+                MsSqlServersQueryConfigurator.getNumberOfPurchasedLicenses());
 
             for (int i=0;i<unicNames.Length;i++)
             {
                 stateForConverter.bufOftimeBetweenQueryToGetLicenses.Add(
-                    getDataToConfigModelCreator(QueryConfigurator.getTimesGiveLicense(
+                    configProxyForLoadDataFromNewBDAndExecute(MsSqlServersQueryConfigurator.getTimesGiveLicense(
                     unicNames[i], config.getInterval())));
                 stateForConverter.bufOfTimesOfInBetweenOutLicenses.Add(
-                    getDataToConfigModelCreator(QueryConfigurator.getInBetweenOutLicenses(
+                    configProxyForLoadDataFromNewBDAndExecute(MsSqlServersQueryConfigurator.getInBetweenOutLicenses(
                     unicNames[i], config.getInterval())));
                 stateForConverter.numberOfGetingLicensesPerTime.Add(
-                    getDataToConfigModelCreator(QueryConfigurator.getNumberOfLicenesForTime(
+                    configProxyForLoadDataFromNewBDAndExecute(MsSqlServersQueryConfigurator.getNumberOfLicenesForTime(
                         unicNames[i], config.getInterval())));
                 stateForConverter.avgLicensePerTime.Add(
-                    getDataToConfigModelCreator(QueryConfigurator.getAvgLicesensePerTime(
+                    configProxyForLoadDataFromNewBDAndExecute(MsSqlServersQueryConfigurator.getAvgLicesensePerTime(
                         unicNames[i], config.getInterval())));
         }
 
@@ -476,6 +478,19 @@ namespace Analytics
             list.Add(query);
             MSAccessStateFields configProxy =
                 new MSAccessStateFields(config.getPathOfDataBase(), list);
+            accessProxy.setConfig(configProxy);
+            accessProxy.execute();
+            list.Clear();
+            return accessProxy.getResult();
+        }
+
+        public DataSet configProxyForLoadDataFromNewBDAndExecute(string query)
+        {
+            DataWorker<MsSQLServerStateFields, DataSet> accessProxy = new MsSQLServerProxy();
+            List<string> list = new List<string>();
+            list.Add(query);
+            MsSQLServerStateFields configProxy =
+                new MsSQLServerStateFields(list);
             accessProxy.setConfig(configProxy);
             accessProxy.execute();
             list.Clear();
