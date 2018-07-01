@@ -55,6 +55,10 @@
     <Compile Include="CommonComponents\CommandsStore\Stores\ConcreteCommandStore.cs" />
     <Compile Include="CommonComponents\BasicObjects\BasicModel.cs" />
     <Compile Include="CommonComponents\DataConverters\DistinctSoftwareNamesConverter.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\Interfaces\ConcreteException.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\Interfaces\ExceptionHandler.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\Interfaces\ExceptionsJornalist.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\Interfaces\ExceptionView.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\DataConverter.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\DataWorker.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\StorageForData.cs" />
