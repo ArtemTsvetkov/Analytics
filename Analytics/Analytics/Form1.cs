@@ -1,4 +1,6 @@
 ﻿using Analytics.CommonComponents.BasicObjects;
+using Analytics.CommonComponents.ExceptionHandler;
+using Analytics.CommonComponents.ExceptionHandler.Interfaces;
 using Analytics.CommonComponents.Views;
 using Analytics.MarcovitsComponent.Converters;
 using Analytics.Modeling.GroupByTypes;
@@ -32,6 +34,14 @@ namespace Analytics
             comboBox3.SelectedIndex = 0;
             comboBox2.SelectedIndex = 0;
             comboBox4.SelectedIndex = 0;
+            //Тест обработчика исключений
+            ExceptionHandlerInterface exceptionHandler = ExceptionHandler.getInstance();
+            exceptionHandler.addException(new TestException());
+            exceptionHandler.addException(new TestException());
+            ExceptionHandlerInterface exceptionHandler2 = ExceptionHandler.getInstance();
+            exceptionHandler2.addException(new TestException2());
+            TestException2 testException2 = new TestException2();
+            exceptionHandler.processing(testException2);
         }
 
         public Chart chart1Elem
