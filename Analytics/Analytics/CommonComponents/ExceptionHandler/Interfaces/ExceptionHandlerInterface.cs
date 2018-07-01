@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Analytics.CommonComponents.ExceptionHandler.Interfaces
 {
-    interface ExceptionHandler
+    interface ExceptionHandlerInterface
     {
         //Обработка исключения
         void processing(Exception exception);
