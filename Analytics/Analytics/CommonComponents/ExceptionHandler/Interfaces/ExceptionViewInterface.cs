@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Analytics.CommonComponents.ExceptionHandler.Interfaces
 {
-    interface ExceptionView<TConfigType>
+    interface ExceptionViewInterface<TConfigType>
     {
         //Установка конфигурации
         void setConfig(TConfigType config);

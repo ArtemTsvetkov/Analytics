@@ -58,10 +58,13 @@
     <Compile Include="CommonComponents\ExceptionHandler\ExceptionHandler.cs" />
     <Compile Include="CommonComponents\ExceptionHandler\Interfaces\ConcreteException.cs" />
     <Compile Include="CommonComponents\ExceptionHandler\Interfaces\ExceptionHandlerInterface.cs" />
-    <Compile Include="CommonComponents\ExceptionHandler\Interfaces\ExceptionsJornalist.cs" />
-    <Compile Include="CommonComponents\ExceptionHandler\Interfaces\ExceptionView.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\Interfaces\ExceptionsJornalistInterface.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\Interfaces\ExceptionViewInterface.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\View\NotificationsInformationConfig.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\View\NotificationsInformationWindow.cs" />
     <Compile Include="CommonComponents\ExceptionHandler\TestException.cs" />
-    <Compile Include="CommonComponents\ExceptionHandler\TestException2.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\TextJornalist\TextFilesJornalist.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\TextJornalist\TextJornalistConfig.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\DataConverter.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\DataWorker.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\StorageForData.cs" />

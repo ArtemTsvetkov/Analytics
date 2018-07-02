@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Analytics.CommonComponents.ExceptionHandler.Interfaces
 {
-    interface ExceptionsJornalist<TConfigType>
+    interface ExceptionsJornalistInterface<TConfigType>
     {
         //Установка конфигурации
         void setConfig(TConfigType config);
