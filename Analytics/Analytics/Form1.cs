@@ -1,6 +1,7 @@
 ﻿using Analytics.CommonComponents.BasicObjects;
 using Analytics.CommonComponents.ExceptionHandler;
 using Analytics.CommonComponents.ExceptionHandler.Interfaces;
+using Analytics.CommonComponents.ExceptionHandler.View;
 using Analytics.CommonComponents.Views;
 using Analytics.MarcovitsComponent.Converters;
 using Analytics.Modeling.GroupByTypes;

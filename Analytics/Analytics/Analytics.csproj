@@ -60,11 +60,14 @@
     <Compile Include="CommonComponents\ExceptionHandler\Interfaces\ExceptionHandlerInterface.cs" />
     <Compile Include="CommonComponents\ExceptionHandler\Interfaces\ExceptionsJornalistInterface.cs" />
     <Compile Include="CommonComponents\ExceptionHandler\Interfaces\ExceptionViewInterface.cs" />
-    <Compile Include="CommonComponents\ExceptionHandler\View\NotificationsInformationConfig.cs" />
-    <Compile Include="CommonComponents\ExceptionHandler\View\NotificationsInformationWindow.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\View\Information\PopupWindow\InformationPopupWindow.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\View\Information\PopupWindow\InformationPopupWindowConfig.cs" />
     <Compile Include="CommonComponents\ExceptionHandler\TestException.cs" />
     <Compile Include="CommonComponents\ExceptionHandler\TextJornalist\TextFilesJornalist.cs" />
     <Compile Include="CommonComponents\ExceptionHandler\TextJornalist\TextJornalistConfig.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\View\Question\PopupWindow\QuestionPopupWindow.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\View\Question\PopupWindow\QuestionPopupWindowConfig.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\View\Question\PopupWindow\QuestionPopupWindowObserver.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\DataConverter.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\DataWorker.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\StorageForData.cs" />
@@ -188,6 +191,7 @@
   <ItemGroup>
     <None Include="Resources\BackGroundImage.jpg" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
