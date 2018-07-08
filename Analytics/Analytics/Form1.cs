@@ -1,5 +1,6 @@
 ﻿using Analytics.CommonComponents.BasicObjects;
 using Analytics.CommonComponents.ExceptionHandler;
+using Analytics.CommonComponents.ExceptionHandler.Concrete;
 using Analytics.CommonComponents.ExceptionHandler.Interfaces;
 using Analytics.CommonComponents.ExceptionHandler.View;
 using Analytics.CommonComponents.Views;
@@ -27,14 +28,23 @@ namespace Analytics
 
         public Form1()
         {
-            InitializeComponent();
-            marcovitsView = new MarcovitsView(this);
-            modelingView = new ModelingView(this);
-            textBox1.Text = "D:\\Files\\MsVisualProjects\\Diplom\\AnaliticsMath\\rules2.txt";
-            comboBox1.SelectedIndex = 0;
-            comboBox3.SelectedIndex = 0;
-            comboBox2.SelectedIndex = 0;
-            comboBox4.SelectedIndex = 0;
+            try
+            {
+                InitializeComponent();
+                ConcreteExceptionHandlerInitializer.initThisExceptionHandler(
+                    ExceptionHandler.getInstance());
+                marcovitsView = new MarcovitsView(this);
+                modelingView = new ModelingView(this);
+                textBox1.Text = "D:\\Files\\MsVisualProjects\\Diplom\\AnaliticsMath\\rules2.txt";
+                comboBox1.SelectedIndex = 0;
+                comboBox3.SelectedIndex = 0;
+                comboBox2.SelectedIndex = 0;
+                comboBox4.SelectedIndex = 0;
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.getInstance().processing(new TestException());
+            }
         }
 
         public Chart chart1Elem

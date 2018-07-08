@@ -55,7 +55,10 @@
     <Compile Include="CommonComponents\CommandsStore\Stores\ConcreteCommandStore.cs" />
     <Compile Include="CommonComponents\BasicObjects\BasicModel.cs" />
     <Compile Include="CommonComponents\DataConverters\DistinctSoftwareNamesConverter.cs" />
-    <Compile Include="CommonComponents\ExceptionHandler\ExceptionHandler.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\Concrete\ConcreteExceptionHandlerInitializer.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\Concrete\ExceptionHandler.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\Exceptions\AlreadyExistException.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\Exceptions\NonFoundException.cs" />
     <Compile Include="CommonComponents\ExceptionHandler\Interfaces\ConcreteException.cs" />
     <Compile Include="CommonComponents\ExceptionHandler\Interfaces\ExceptionHandlerInterface.cs" />
     <Compile Include="CommonComponents\ExceptionHandler\Interfaces\ExceptionsJornalistInterface.cs" />

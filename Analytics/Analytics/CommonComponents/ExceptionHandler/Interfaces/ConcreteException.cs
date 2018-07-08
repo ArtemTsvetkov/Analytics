@@ -8,7 +8,7 @@ namespace Analytics.CommonComponents.ExceptionHandler.Interfaces
 {
     interface ConcreteException
     {
-        //Обработка исключения
-        void processing();
+        //Обработка исключения, используя данные базового
+        void processing(Exception basic);
     }
 }

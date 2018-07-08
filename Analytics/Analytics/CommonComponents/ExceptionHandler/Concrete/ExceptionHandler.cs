@@ -1,4 +1,5 @@
-﻿using Analytics.CommonComponents.ExceptionHandler.Interfaces;
+﻿using Analytics.CommonComponents.ExceptionHandler.Exceptions;
+using Analytics.CommonComponents.ExceptionHandler.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,8 @@ namespace Analytics.CommonComponents.ExceptionHandler
 {
     class ExceptionHandler : ExceptionHandlerInterface
     {
-        private List<ConcreteException> exceptions;
         private static ExceptionHandler currentInstanse;
+        private List<ConcreteException> exceptions;
 
         private ExceptionHandler()
         {
@@ -22,6 +23,8 @@ namespace Analytics.CommonComponents.ExceptionHandler
             if(currentInstanse == null)
             {
                 currentInstanse = new ExceptionHandler();
+                currentInstanse.addException(new NonFoundException());
+                currentInstanse.addException(new AlreadyExistException());
             }
             return currentInstanse;
         }
@@ -33,8 +36,8 @@ namespace Analytics.CommonComponents.ExceptionHandler
             {
                 if (currentInstanse.exceptions.ElementAt(i).GetType() == exception.GetType())
                 {
-                    //ВЫЗОВ ИСКЛЮЧЕНИЯ-ТАКОЕ ИСКЛЮЧЕНИЕ УЖЕ БЫЛО ДОБАВЛЕННО РАНЕЕ
-                    int ikhkhk = 0;
+                    throw new AlreadyExistException("Exception "+
+                    exception.GetType() + " was added earlier, it will be skipped!");
                 }
             }
             currentInstanse.exceptions.Add(exception);
@@ -42,16 +45,23 @@ namespace Analytics.CommonComponents.ExceptionHandler
 
         public void processing(Exception exception)
         {
-            for(int i=0;i<currentInstanse.exceptions.Count;i++)
+            try
             {
-                if (currentInstanse.exceptions.ElementAt(i).GetType() == exception.GetType())
+                for (int i = 0; i < currentInstanse.exceptions.Count; i++)
                 {
-                    currentInstanse.exceptions.ElementAt(i).processing();
-                    break;
+                    if (currentInstanse.exceptions.ElementAt(i).GetType() == exception.GetType())
+                    {
+                        currentInstanse.exceptions.ElementAt(i).processing(exception);
+                        return;
+                    }
                 }
+                //Если до сюда дошло, то исключение не найдено
+                throw new NonFoundException("Unknown exception" + exception.GetType());
             }
-            //Если до сюда дошло, то исключение не найдено
-            //ДОБАВИТЬ СЮДА ОБРАБОТКУ ИСКЛЮЧЕНИЯ-НЕИЗВЕСТНОЕ ИСКЛЮЧЕНИЕ
+            catch(Exception ex)
+            {
+                processing(ex);
+            }
         }
     }
 }
