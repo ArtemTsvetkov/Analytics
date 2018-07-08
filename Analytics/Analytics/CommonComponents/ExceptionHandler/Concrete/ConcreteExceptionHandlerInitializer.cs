@@ -1,5 +1,6 @@
 ﻿using Analytics.CommonComponents.ExceptionHandler.Exceptions;
 using Analytics.CommonComponents.ExceptionHandler.Interfaces;
+using Analytics.CommonComponents.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,11 @@ namespace Analytics.CommonComponents.ExceptionHandler.Concrete
         {
             try
             {
-                //handler.addException(new AlreadyExistException());
+                handler.addException(new UnknownTimeIntervalType());
+                handler.addException(new NoConfigurationSpecified());
+                handler.addException(new InvalidArraySize());
+                handler.addException(new NoDataBaseConnection());
+                handler.addException(new NoFilesConnection());
             }
             catch(Exception ex)
             {

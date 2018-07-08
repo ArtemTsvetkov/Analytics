@@ -7,7 +7,6 @@ using Analytics.CommonComponents.Math;
 using Analytics.CommonComponents.MsSqlServersQueryConfigurator;
 using Analytics.CommonComponents.WorkWithDataBase.MsSqlServer;
 using Analytics.CommonComponents.WorkWithFiles.Load;
-using Analytics.CommonComponents.WorkWithMSAccess;
 using Analytics.Modeling;
 using Analytics.Modeling.Config;
 using Analytics.Modeling.Converters;
@@ -471,19 +470,6 @@ namespace Analytics
 
         //Получение исходных данных для дальнейшей конфигурации конфигуратора 
         //модели для моделирования
-        private DataSet getDataToConfigModelCreator(string query)
-        {
-            DataWorker<MSAccessStateFields, DataSet> accessProxy = new MSAccessProxy();
-            List<string> list = new List<string>();
-            list.Add(query);
-            MSAccessStateFields configProxy =
-                new MSAccessStateFields(config.getPathOfDataBase(), list);
-            accessProxy.setConfig(configProxy);
-            accessProxy.execute();
-            list.Clear();
-            return accessProxy.getResult();
-        }
-
         public DataSet configProxyForLoadDataFromNewBDAndExecute(string query)
         {
             DataWorker<MsSQLServerStateFields, DataSet> accessProxy = new MsSQLServerProxy();

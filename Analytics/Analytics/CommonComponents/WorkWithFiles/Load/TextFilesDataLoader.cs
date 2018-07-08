@@ -1,4 +1,5 @@
-﻿using Analytics.CommonComponents.Interfaces.Data;
+﻿using Analytics.CommonComponents.Exceptions;
+using Analytics.CommonComponents.Interfaces.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace Analytics.CommonComponents.WorkWithFiles.Load
             }
             else
             {
-                //ДОБАВИТЬ ВЫЗОВ ИСКЛЮЧЕНИЯ
+                throw new NoFilesConnection("There is no access to the file: "+config.getFilePath());
             }
         }
 

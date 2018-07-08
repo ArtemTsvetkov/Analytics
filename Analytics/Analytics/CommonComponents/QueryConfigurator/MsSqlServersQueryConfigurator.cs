@@ -1,4 +1,5 @@
-﻿using Analytics.Modeling.GroupByTypes;
+﻿using Analytics.CommonComponents.Exceptions;
+using Analytics.Modeling.GroupByTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -87,8 +88,7 @@ namespace Analytics.CommonComponents.MsSqlServersQueryConfigurator
                     "MONTH(h.DateIN), DAY(h.DateIN), DATEPART(hour,h.TimeIN), " + 
                     "DATEPART(minute,h.TimeIN), DATEPART(second,h.TimeIN)) as newTable";
             }
-            //ДОБАВИТЬ ИСКЛЛЮЧЕНИЕ-НЕИЗВЕСТНЫЙ ТИП
-            throw new Exception();
+            throw new UnknownTimeIntervalType("Unknown time interval type");
         }
 
         //Получение данных об использовании для всех видов лицензий
@@ -261,8 +261,7 @@ namespace Analytics.CommonComponents.MsSqlServersQueryConfigurator
 
                 return query;
             }
-            //ДОБАВИТЬ ИСКЛЛЮЧЕНИЕ-НЕИЗВЕСТНЫЙ ТИП
-            throw new Exception();
+            throw new UnknownTimeIntervalType("Unknown time interval type");
         }
         
         //Получение времени отдачи сервером лицензии
@@ -326,8 +325,7 @@ namespace Analytics.CommonComponents.MsSqlServersQueryConfigurator
                     "MONTH(h.DateIN), DAY(h.DateIN), DATEPART(hour,h.TimeIN), " + 
                     "DATEPART(minute,h.TimeIN), DATEPART(second,h.TimeIN)";
             }
-            //ДОБАВИТЬ ИСКЛЛЮЧЕНИЕ-НЕИЗВЕСТНЫЙ ТИП
-            throw new Exception();
+            throw new UnknownTimeIntervalType("Unknown time interval type");
         }
 
         //Получение разницы во времени между получением и возвращением лицензии
@@ -416,8 +414,7 @@ namespace Analytics.CommonComponents.MsSqlServersQueryConfigurator
                     "DATEPART(hour,h.TimeIN), DATEPART(minute,h.TimeIN), " + 
                     "DATEPART(second,h.TimeIN)";
             }
-            //ДОБАВИТЬ ИСКЛЛЮЧЕНИЕ-НЕИЗВЕСТНЫЙ ТИП
-            throw new Exception();
+            throw new UnknownTimeIntervalType("Unknown time interval type");
         }
 
         //Получение данных о количестве полученных лицензий за определенный промежуток времени
@@ -447,8 +444,7 @@ namespace Analytics.CommonComponents.MsSqlServersQueryConfigurator
             {
                 return "SELECT COUNT(*) FROM History h WHERE YEAR(h.DateIN) != 0 AND YEAR(h.DateExit) != 0 AND h.SoftwareID=(SELECT SoftwareID FROM Software s WHERE s.Code='85787BDSPRM_F')GROUP BY YEAR(h.DateIN), MONTH(h.DateIN), DAY(h.DateIN), DATEPART(hour,h.TimeIN), DATEPART(minute,h.TimeIN), DATEPART(second,h.TimeIN)";
             }
-            //ДОБАВИТЬ ИСКЛЛЮЧЕНИЕ-НЕИЗВЕСТНЫЙ ТИП
-            throw new Exception();
+            throw new UnknownTimeIntervalType("Unknown time interval type");
         }
     }
 }

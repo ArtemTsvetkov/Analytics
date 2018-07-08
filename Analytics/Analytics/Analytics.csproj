@@ -63,14 +63,21 @@
     <Compile Include="CommonComponents\ExceptionHandler\Interfaces\ExceptionHandlerInterface.cs" />
     <Compile Include="CommonComponents\ExceptionHandler\Interfaces\ExceptionsJornalistInterface.cs" />
     <Compile Include="CommonComponents\ExceptionHandler\Interfaces\ExceptionViewInterface.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\View\Error\ErrorPopupWindow.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\View\Error\ErrorPopupWindowConfig.cs" />
     <Compile Include="CommonComponents\ExceptionHandler\View\Information\PopupWindow\InformationPopupWindow.cs" />
     <Compile Include="CommonComponents\ExceptionHandler\View\Information\PopupWindow\InformationPopupWindowConfig.cs" />
-    <Compile Include="CommonComponents\ExceptionHandler\TestException.cs" />
     <Compile Include="CommonComponents\ExceptionHandler\TextJornalist\TextFilesJornalist.cs" />
     <Compile Include="CommonComponents\ExceptionHandler\TextJornalist\TextJornalistConfig.cs" />
     <Compile Include="CommonComponents\ExceptionHandler\View\Question\PopupWindow\QuestionPopupWindow.cs" />
     <Compile Include="CommonComponents\ExceptionHandler\View\Question\PopupWindow\QuestionPopupWindowConfig.cs" />
     <Compile Include="CommonComponents\ExceptionHandler\View\Question\PopupWindow\QuestionPopupWindowObserver.cs" />
+    <Compile Include="CommonComponents\Exceptions\ErrorWithFile.cs" />
+    <Compile Include="CommonComponents\Exceptions\InvalidArraySize.cs" />
+    <Compile Include="CommonComponents\Exceptions\NoConfigurationSpecified.cs" />
+    <Compile Include="CommonComponents\Exceptions\NoDataBaseConnection.cs" />
+    <Compile Include="CommonComponents\Exceptions\NoFilesConnection.cs" />
+    <Compile Include="CommonComponents\Exceptions\UnknownTimeIntervalType.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\DataConverter.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\DataWorker.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\StorageForData.cs" />
@@ -86,8 +93,6 @@
     <Compile Include="CommonComponents\WorkWithFiles\Load\TextFilesDataLoader.cs" />
     <Compile Include="CommonComponents\WorkWithFiles\Save\TextFilesConfigFieldsOnSave.cs" />
     <Compile Include="CommonComponents\WorkWithFiles\Save\TextFilesDataSaver.cs" />
-    <Compile Include="CommonComponents\WorkWithDataBase\MSAccess\MSAccessStateFields.cs" />
-    <Compile Include="CommonComponents\WorkWithDataBase\MSAccess\MSAccessStorageForData.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -104,8 +109,6 @@
     <Compile Include="MarcovitsComponent\MarcovitsModelState.cs" />
     <Compile Include="CommonComponents\Interfaces\Model.cs" />
     <Compile Include="CommonComponents\Interfaces\ModelsState.cs" />
-    <Compile Include="CommonComponents\WorkWithDataBase\MSAccess\MSAccessDataSaver.cs" />
-    <Compile Include="CommonComponents\WorkWithDataBase\MSAccess\MSAccessProxy.cs" />
     <Compile Include="CommonComponents\Interfaces\Observer.cs" />
     <Compile Include="Modeling\CheinPartOfOperationCreator.cs" />
     <Compile Include="Modeling\Config\ModelingConfig.cs" />
@@ -169,7 +172,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Statistics.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

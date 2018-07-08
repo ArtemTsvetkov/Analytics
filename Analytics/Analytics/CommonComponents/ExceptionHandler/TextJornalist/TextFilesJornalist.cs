@@ -1,5 +1,6 @@
 ﻿using Analytics.CommonComponents.ExceptionHandler.Interfaces;
 using Analytics.CommonComponents.ExceptionHandler.TextJornalist;
+using Analytics.CommonComponents.Exceptions;
 using Analytics.CommonComponents.Interfaces.Data;
 using Analytics.CommonComponents.WorkWithFiles;
 using System;
@@ -22,29 +23,36 @@ namespace Analytics.CommonComponents.ExceptionHandler
 
         public void write()
         {
-            if(config == null)
+            try
             {
-                //ДОБАВИТЬ ВЫЗОВ ИСКЛЮЧЕНИЯ-КОНФИГ НЕ ЗАДАН
+                if (config == null)
+                {
+                    throw new NoConfigurationSpecified("No configuration specified");
+                }
+                else
+                {
+                    List<string> buf = new List<string>();
+                    buf.Add("-----------------------------------------------");
+                    buf.Add("Module: " + config.getExeptionsSourse());
+                    buf.Add("Trace: " + config.getExceptionTrace());
+                    DateTime thisDay = DateTime.Now;
+                    buf.Add("Time: " + thisDay.ToString());
+                    buf.Add("Exception: " + config.getExceptionMessage());
+
+                    TextFilesConfigFieldsOnSave proxyConfig =
+                        new TextFilesConfigFieldsOnSave(buf, Directory.GetCurrentDirectory() +
+                        "\\Errors.txt", 0);
+
+
+                    DataWorker<TextFilesConfigFieldsOnSave, bool> saver = new TextFilesDataSaver();
+                    saver.setConfig(proxyConfig);
+                    saver.connect();
+                    saver.execute();
+                }
             }
-            else
+            catch(Exception ex)
             {
-                List<string> buf = new List<string>();
-                buf.Add("-----------------------------------------------");
-                buf.Add("Module: "+ config.getExeptionsSourse());
-                buf.Add("Trace: " + config.getExceptionTrace());
-                DateTime thisDay = DateTime.Now;
-                buf.Add("Time: " + thisDay.ToString());
-                buf.Add("Exception: " + config.getExceptionMessage());
-
-                TextFilesConfigFieldsOnSave proxyConfig = 
-                    new TextFilesConfigFieldsOnSave(buf, Directory.GetCurrentDirectory() + 
-                    "\\Errors.txt", 0);
-
-
-                DataWorker<TextFilesConfigFieldsOnSave, bool> saver = new TextFilesDataSaver();
-                saver.setConfig(proxyConfig);
-                saver.connect();
-                saver.execute();
+                ExceptionHandler.getInstance().processing(ex);
             }
         }
     }

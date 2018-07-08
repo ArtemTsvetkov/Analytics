@@ -1,4 +1,5 @@
-﻿using Analytics.CommonComponents.Interfaces.Data;
+﻿using Analytics.CommonComponents.Exceptions;
+using Analytics.CommonComponents.Interfaces.Data;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -80,32 +81,14 @@ namespace Analytics.CommonComponents.WorkWithDataBase.MsSqlServer
                     }
                     catch (Exception ex)
                     {
-                        ReadWriteTextFile rwtf = new ReadWriteTextFile();
-                        List<string> buf = new List<string>();
-                        buf.Add("-----------------------------------------------");
-                        buf.Add("Module: Form1");
-                        DateTime thisDay = DateTime.Now;
-                        buf.Add("Time: " + thisDay.ToString());
-                        buf.Add("Exception: " + ex.Message);
-                        buf.Add("Query:" + query);
-                        ReadWriteTextFile.Write_to_file(buf, Directory.GetCurrentDirectory() +
-                            "\\Errors.txt", 0);
+                        throw new NoDataBaseConnection("There is no database connection");
                     }
                 }
                 return dataSet;
             }
             catch (Exception ex)
             {
-                ReadWriteTextFile rwtf = new ReadWriteTextFile();
-                List<string> buf = new List<string>();
-                buf.Add("-----------------------------------------------");
-                buf.Add("Module: Form1");
-                DateTime thisDay = DateTime.Now;
-                buf.Add("Time: " + thisDay.ToString());
-                buf.Add("Exception: " + ex.Message);
-                ReadWriteTextFile.Write_to_file(buf, Directory.GetCurrentDirectory() + "\\Errors.txt",
-                    0);
-                return null;
+                throw new NoDataBaseConnection("There is no database connection");
             }
             finally
             {

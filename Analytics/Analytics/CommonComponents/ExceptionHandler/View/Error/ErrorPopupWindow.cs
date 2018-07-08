@@ -7,13 +7,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Analytics.CommonComponents.ExceptionHandler.View.Information.PopupWindow
+namespace Analytics.CommonComponents.ExceptionHandler.View.Error
 {
-    class InformationPopupWindow : ExceptionViewInterface<InformationPopupWindowConfig>
+    class ErrorPopupWindow : ExceptionViewInterface<ErrorPopupWindowConfig>
     {
-        private InformationPopupWindowConfig config;
+        private ErrorPopupWindowConfig config;
 
-        public void setConfig(InformationPopupWindowConfig config)
+        public void setConfig(ErrorPopupWindowConfig config)
         {
             this.config = config;
         }
@@ -30,7 +30,7 @@ namespace Analytics.CommonComponents.ExceptionHandler.View.Information.PopupWind
                     config.getMessage(),
                     "Сообщение",
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.Information,
+                    MessageBoxIcon.Error,
                     MessageBoxDefaultButton.Button1,
                     MessageBoxOptions.DefaultDesktopOnly);
             }

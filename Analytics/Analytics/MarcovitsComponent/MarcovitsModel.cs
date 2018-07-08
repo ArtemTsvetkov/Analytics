@@ -5,7 +5,6 @@ using Analytics.CommonComponents.Interfaces.Data;
 using Analytics.CommonComponents.Math;
 using Analytics.CommonComponents.MsSqlServersQueryConfigurator;
 using Analytics.CommonComponents.WorkWithDataBase.MsSqlServer;
-using Analytics.CommonComponents.WorkWithMSAccess;
 using Analytics.MarcovitsComponent.Config;
 using Analytics.Modeling.GroupByTypes;
 using System;
@@ -135,19 +134,6 @@ namespace Analytics
             notifyObservers();
         }
 
-        public DataSet configProxyForLoadDataFromBDAndExecute(string query)
-        {
-            DataWorker<MSAccessStateFields, DataSet> accessProxy = new MSAccessProxy();
-            List<string> list = new List<string>();
-            list.Add(query);
-            MSAccessStateFields configProxy =
-                new MSAccessStateFields(config.getPathOfDataBase(), list);
-            accessProxy.setConfig(configProxy);
-            accessProxy.execute();
-            list.Clear();
-            return accessProxy.getResult();
-        }
-
         public DataSet configProxyForLoadDataFromNewBDAndExecute(string query)
         {
             DataWorker<MsSQLServerStateFields, DataSet> accessProxy = new MsSQLServerProxy();
@@ -163,7 +149,7 @@ namespace Analytics
 
         public override void loadStore()//загрузка данных
         {
-            DataWorker<MSAccessStateFields, DataSet> accessProxy = new MSAccessProxy();
+            DataWorker<MsSQLServerStateFields, DataSet> accessProxy = new MsSQLServerProxy();
             //получение значения id
             DataSet ds = configProxyForLoadDataFromNewBDAndExecute(
                 MsSqlServersQueryConfigurator.getDataOfUsersUseLicenses());

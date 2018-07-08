@@ -1,5 +1,6 @@
 ﻿using Analytics.CommonComponents.BasicObjects;
 using Analytics.CommonComponents.CommandsStore.Commands.Modeling;
+using Analytics.CommonComponents.Exceptions;
 using Analytics.MarcovitsComponent.Config;
 using Analytics.MarcovitsComponent.Converters;
 using Analytics.Modeling.GroupByTypes;
@@ -115,9 +116,8 @@ namespace Analytics.CommonComponents.Views
                         form.comboBox3Elem.SelectedIndex = 5;
                         break;
                     default:
-                        //ДОБАВИТЬ СЮДА ИСКЛЮЧЕНИЕ - НЕИЗВЕСТНЫЙ ТИП ИНТЕРВАЛА
-                        throw new Exception();
-                }
+                        throw new UnknownTimeIntervalType("Unknown time interval type");
+            }
             //}
             //else
             //{
