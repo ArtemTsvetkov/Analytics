@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Analytics.Modeling.ModelingExceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -43,10 +44,11 @@ namespace Analytics.Modeling.ModelingRules
                 {
                     return new EnterOperation(words[1], model);
                 }
-                /* if (param.Count() > 2)
+                if (param.Count() > 2)
                 {
-                    //ВЫЗОВ ИСКЛЮЧЕНИЯ-НЕВЕРНЫЙ ФОРМАТ
-                }*/
+                    throw new IncorrectFormatOperation("Incorrect format modeling operation"+
+                        "enter");
+                }
             }
             //Для случая наличия метки
             if (words.Length > 1 && words[1] == "ENTER")
@@ -63,10 +65,11 @@ namespace Analytics.Modeling.ModelingRules
                 {
                     return new EnterOperation(words[2], model);
                 }
-                /* if (param.Count() > 2)
+                if (param.Count() > 2)
                 {
-                    //ВЫЗОВ ИСКЛЮЧЕНИЯ-НЕВЕРНЫЙ ФОРМАТ
-                }*/
+                    throw new IncorrectFormatOperation("Incorrect format modeling operation"+
+                        "enter");
+                }
             }
 
             return null;
@@ -149,8 +152,8 @@ namespace Analytics.Modeling.ModelingRules
             {
                 return new EnterOperation(parameters[0], int.Parse(parameters[1]), model);
             }
-            //ВЫЗОВ ИСКЛЮЧЕНИЯ-НЕВЕРНЫЙ ФОРМАТ
-            throw new Exception();
+            throw new IncorrectFormatOperation("Incorrect format modeling operation"+
+                "enter");
         }
     }
 }

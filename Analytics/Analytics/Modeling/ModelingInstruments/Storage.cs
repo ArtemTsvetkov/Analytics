@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Analytics.Modeling.ModelingExceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -50,7 +51,8 @@ namespace Analytics.Modeling.ModelingInstruments
             }
             else
             {
-                //ДОБАВИТЬ ВЫЗОВ ИСКЛЮЧЕНИЯ
+                throw new NotEnoughMemoryInTheModelingElement(
+                    "Not enough memory in the modeling element:"+ name);
             }
         }
 

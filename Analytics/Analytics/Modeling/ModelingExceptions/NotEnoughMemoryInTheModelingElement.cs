@@ -10,17 +10,17 @@ using System.Threading.Tasks;
 
 namespace Analytics.Modeling.ModelingExceptions
 {
-    class IncorrectFormatOperation : Exception, ConcreteException
+    class NotEnoughMemoryInTheModelingElement : Exception, ConcreteException
     {
-        public IncorrectFormatOperation() : base() { }
+        public NotEnoughMemoryInTheModelingElement() : base() { }
 
-        public IncorrectFormatOperation(string message) : base(message) { }
+        public NotEnoughMemoryInTheModelingElement(string message) : base(message) { }
 
         public void processing(Exception ex)
         {
             ExceptionViewInterface<ErrorPopupWindowConfig> view = new ErrorPopupWindow();
             ErrorPopupWindowConfig config = new ErrorPopupWindowConfig(
-                "Некорректный формат операции в модели для моделирования!");
+                "Недостаточно памяти в одном из компонентов моделирования, проверьте модель!");
             view.setConfig(config);
             view.show();
 

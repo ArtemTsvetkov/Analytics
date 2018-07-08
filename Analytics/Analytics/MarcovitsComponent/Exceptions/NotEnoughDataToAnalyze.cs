@@ -2,25 +2,28 @@
 using Analytics.CommonComponents.ExceptionHandler.Interfaces;
 using Analytics.CommonComponents.ExceptionHandler.TextJornalist;
 using Analytics.CommonComponents.ExceptionHandler.View.Error;
+using Analytics.CommonComponents.ExceptionHandler.View.Information.PopupWindow;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Analytics.Modeling.ModelingExceptions
+namespace Analytics.MarcovitsComponent.Exceptions
 {
-    class IncorrectFormatOperation : Exception, ConcreteException
+    class NotEnoughDataToAnalyze : Exception, ConcreteException
     {
-        public IncorrectFormatOperation() : base() { }
+        public NotEnoughDataToAnalyze() : base() { }
 
-        public IncorrectFormatOperation(string message) : base(message) { }
+        public NotEnoughDataToAnalyze(string message) : base(message) { }
 
         public void processing(Exception ex)
         {
-            ExceptionViewInterface<ErrorPopupWindowConfig> view = new ErrorPopupWindow();
-            ErrorPopupWindowConfig config = new ErrorPopupWindowConfig(
-                "Некорректный формат операции в модели для моделирования!");
+            ExceptionViewInterface<InformationPopupWindowConfig> view = 
+                new InformationPopupWindow();
+            InformationPopupWindowConfig config = new InformationPopupWindowConfig(
+                "Недостаточно данных для анализа, попробуйте изменить "+
+                "рассматриваемый интервал вреиени");
             view.setConfig(config);
             view.show();
 

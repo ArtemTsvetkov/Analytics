@@ -69,8 +69,6 @@ namespace Analytics
             {
                 model.getState().newRules.Add(advanceOperation.processing(model.getState().originalRules.
                     ElementAt(i)));
-            }
-            int idfd = 0;
-        }
+            }        }
     }
 }

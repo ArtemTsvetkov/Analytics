@@ -104,6 +104,7 @@
     <Compile Include="MarcovitsComponent\Config\MarcovitsConfig.cs" />
     <Compile Include="MarcovitsComponent\Converters\MarcovitsDataTableConverter.cs" />
     <Compile Include="MarcovitsComponent\Converters\ResultConverter.cs" />
+    <Compile Include="MarcovitsComponent\Exceptions\NotEnoughDataToAnalyze.cs" />
     <Compile Include="MarcovitsComponent\MarcovitsDataTable.cs" />
     <Compile Include="MarcovitsComponent\MarcovitsModel.cs" />
     <Compile Include="MarcovitsComponent\MarcovitsModelState.cs" />
@@ -126,7 +127,9 @@
     <Compile Include="Modeling\IntermediateStates\ModelsCreatorConfig\ReturnStateForConverterOfModelCreatorConfig.cs" />
     <Compile Include="Modeling\IntermediateStates\ModelsCreatorConfig\StateForConverterOfModelCreatorConfig.cs" />
     <Compile Include="Modeling\ModelingExceptions\IncorrectFormatOperation.cs" />
-    <Compile Include="Modeling\ModelingExceptions\ModelingException.cs" />
+    <Compile Include="Modeling\ModelingExceptions\NotEnoughMemoryInTheModelingElement.cs" />
+    <Compile Include="Modeling\ModelingExceptions\UnknownOperation.cs" />
+    <Compile Include="Modeling\ModelingExceptions\UsingCovarianceInsteadOfCorrelation.cs" />
     <Compile Include="Modeling\ModelingFunctionParser.cs" />
     <Compile Include="Modeling\ModelingInstruments\Device.cs" />
     <Compile Include="Modeling\ModelingInstruments\Element.cs" />
