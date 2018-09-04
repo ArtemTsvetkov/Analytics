@@ -10,17 +10,17 @@ using System.Threading.Tasks;
 
 namespace Analytics.Modeling.ModelingExceptions
 {
-    class IncorrectFormatOperation : Exception, ConcreteException
+    class UnknownOperation : Exception, ConcreteException
     {
-        public IncorrectFormatOperation() : base() { }
+        public UnknownOperation() : base() { }
 
-        public IncorrectFormatOperation(string message) : base(message) { }
+        public UnknownOperation(string message) : base(message) { }
 
         public void processing(Exception ex)
         {
             ExceptionViewInterface<ErrorPopupWindowConfig> view = new ErrorPopupWindow();
             ErrorPopupWindowConfig config = new ErrorPopupWindowConfig(
-                "Некорректный формат операции в модели для моделирования!");
+                "Неизвестная операция в модели для моделирования!");
             view.setConfig(config);
             view.show();
 

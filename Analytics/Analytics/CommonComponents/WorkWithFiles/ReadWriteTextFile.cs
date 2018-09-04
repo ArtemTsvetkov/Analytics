@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Text.RegularExpressions;
+using Analytics.CommonComponents.Exceptions;
 
 namespace Analytics
 {
@@ -52,15 +53,7 @@ namespace Analytics
             }
             catch (Exception ex)
             {
-                //ReadWriteTextFile rwtf = new ReadWriteTextFile();
-                List<string> buf = new List<string>();
-                buf.Add("-----------------------------------------------");
-                buf.Add("Module: ReadWriteTextFile");
-                DateTime thisDay = DateTime.Now;
-                buf.Add("Time: " + thisDay.ToString());
-                buf.Add("Exception: " + ex.Message);
-                Write_to_file(buf, Directory.GetCurrentDirectory() + "\\Errors.txt", 0);
-                return false;
+                throw new ErrorWithFile("The error with the file: " + file_path);
             }
         }
 
@@ -97,16 +90,7 @@ namespace Analytics
             }
             catch (Exception ex)
             {
-                buf_of_file_lines.Clear();
-                //ReadWriteTextFile rwtf = new ReadWriteTextFile();
-                List<string> buf = new List<string>();
-                buf.Add("-----------------------------------------------");
-                buf.Add("Module: ReadWriteTextFile");
-                DateTime thisDay = DateTime.Now;
-                buf.Add("Time: " + thisDay.ToString());
-                buf.Add("Exception: " + ex.Message);
-                Write_to_file(buf, Directory.GetCurrentDirectory() + "\\Errors.txt", 0);
-                return buf_of_file_lines;
+                throw new ErrorWithFile("The error with the file: " + file_path);
             }
         }
     }

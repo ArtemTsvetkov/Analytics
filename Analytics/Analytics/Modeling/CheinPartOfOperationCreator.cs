@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Analytics.Modeling.ModelingExceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,7 +33,7 @@ namespace Analytics.Modeling
                 }
                 else
                 {
-                    throw new Exception();
+                    throw new UnknownOperation("Unknown operation:" + rule);
                 }
             }
             else

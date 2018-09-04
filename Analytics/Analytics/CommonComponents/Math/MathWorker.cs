@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Analytics.CommonComponents.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -37,7 +38,8 @@ namespace Analytics.CommonComponents.Math
             }
             else//Должно совпадать, иначе нет смысла сравнивать
             {
-                throw new Exception();
+                throw new InvalidArraySize("Check the size of the arrays involved in the" +
+                    " covariance calculation");
             }
         }
 
@@ -86,9 +88,10 @@ namespace Analytics.CommonComponents.Math
                 }
                 return product;
             }
-            else//Должно совпадать, иначе нет смысла считать
+            else//Должно совпадать, иначе нет смысла сравнивать
             {
-                throw new Exception();
+                throw new InvalidArraySize("Check the size of the arrays involved in the" +
+                    " multiply matrix calculation");
             }
         }
     }

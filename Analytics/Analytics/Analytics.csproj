@@ -55,6 +55,29 @@
     <Compile Include="CommonComponents\CommandsStore\Stores\ConcreteCommandStore.cs" />
     <Compile Include="CommonComponents\BasicObjects\BasicModel.cs" />
     <Compile Include="CommonComponents\DataConverters\DistinctSoftwareNamesConverter.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\Concrete\ConcreteExceptionHandlerInitializer.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\Concrete\ExceptionHandler.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\Exceptions\AlreadyExistException.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\Exceptions\NonFoundException.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\Interfaces\ConcreteException.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\Interfaces\ExceptionHandlerInterface.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\Interfaces\ExceptionsJornalistInterface.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\Interfaces\ExceptionViewInterface.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\View\Error\ErrorPopupWindow.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\View\Error\ErrorPopupWindowConfig.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\View\Information\PopupWindow\InformationPopupWindow.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\View\Information\PopupWindow\InformationPopupWindowConfig.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\TextJornalist\TextFilesJornalist.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\TextJornalist\TextJornalistConfig.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\View\Question\PopupWindow\QuestionPopupWindow.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\View\Question\PopupWindow\QuestionPopupWindowConfig.cs" />
+    <Compile Include="CommonComponents\ExceptionHandler\View\Question\PopupWindow\QuestionPopupWindowObserver.cs" />
+    <Compile Include="CommonComponents\Exceptions\ErrorWithFile.cs" />
+    <Compile Include="CommonComponents\Exceptions\InvalidArraySize.cs" />
+    <Compile Include="CommonComponents\Exceptions\NoConfigurationSpecified.cs" />
+    <Compile Include="CommonComponents\Exceptions\NoDataBaseConnection.cs" />
+    <Compile Include="CommonComponents\Exceptions\NoFilesConnection.cs" />
+    <Compile Include="CommonComponents\Exceptions\UnknownTimeIntervalType.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\DataConverter.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\DataWorker.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\StorageForData.cs" />
@@ -70,8 +93,6 @@
     <Compile Include="CommonComponents\WorkWithFiles\Load\TextFilesDataLoader.cs" />
     <Compile Include="CommonComponents\WorkWithFiles\Save\TextFilesConfigFieldsOnSave.cs" />
     <Compile Include="CommonComponents\WorkWithFiles\Save\TextFilesDataSaver.cs" />
-    <Compile Include="CommonComponents\WorkWithDataBase\MSAccess\MSAccessStateFields.cs" />
-    <Compile Include="CommonComponents\WorkWithDataBase\MSAccess\MSAccessStorageForData.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -83,13 +104,12 @@
     <Compile Include="MarcovitsComponent\Config\MarcovitsConfig.cs" />
     <Compile Include="MarcovitsComponent\Converters\MarcovitsDataTableConverter.cs" />
     <Compile Include="MarcovitsComponent\Converters\ResultConverter.cs" />
+    <Compile Include="MarcovitsComponent\Exceptions\NotEnoughDataToAnalyze.cs" />
     <Compile Include="MarcovitsComponent\MarcovitsDataTable.cs" />
     <Compile Include="MarcovitsComponent\MarcovitsModel.cs" />
     <Compile Include="MarcovitsComponent\MarcovitsModelState.cs" />
     <Compile Include="CommonComponents\Interfaces\Model.cs" />
     <Compile Include="CommonComponents\Interfaces\ModelsState.cs" />
-    <Compile Include="CommonComponents\WorkWithDataBase\MSAccess\MSAccessDataSaver.cs" />
-    <Compile Include="CommonComponents\WorkWithDataBase\MSAccess\MSAccessProxy.cs" />
     <Compile Include="CommonComponents\Interfaces\Observer.cs" />
     <Compile Include="Modeling\CheinPartOfOperationCreator.cs" />
     <Compile Include="Modeling\Config\ModelingConfig.cs" />
@@ -107,7 +127,9 @@
     <Compile Include="Modeling\IntermediateStates\ModelsCreatorConfig\ReturnStateForConverterOfModelCreatorConfig.cs" />
     <Compile Include="Modeling\IntermediateStates\ModelsCreatorConfig\StateForConverterOfModelCreatorConfig.cs" />
     <Compile Include="Modeling\ModelingExceptions\IncorrectFormatOperation.cs" />
-    <Compile Include="Modeling\ModelingExceptions\ModelingException.cs" />
+    <Compile Include="Modeling\ModelingExceptions\NotEnoughMemoryInTheModelingElement.cs" />
+    <Compile Include="Modeling\ModelingExceptions\UnknownOperation.cs" />
+    <Compile Include="Modeling\ModelingExceptions\UsingCovarianceInsteadOfCorrelation.cs" />
     <Compile Include="Modeling\ModelingFunctionParser.cs" />
     <Compile Include="Modeling\ModelingInstruments\Device.cs" />
     <Compile Include="Modeling\ModelingInstruments\Element.cs" />
@@ -153,7 +175,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Statistics.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -178,6 +199,7 @@
   <ItemGroup>
     <None Include="Resources\BackGroundImage.jpg" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

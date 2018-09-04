@@ -1,8 +1,12 @@
 ﻿using Analytics.CommonComponents.BasicObjects;
+using Analytics.CommonComponents.ExceptionHandler;
+using Analytics.CommonComponents.ExceptionHandler.Concrete;
+using Analytics.CommonComponents.ExceptionHandler.Interfaces;
+using Analytics.CommonComponents.ExceptionHandler.View;
+using Analytics.CommonComponents.Exceptions;
 using Analytics.CommonComponents.Views;
 using Analytics.MarcovitsComponent.Converters;
 using Analytics.Modeling.GroupByTypes;
-using Modelirovanie;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,14 +28,23 @@ namespace Analytics
 
         public Form1()
         {
-            InitializeComponent();
-            marcovitsView = new MarcovitsView(this);
-            modelingView = new ModelingView(this);
-            textBox1.Text = "D:\\Files\\MsVisualProjects\\Diplom\\AnaliticsMath\\rules2.txt";
-            comboBox1.SelectedIndex = 0;
-            comboBox3.SelectedIndex = 0;
-            comboBox2.SelectedIndex = 0;
-            comboBox4.SelectedIndex = 0;
+            try
+            {
+                InitializeComponent();
+                ConcreteExceptionHandlerInitializer.initThisExceptionHandler(
+                    ExceptionHandler.getInstance());
+                marcovitsView = new MarcovitsView(this);
+                modelingView = new ModelingView(this);
+                textBox1.Text = "D:\\Files\\MsVisualProjects\\Diplom\\AnaliticsMath\\rules2.txt";
+                comboBox1.SelectedIndex = 0;
+                comboBox3.SelectedIndex = 0;
+                comboBox2.SelectedIndex = 0;
+                comboBox4.SelectedIndex = 0;
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.getInstance().processing(ex);
+            }
         }
 
         public Chart chart1Elem
@@ -111,47 +124,53 @@ namespace Analytics
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            switch (comboBox1.SelectedIndex)
+            try
             {
-                case 0:
-                    if(modelingView!=null)
-                    {
-                        modelingView.intervalChange(BasicType.year);
-                    }
-                    break;
-                case 1:
-                    if (modelingView != null)
-                    {
-                        modelingView.intervalChange(BasicType.month);
-                    }
-                    break;
-                case 2:
-                    if (modelingView != null)
-                    {
-                        modelingView.intervalChange(BasicType.day);
-                    }
-                    break;
-                case 3:
-                    if (modelingView != null)
-                    {
-                        modelingView.intervalChange(BasicType.hour);
-                    }
-                    break;
-                case 4:
-                    if (modelingView != null)
-                    {
-                        modelingView.intervalChange(BasicType.minute);
-                    }
-                    break;
-                case 5:
-                    if (modelingView != null)
-                    {
-                        modelingView.intervalChange(BasicType.second);
-                    }
-                    break;
-                default:
-                    //ДОБАВИТЬ СЮДА ИСКЛЮЧЕНИЕ - НЕИЗВЕСТНЫЙ ТИП ИНТЕРВАЛА
-                    throw new Exception();
+                switch (comboBox1.SelectedIndex)
+                {
+                    case 0:
+                        if (modelingView != null)
+                        {
+                            modelingView.intervalChange(BasicType.year);
+                        }
+                        break;
+                    case 1:
+                        if (modelingView != null)
+                        {
+                            modelingView.intervalChange(BasicType.month);
+                        }
+                        break;
+                    case 2:
+                        if (modelingView != null)
+                        {
+                            modelingView.intervalChange(BasicType.day);
+                        }
+                        break;
+                    case 3:
+                        if (modelingView != null)
+                        {
+                            modelingView.intervalChange(BasicType.hour);
+                        }
+                        break;
+                    case 4:
+                        if (modelingView != null)
+                        {
+                            modelingView.intervalChange(BasicType.minute);
+                        }
+                        break;
+                    case 5:
+                        if (modelingView != null)
+                        {
+                            modelingView.intervalChange(BasicType.second);
+                        }
+                        break;
+                    default:
+                        throw new UnknownTimeIntervalType("Unknown time interval type");
+                }
+            }
+            catch(Exception ex)
+            {
+                ExceptionHandler.getInstance().processing(ex);
             }
         }
 
@@ -162,47 +181,53 @@ namespace Analytics
 
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
-            switch (comboBox3.SelectedIndex)
+            try
             {
-                case 0:
-                    if (marcovitsView != null)
-                    {
-                        marcovitsView.intervalChange(BasicType.year);
-                    }
-                    break;
-                case 1:
-                    if (marcovitsView != null)
-                    {
-                        marcovitsView.intervalChange(BasicType.month);
-                    }
-                    break;
-                case 2:
-                    if (marcovitsView != null)
-                    {
-                        marcovitsView.intervalChange(BasicType.day);
-                    }
-                    break;
-                case 3:
-                    if (marcovitsView != null)
-                    {
-                        marcovitsView.intervalChange(BasicType.hour);
-                    }
-                    break;
-                case 4:
-                    if (marcovitsView != null)
-                    {
-                        marcovitsView.intervalChange(BasicType.minute);
-                    }
-                    break;
-                case 5:
-                    if (marcovitsView != null)
-                    {
-                        marcovitsView.intervalChange(BasicType.second);
-                    }
-                    break;
-                default:
-                    //ДОБАВИТЬ СЮДА ИСКЛЮЧЕНИЕ - НЕИЗВЕСТНЫЙ ТИП ИНТЕРВАЛА
-                    throw new Exception();
+                switch (comboBox3.SelectedIndex)
+                {
+                    case 0:
+                        if (marcovitsView != null)
+                        {
+                            marcovitsView.intervalChange(BasicType.year);
+                        }
+                        break;
+                    case 1:
+                        if (marcovitsView != null)
+                        {
+                            marcovitsView.intervalChange(BasicType.month);
+                        }
+                        break;
+                    case 2:
+                        if (marcovitsView != null)
+                        {
+                            marcovitsView.intervalChange(BasicType.day);
+                        }
+                        break;
+                    case 3:
+                        if (marcovitsView != null)
+                        {
+                            marcovitsView.intervalChange(BasicType.hour);
+                        }
+                        break;
+                    case 4:
+                        if (marcovitsView != null)
+                        {
+                            marcovitsView.intervalChange(BasicType.minute);
+                        }
+                        break;
+                    case 5:
+                        if (marcovitsView != null)
+                        {
+                            marcovitsView.intervalChange(BasicType.second);
+                        }
+                        break;
+                    default:
+                        throw new UnknownTimeIntervalType("Unknown time interval type");
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.getInstance().processing(ex);
             }
         }
 

@@ -1,12 +1,13 @@
 ﻿using Analytics.CommonComponents;
 using Analytics.CommonComponents.BasicObjects;
 using Analytics.CommonComponents.DataConverters;
+using Analytics.CommonComponents.ExceptionHandler;
 using Analytics.CommonComponents.Interfaces.Data;
 using Analytics.CommonComponents.Math;
 using Analytics.CommonComponents.MsSqlServersQueryConfigurator;
 using Analytics.CommonComponents.WorkWithDataBase.MsSqlServer;
-using Analytics.CommonComponents.WorkWithMSAccess;
 using Analytics.MarcovitsComponent.Config;
+using Analytics.MarcovitsComponent.Exceptions;
 using Analytics.Modeling.GroupByTypes;
 using System;
 using System.Collections.Generic;
@@ -35,117 +36,110 @@ namespace Analytics
 
         public override void calculationStatistics()
         {
-            //Получение уникальных имен лицензий
-            DataSet ds = configProxyForLoadDataFromNewBDAndExecute(
+            try
+            {
+                //Получение уникальных имен лицензий
+                DataSet ds = configProxyForLoadDataFromNewBDAndExecute(
                 MsSqlServersQueryConfigurator.getUnicLicensesName());
-            state.unicSoftwareNames = unucNamesConverter.convert(ds);
-            //Формирование запроса на получение данных
-            ds = configProxyForLoadDataFromNewBDAndExecute(MsSqlServersQueryConfigurator.
-                getDataOfUseAllLicenses(state.unicSoftwareNames, config.getInterval()));
-            state.data = converter.convert(ds);
-            if (state.data.Count < 5)
-            {
-                //ДОБАВИТЬ ВЫЗОВ ИСКЛЮЧЕНИЯ-НЕДОСТАТОЧНО ДАННЫХ ДЛЯ АНАЛИЗА
-                throw new Exception();
-            }
-
-
-            //Рассчет средних значений кол-ва лицензий
-            state.avgNumbersUseLicense = new double[state.unicSoftwareNames.Length];
-            for (int i=0; i< state.data.Count; i++)
-            {
-                for(int j=0; j<state.data.ElementAt(i).licenses.Length; j++)
+                state.unicSoftwareNames = unucNamesConverter.convert(ds);
+                //Формирование запроса на получение данных
+                ds = configProxyForLoadDataFromNewBDAndExecute(MsSqlServersQueryConfigurator.
+                    getDataOfUseAllLicenses(state.unicSoftwareNames, config.getInterval()));
+                state.data = converter.convert(ds);
+                if (state.data.Count < 5)
                 {
-                    state.avgNumbersUseLicense[j] += state.data.ElementAt(i).licenses[j];
+                    throw new NotEnoughDataToAnalyze("Not enough data to analyze");
                 }
-            }
-            for (int j = 0; j < state.avgNumbersUseLicense.Length; j++)
-            {
-                state.avgNumbersUseLicense[j] = state.avgNumbersUseLicense[j] / state.data.Count;        
-            }
 
-            //Число закупленных лицензий читается из таблицы PurchasedLicenses
-            ds = configProxyForLoadDataFromNewBDAndExecute(
-                MsSqlServersQueryConfigurator.getNumberOfPurchasedLicenses());
-            DataTable table = ds.Tables[0];
-            state.numberBuyLicense = new double[state.unicSoftwareNames.Count()];
-            for (int i=0;i<state.unicSoftwareNames.Count();i++)
-            {
-                state.numberBuyLicense[i] = int.Parse(table.Rows[i][1].ToString());
-            }
-            //Расчет разницы между кол-вом закупленных и текущих лицензий
-            for (int i = 0; i < state.data.Count; i++)
-            {
-                for (int j = 0; j < state.data.ElementAt(i).licenses.Length; j++)
-                {
-                    state.data.ElementAt(i).licenses[j] = (state.data.ElementAt(i).licenses[j] - 
-                        state.numberBuyLicense[j])/ state.numberBuyLicense[j];
-                }
-            }
 
-            state.avgDeviationFromPurchasedNumber = new double[state.unicSoftwareNames.Length];
-            //расчет ковариации
-            double[,] covarMas = new double[state.unicSoftwareNames.Length, state.unicSoftwareNames.
-                Length];
-            for(int i=0; i< state.unicSoftwareNames.Length; i++)
-            {
-                for (int j = 0; j < state.unicSoftwareNames.Length; j++)
+                //Рассчет средних значений кол-ва лицензий
+                state.avgNumbersUseLicense = new double[state.unicSoftwareNames.Length];
+                for (int i = 0; i < state.data.Count; i++)
                 {
-                    double[] matrixA = new double[state.data.Count];
-                    double[] matrixB = new double[state.data.Count];
-                    for(int m=0; m< state.data.Count; m++)
+                    for (int j = 0; j < state.data.ElementAt(i).licenses.Length; j++)
                     {
-                        matrixA[m] = state.data.ElementAt(m).licenses[i];
-                        matrixB[m] = state.data.ElementAt(m).licenses[j];
+                        state.avgNumbersUseLicense[j] += state.data.ElementAt(i).licenses[j];
                     }
-                    covarMas[i, j] = MathWorker.covar(matrixA, matrixB);
-
-                    //Для рассчета доходности считаю доходность по каждой отдельной лицензии
-                    state.avgDeviationFromPurchasedNumber[i] = (1 - Math.Abs(MathWorker.avg(matrixA)));
                 }
+                for (int j = 0; j < state.avgNumbersUseLicense.Length; j++)
+                {
+                    state.avgNumbersUseLicense[j] = state.avgNumbersUseLicense[j] / state.data.Count;
+                }
+
+                //Число закупленных лицензий читается из таблицы PurchasedLicenses
+                ds = configProxyForLoadDataFromNewBDAndExecute(
+                    MsSqlServersQueryConfigurator.getNumberOfPurchasedLicenses());
+                DataTable table = ds.Tables[0];
+                state.numberBuyLicense = new double[state.unicSoftwareNames.Count()];
+                for (int i = 0; i < state.unicSoftwareNames.Count(); i++)
+                {
+                    state.numberBuyLicense[i] = int.Parse(table.Rows[i][1].ToString());
+                }
+                //Расчет разницы между кол-вом закупленных и текущих лицензий
+                for (int i = 0; i < state.data.Count; i++)
+                {
+                    for (int j = 0; j < state.data.ElementAt(i).licenses.Length; j++)
+                    {
+                        state.data.ElementAt(i).licenses[j] = (state.data.ElementAt(i).licenses[j] -
+                            state.numberBuyLicense[j]) / state.numberBuyLicense[j];
+                    }
+                }
+
+                state.avgDeviationFromPurchasedNumber = new double[state.unicSoftwareNames.Length];
+                //расчет ковариации
+                double[,] covarMas = new double[state.unicSoftwareNames.Length, state.unicSoftwareNames.
+                    Length];
+                for (int i = 0; i < state.unicSoftwareNames.Length; i++)
+                {
+                    for (int j = 0; j < state.unicSoftwareNames.Length; j++)
+                    {
+                        double[] matrixA = new double[state.data.Count];
+                        double[] matrixB = new double[state.data.Count];
+                        for (int m = 0; m < state.data.Count; m++)
+                        {
+                            matrixA[m] = state.data.ElementAt(m).licenses[i];
+                            matrixB[m] = state.data.ElementAt(m).licenses[j];
+                        }
+                        covarMas[i, j] = MathWorker.covar(matrixA, matrixB);
+
+                        //Для рассчета доходности считаю доходность по каждой отдельной лицензии
+                        state.avgDeviationFromPurchasedNumber[i] = (1 - Math.Abs(MathWorker.avg(matrixA)));
+                    }
+                }
+                //Cоотношения в процентах читается из таблицы PercentageOfLicense
+                ds = configProxyForLoadDataFromNewBDAndExecute(
+                    MsSqlServersQueryConfigurator.getPartsInPersentOfPurchasedLicenses());
+                table = ds.Tables[0];
+                state.percents = new double[state.unicSoftwareNames.Count(), 1];
+                for (int i = 0; i < state.unicSoftwareNames.Count(); i++)
+                {
+                    state.percents[i, 0] = double.Parse(table.Rows[i][1].ToString());
+                }
+
+                //Подсчет общего риска
+                state.risk = MathWorker.multiplyMatrix(covarMas, state.percents);
+
+                double[,] transpPercents = new double[1, 5];
+                for (int i = 0; i < 5; i++)
+                {
+                    transpPercents[0, i] = state.percents[i, 0];
+                }
+
+                state.risk = MathWorker.multiplyMatrix(transpPercents, state.risk);
+
+                //Подсчет общего дохода
+                state.income = 0;
+                for (int i = 0; i < state.avgDeviationFromPurchasedNumber.Length; i++)
+                {
+                    state.income += state.avgDeviationFromPurchasedNumber[i] * state.percents[i, 0];
+                }
+
+                notifyObservers();
             }
-            //Cоотношения в процентах читается из таблицы PercentageOfLicense
-            ds = configProxyForLoadDataFromNewBDAndExecute(
-                MsSqlServersQueryConfigurator.getPartsInPersentOfPurchasedLicenses());
-            table = ds.Tables[0];
-            state.percents = new double[state.unicSoftwareNames.Count(),1];
-            for (int i = 0; i < state.unicSoftwareNames.Count(); i++)
+            catch(Exception ex)
             {
-                state.percents[i,0] = double.Parse(table.Rows[i][1].ToString());
+                ExceptionHandler.getInstance().processing(ex);
             }
-
-            //Подсчет общего риска
-            state.risk = MathWorker.multiplyMatrix(covarMas, state.percents);
-
-            double[,] transpPercents = new double[1, 5];
-            for (int i = 0; i < 5; i++)
-            {
-                transpPercents[0, i] = state.percents[i, 0];
-            }
-
-            state.risk = MathWorker.multiplyMatrix(transpPercents, state.risk);
-
-            //Подсчет общего дохода
-            state.income = 0;
-            for (int i=0; i<state.avgDeviationFromPurchasedNumber.Length; i++)
-            {
-                state.income += state.avgDeviationFromPurchasedNumber[i] * state.percents[i,0];
-            }
-
-            notifyObservers();
-        }
-
-        public DataSet configProxyForLoadDataFromBDAndExecute(string query)
-        {
-            DataWorker<MSAccessStateFields, DataSet> accessProxy = new MSAccessProxy();
-            List<string> list = new List<string>();
-            list.Add(query);
-            MSAccessStateFields configProxy =
-                new MSAccessStateFields(config.getPathOfDataBase(), list);
-            accessProxy.setConfig(configProxy);
-            accessProxy.execute();
-            list.Clear();
-            return accessProxy.getResult();
         }
 
         public DataSet configProxyForLoadDataFromNewBDAndExecute(string query)
@@ -163,7 +157,7 @@ namespace Analytics
 
         public override void loadStore()//загрузка данных
         {
-            DataWorker<MSAccessStateFields, DataSet> accessProxy = new MSAccessProxy();
+            DataWorker<MsSQLServerStateFields, DataSet> accessProxy = new MsSQLServerProxy();
             //получение значения id
             DataSet ds = configProxyForLoadDataFromNewBDAndExecute(
                 MsSqlServersQueryConfigurator.getDataOfUsersUseLicenses());

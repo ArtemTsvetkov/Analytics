@@ -8,19 +8,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Analytics.Modeling.ModelingExceptions
+namespace Analytics.CommonComponents.Exceptions
 {
-    class IncorrectFormatOperation : Exception, ConcreteException
+    class ErrorWithFile : Exception, ConcreteException
     {
-        public IncorrectFormatOperation() : base() { }
+        public ErrorWithFile() : base() { }
 
-        public IncorrectFormatOperation(string message) : base(message) { }
+        public ErrorWithFile(string message) : base(message) { }
 
         public void processing(Exception ex)
         {
             ExceptionViewInterface<ErrorPopupWindowConfig> view = new ErrorPopupWindow();
             ErrorPopupWindowConfig config = new ErrorPopupWindowConfig(
-                "Некорректный формат операции в модели для моделирования!");
+                "Ошибка работы с файлом");
             view.setConfig(config);
             view.show();
 

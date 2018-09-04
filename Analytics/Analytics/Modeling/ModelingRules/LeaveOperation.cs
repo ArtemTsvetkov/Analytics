@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Analytics.Modeling.ModelingExceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -43,10 +44,11 @@ namespace Analytics.Modeling.ModelingRules
                 {
                     return new LeaveOperation(words[1], model);
                 }
-                /* if (param.Count() > 2)
+                if (param.Count() > 2)
                 {
-                    //ВЫЗОВ ИСКЛЮЧЕНИЯ-НЕВЕРНЫЙ ФОРМАТ
-                }*/
+                    throw new IncorrectFormatOperation("Incorrect format modeling operation"+
+                        "leave");
+                }
             }
             //Для случая наличия метки
             if (words.Length > 1 && words[1] == "LEAVE")
@@ -62,6 +64,11 @@ namespace Analytics.Modeling.ModelingRules
                 if (param.Count() == 1)
                 {
                     return new LeaveOperation(words[2], model);
+                }
+                if (param.Count() > 2)
+                {
+                    throw new IncorrectFormatOperation("Incorrect format modeling operation:"+
+                        "leave");
                 }
             }
 

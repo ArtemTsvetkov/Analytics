@@ -1,4 +1,5 @@
-﻿using Analytics.CommonComponents.Interfaces.Data;
+﻿using Analytics.CommonComponents.Exceptions;
+using Analytics.CommonComponents.Interfaces.Data;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -22,13 +23,20 @@ namespace Analytics.CommonComponents.WorkWithDataBase.MsSqlServer
 
         public void execute()
         {
-            if (connect())
+            try
             {
-                saver.execute();
+                if (connect())
+                {
+                    saver.execute();
+                }
+                else
+                {
+                    throw new NoDataBaseConnection("There is no database connection");
+                }
             }
-            else
+            catch(Exception ex)
             {
-                //ДОБАВИТЬ СЮДА ВЫЗОВ ИСКЛЮЧЕНИЯ
+                ExceptionHandler.ExceptionHandler.getInstance().processing(ex);
             }
         }
 
@@ -56,8 +64,7 @@ namespace Analytics.CommonComponents.WorkWithDataBase.MsSqlServer
             }
             catch (Exception ex)
             {
-                //ДОБАВИТЬ СЮДА ВЫЗОВ ИСКЛЮЧЕНИЯ
-                throw new Exception();
+                throw new NoDataBaseConnection("There is no database connection");
             }
             finally
             {

@@ -62,7 +62,8 @@ namespace Analytics.Modeling.ModelingRules
                         D = param[3];
                         break;
                     default:
-                        throw new IncorrectFormatOperation();
+                        throw new IncorrectFormatOperation(
+                            "Incorrect format of transaction model for simulation");
                 }
 
                 return new TransferOperation(A, B, C, D, model);
@@ -101,7 +102,8 @@ namespace Analytics.Modeling.ModelingRules
                         D = param[3];
                         break;
                     default:
-                        throw new IncorrectFormatOperation();
+                        throw new IncorrectFormatOperation(
+                            "Incorrect format of transaction model for simulation");
                 }
 
                 return new TransferOperation(A, B, C, D, model);

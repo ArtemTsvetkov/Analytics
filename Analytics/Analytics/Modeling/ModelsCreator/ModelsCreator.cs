@@ -1,4 +1,5 @@
 ﻿using Analytics.CommonComponents.Interfaces.Data;
+using Analytics.Modeling.ModelingExceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,8 +54,8 @@ namespace Analytics.Modeling.ModelsCreator
                         {
                             if (fields.korellation[m, i] > 1 | fields.korellation[m, i] < -1)
                             {
-                                throw new Exception();
-                                //ДОБАВИТЬ ИСКЛЮЧЕНИЕ - ИСПОЛЬЗОВАНИЕ КОВАРИАЦИИ ВМЕСТО КОРЕЛЛЯЦИИ
+                                throw new UsingCovarianceInsteadOfCorrelation(
+                                    "Using covariance instead of correlation");
                             }
                             else
                             {

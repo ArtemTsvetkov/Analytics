@@ -8,19 +8,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Analytics.Modeling.ModelingExceptions
+namespace Analytics.CommonComponents.Exceptions
 {
-    class IncorrectFormatOperation : Exception, ConcreteException
+    class NoDataBaseConnection : Exception, ConcreteException
     {
-        public IncorrectFormatOperation() : base() { }
+        public NoDataBaseConnection() : base() { }
 
-        public IncorrectFormatOperation(string message) : base(message) { }
+        public NoDataBaseConnection(string message) : base(message) { }
 
         public void processing(Exception ex)
         {
             ExceptionViewInterface<ErrorPopupWindowConfig> view = new ErrorPopupWindow();
             ErrorPopupWindowConfig config = new ErrorPopupWindowConfig(
-                "Некорректный формат операции в модели для моделирования!");
+                "Нет соединения с базой данных!");
             view.setConfig(config);
             view.show();
 
