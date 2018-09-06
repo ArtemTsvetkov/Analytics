@@ -26,19 +26,13 @@ namespace Analytics
     class ModelingModel : BasicModel<ModelingReport, ModelingConfig>
     {
         private ModelingState state;
-        //Отчет по моделированию
         private ModelingReport report;
-        private int numberOfStartsModel = 0;
 
         public ModelingState getState()
         {
             return state;
         }
 
-        //Данная функция, следуя флагу resetAllState, либо полностью
-        //откатит все изменения стейта, либо только те объекты, которые участвуют
-        //непосредственно в моделировании(очереди, устройства и тд), но оставит
-        //количество запусков моделирования и отчет
         public override void recoverySelf(ModelsState backUpState)
         {
             ModelingState oldState = (ModelingState)backUpState;
@@ -98,16 +92,12 @@ namespace Analytics
                 state.newRules.Add(oldState.newRules.ElementAt(i).clone());
             }
 
-            if(config.getResetAllState())
+            if(oldState.report.getAvgTranzactsInQueue().Count>0)
             {
-                state.report = oldState.report.copyReport(oldState);
-                report = oldState.report.copyReport(oldState);
+                int dfdfsfsfsf = 0;
             }
-            else
-            {
-                state.numberOfStartsModel = numberOfStartsModel;
-                state.report = report.copyReport(state);
-            }
+
+            report = oldState.report.copyReport(oldState);
 
             notifyObservers();
         }
@@ -122,7 +112,7 @@ namespace Analytics
             copy.numberOfStartsModel = state.numberOfStartsModel;
             copy.rand = state.rand;
             copy.interval = state.interval;
-            copy.report = state.report.copyReport(state);
+            copy.report = report.copyReport(state);
 
             string[] originalRulesC = new string[state.originalRules.Count];
             state.originalRules.CopyTo(originalRulesC);
@@ -320,18 +310,17 @@ namespace Analytics
 
         public override void calculationStatistics()
         {
-            run_simulation();
-
-            state.numberOfStartsModel++;
-            numberOfStartsModel = state.numberOfStartsModel;
-            if (state.numberOfStartsModel == 1)
+            ModelsState backup = copySelf();
+            for (int i = 0; i < state.numberOfStartsModel; i++)
             {
-                state.report = new ModelingReport(state);
+                run_simulation();
+                if (i == 0)
+                {
+                    report = new ModelingReport(state);
+                }
+                report.updateReport(state);
+                recoverySelf(backup);
             }
-            state.report.updateReport(state);
-            report = state.report.copyReport(state);
-
-            notifyObservers();
         }
 
         public override void loadStore()
@@ -343,6 +332,8 @@ namespace Analytics
             loader.setConfig(loadersConfig);
             loader.execute();
             state.originalRules = loader.getResult();*/
+
+
             //Создание модели в реалтайме
             DataWorker<ModelsCreatorConfigState, List<string>> loader = 
                 new ModelsCreatorProxy();
@@ -375,7 +366,7 @@ namespace Analytics
                 stateForConverter.avgLicensePerTime.Add(
                     configProxyForLoadDataFromNewBDAndExecute(MsSqlServersQueryConfigurator.getAvgLicesensePerTime(
                         unicNames[i], config.getInterval())));
-        }
+            }
 
             //Перевод типа DataSet к нужному формату
             DataConverter<StateForConverterOfModelCreatorConfig,
@@ -486,18 +477,16 @@ namespace Analytics
         public override void setConfig(ModelingConfig configData)
         {
             config = configData;
-            if (configData.getResetAllState())
-            {
-                state = new ModelingState();
-                state.report = new ModelingReport(state);
-            }
-            report = state.report.copyReport(state);
+            state = new ModelingState();
+            report = new ModelingReport(state);
             state.interval = config.getInterval();
+            state.numberOfStartsModel = config.getNumberOfStartsModeling();
             notifyObservers();
         }
 
         public override ModelingReport getResult()
         {
+            state.report = report.copyReport(state);
             DataConverter<ModelingState, ModelingReport> converter =
                 new ResultConverter();
             return converter.convert(state);

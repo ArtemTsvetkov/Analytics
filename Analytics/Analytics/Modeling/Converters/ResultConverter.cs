@@ -17,28 +17,28 @@ namespace Analytics.Modeling.Converters
             {
                 avgReport.getMaxTranzactsInQueue().ElementAt(i).value =
                     avgReport.getMaxTranzactsInQueue().ElementAt(i).value / 
-                    (double)data.numberOfStartsModel;
+                    (double)avgReport.getNumberOfReportsUpdates();
             }
 
             for (int i = 0; i < avgReport.getAvgTranzactsInQueue().Count(); i++)
             {
                 avgReport.getAvgTranzactsInQueue().ElementAt(i).value =
                     avgReport.getAvgTranzactsInQueue().ElementAt(i).value /
-                    (double)data.numberOfStartsModel;
+                    (double)avgReport.getNumberOfReportsUpdates();
             }
 
             for (int i = 0; i < avgReport.getNumberRunTranzactsOnLable().Count(); i++)
             {
                 avgReport.getNumberRunTranzactsOnLable().ElementAt(i).value =
                     avgReport.getNumberRunTranzactsOnLable().ElementAt(i).value /
-                    (double)data.numberOfStartsModel;
+                    (double)avgReport.getNumberOfReportsUpdates();
             }
 
             for (int i = 0; i < avgReport.getVariablesValue().Count(); i++)
             {
                 avgReport.getVariablesValue().ElementAt(i).value =
                     avgReport.getVariablesValue().ElementAt(i).value /
-                    (double)data.numberOfStartsModel;
+                    (double)avgReport.getNumberOfReportsUpdates();
             }
 
             avgReport.interval = data.interval;

@@ -516,5 +516,11 @@ namespace Analytics
                     throw new Exception();
             }
         }
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+            modelingView.numberOfModelingStartsChange(
+                int.Parse(numericUpDown1.Value.ToString()));
+        }
     }
 }

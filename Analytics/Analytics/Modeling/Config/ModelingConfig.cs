@@ -1,4 +1,5 @@
-﻿using Analytics.Modeling.GroupByTypes;
+﻿using Analytics.CommonComponents.Exceptions;
+using Analytics.Modeling.GroupByTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,6 @@ namespace Analytics.Modeling.Config
 {
     class ModelingConfig
     {
-        //Флаг, указывающий сброс всего стейта
-        private bool resetAllState = true;
         //Путь до БД
         private string pathOfDataBase;
         //Флаг использования корелляции между запроса на лицензии
@@ -18,11 +17,31 @@ namespace Analytics.Modeling.Config
         //Модификатор группировки для нализа(по дням/минутам и тд)
         //рассматриваемый промежуток времени
         private GropByType interval = new HourType();
+        //Необходимое количество запусков моделирования, если оно больше 1, то в итоговый
+        //отчет попадут усредненные значения
+        private int numberOfStartsModeling = 1;
 
         public ModelingConfig(string pathOfDataBase, GropByType interval)
         {
             this.pathOfDataBase = pathOfDataBase;
             this.interval = interval;
+        }
+
+        public int getNumberOfStartsModeling()
+        {
+            return numberOfStartsModeling;
+        }
+
+        public void setNumberOfStartsModeling(int numberOfStartsModeling)
+        {
+            if (numberOfStartsModeling < 1)
+            {
+                throw new IncorrectValue("Enter incorrect value: for number of starts modeling");
+            }
+            else
+            {
+                this.numberOfStartsModeling = numberOfStartsModeling;
+            }
         }
 
         public GropByType getInterval()
@@ -48,16 +67,6 @@ namespace Analytics.Modeling.Config
         public void setPathOfDataBase(string pathOfDataBase)
         {
             this.pathOfDataBase = pathOfDataBase;
-        }
-
-        public bool getResetAllState()
-        {
-            return resetAllState;
-        }
-
-        public void setResetAllState(bool resetAllState)
-        {
-            this.resetAllState = resetAllState;
         }
     }
 }

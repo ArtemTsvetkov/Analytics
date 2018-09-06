@@ -18,14 +18,26 @@ namespace Analytics.Modeling
         List<ElementsNameWithElementsValue> numberRunTranzactsOnLable;
         //Значение переменных
         List<ElementsNameWithElementsValue> variablesValue;
-        //рассматриваемый промежуток времени
+        //Рассматриваемый промежуток времени
         public GropByType interval;
+        //Количество обновлений
+        private int numberOfReportsUpdates;
 
         //В конструкторе только создается нужная структура, с именами элементов, но во всех
         //значения стоит 0
         public ModelingReport(ModelingState state)
         {
             reset(state);
+        }
+
+        public int getNumberOfReportsUpdates()
+        {
+            return numberOfReportsUpdates;
+        }
+
+        public void setNumberOfReportsUpdates(int numberOfReportsUpdates)
+        {
+            this.numberOfReportsUpdates = numberOfReportsUpdates;
         }
 
         public List<ElementsNameWithElementsValue> getMaxTranzactsInQueue()
@@ -51,6 +63,7 @@ namespace Analytics.Modeling
         //Сброс отчета
         public void reset(ModelingState state)
         {
+            numberOfReportsUpdates = 0;
             maxTranzactsInQueue = new List<ElementsNameWithElementsValue>();
             avgTranzactsInQueue = new List<ElementsNameWithElementsValue>();
             numberRunTranzactsOnLable = new List<ElementsNameWithElementsValue>();
@@ -175,6 +188,8 @@ namespace Analytics.Modeling
                 }
             }
 
+            copy.setNumberOfReportsUpdates(getNumberOfReportsUpdates());
+
             return copy;
         }
 
@@ -207,6 +222,8 @@ namespace Analytics.Modeling
                         double.Parse(state.variables.ElementAt(i).value);
                 }
             }
+
+            numberOfReportsUpdates++;
         }
     }
 }
