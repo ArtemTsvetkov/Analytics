@@ -20,11 +20,24 @@ namespace Analytics.Modeling.Config
         //Необходимое количество запусков моделирования, если оно больше 1, то в итоговый
         //отчет попадут усредненные значения
         private int numberOfStartsModeling = 1;
+        //Восстанавливать report (для поддержки просмотра предыдущих рассчетов и вместе с тем
+        //многократного запуска модели)
+        private bool rollbackReport = true;
 
         public ModelingConfig(string pathOfDataBase, GropByType interval)
         {
             this.pathOfDataBase = pathOfDataBase;
             this.interval = interval;
+        }
+
+        public ModelingConfig copy()
+        {
+            ModelingConfig copy = new ModelingConfig(pathOfDataBase, interval);
+            copy.setWithKovar(withKovar);
+            copy.setNumberOfStartsModeling(numberOfStartsModeling);
+            copy.setRollbackReport(rollbackReport);
+
+            return copy;
         }
 
         public int getNumberOfStartsModeling()
@@ -57,6 +70,16 @@ namespace Analytics.Modeling.Config
         public void setWithKovar(bool withKovar)
         {
             this.withKovar = withKovar;
+        }
+
+        public bool isRollbackReport()
+        {
+            return rollbackReport;
+        }
+
+        public void setRollbackReport(bool rollbackReport)
+        {
+            this.rollbackReport = rollbackReport;
         }
 
         public string getPathOfDataBase()

@@ -38,12 +38,10 @@ namespace Analytics
             ModelingState oldState = (ModelingState)backUpState;
             state = new ModelingState();
             state.last_tranzaktions_id = oldState.last_tranzaktions_id;
-            state.result = oldState.result;
             state.time_of_modeling = oldState.time_of_modeling;
             state.idProcessingTranzact = oldState.idProcessingTranzact;
-            state.numberOfStartsModel = oldState.numberOfStartsModel;
             state.rand = oldState.rand;
-            state.interval = oldState.interval;
+            config = oldState.report.getConfig().copy();
 
             string[] originalRulesC = new string[oldState.originalRules.Count];
             oldState.originalRules.CopyTo(originalRulesC);
@@ -92,27 +90,26 @@ namespace Analytics
                 state.newRules.Add(oldState.newRules.ElementAt(i).clone());
             }
 
-            if(oldState.report.getAvgTranzactsInQueue().Count>0)
+            //Откат report нужен только в случае отката всей 
+            //модели для просматра предыдущих результатов ее работы
+            if (config.isRollbackReport())
             {
-                int dfdfsfsfsf = 0;
+                report = oldState.report.copyReport(oldState);
             }
-
-            report = oldState.report.copyReport(oldState);
 
             notifyObservers();
         }
 
         public override ModelsState copySelf()
         {
+            state.report = report.copyReport(state);
             ModelingState copy = new ModelingState();
             copy.last_tranzaktions_id = state.last_tranzaktions_id;
-            copy.result = state.result;
             copy.time_of_modeling = state.time_of_modeling;
             copy.idProcessingTranzact = state.idProcessingTranzact;
-            copy.numberOfStartsModel = state.numberOfStartsModel;
             copy.rand = state.rand;
-            copy.interval = state.interval;
             copy.report = report.copyReport(state);
+            copy.report.setConfig(config.copy());
 
             string[] originalRulesC = new string[state.originalRules.Count];
             state.originalRules.CopyTo(originalRulesC);
@@ -298,7 +295,6 @@ namespace Analytics
                 }
             }
             state.time_of_modeling = system_time;
-            state.result = "Успех!";
         }
 
         //функция создания времени задержки, принимает разброс возможных значений
@@ -310,8 +306,9 @@ namespace Analytics
 
         public override void calculationStatistics()
         {
+            config.setRollbackReport(false);
             ModelsState backup = copySelf();
-            for (int i = 0; i < state.numberOfStartsModel; i++)
+            for (int i = 0; i < config.getNumberOfStartsModeling(); i++)
             {
                 run_simulation();
                 if (i == 0)
@@ -321,6 +318,7 @@ namespace Analytics
                 report.updateReport(state);
                 recoverySelf(backup);
             }
+            config.setRollbackReport(true);
         }
 
         public override void loadStore()
@@ -476,11 +474,9 @@ namespace Analytics
 
         public override void setConfig(ModelingConfig configData)
         {
-            config = configData;
+            config = configData.copy();
             state = new ModelingState();
             report = new ModelingReport(state);
-            state.interval = config.getInterval();
-            state.numberOfStartsModel = config.getNumberOfStartsModeling();
             notifyObservers();
         }
 

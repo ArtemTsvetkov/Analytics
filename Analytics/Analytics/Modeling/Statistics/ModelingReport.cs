@@ -1,4 +1,5 @@
-﻿using Analytics.Modeling.GroupByTypes;
+﻿using Analytics.Modeling.Config;
+using Analytics.Modeling.GroupByTypes;
 using Analytics.Modeling.Statistics;
 using System;
 using System.Collections.Generic;
@@ -18,16 +19,26 @@ namespace Analytics.Modeling
         List<ElementsNameWithElementsValue> numberRunTranzactsOnLable;
         //Значение переменных
         List<ElementsNameWithElementsValue> variablesValue;
-        //Рассматриваемый промежуток времени
-        public GropByType interval;
         //Количество обновлений
         private int numberOfReportsUpdates;
+        //Используется ТОЛЬКО для пересылки при получении данных из модели или для ее отката
+        private ModelingConfig config;
 
         //В конструкторе только создается нужная структура, с именами элементов, но во всех
         //значения стоит 0
         public ModelingReport(ModelingState state)
         {
             reset(state);
+        }
+
+        public ModelingConfig getConfig()
+        {
+            return config;
+        }
+
+        public void setConfig(ModelingConfig config)
+        {
+            this.config = config;
         }
 
         public int getNumberOfReportsUpdates()

@@ -102,8 +102,8 @@ namespace Analytics.CommonComponents.Views
         {
             form.progressBar1Elem.Value = 0;
             step = 100 / int.Parse(form.numericUpDown1Elem.Value.ToString())/3;
-            commandsStore.executeCommand(
-                new UpdateConfigCommand<ModelingReport, ModelingConfig>(control, config));
+            //commandsStore.executeCommand(
+              //  new UpdateConfigCommand<ModelingReport, ModelingConfig>(control, config));
             commandsStore.executeCommand(new RunModeling<ModelingConfig>(control));
             form.progressBar1Elem.Value = 100;
         }
@@ -232,28 +232,31 @@ namespace Analytics.CommonComponents.Views
             }
 
             //Обновление управляющих элементов
-            switch (report.interval.getType())
+            if (report.getConfig() != null)
             {
-                case "year":
-                    form.comboBox1Elem.SelectedIndex = 0;
-                    break;
-                case "month":
-                    form.comboBox1Elem.SelectedIndex = 1;
-                    break;
-                case "day":
-                    form.comboBox1Elem.SelectedIndex = 2;
-                    break;
-                case "hour":
-                    form.comboBox1Elem.SelectedIndex = 3;
-                    break;
-                case "minute":
-                    form.comboBox1Elem.SelectedIndex = 4;
-                    break;
-                case "second":
-                    form.comboBox1Elem.SelectedIndex = 5;
-                    break;
-                default:
-                    throw new UnknownTimeIntervalType("Unknown time interval type");
+                switch (report.getConfig().getInterval().getType())
+                {
+                    case "year":
+                        form.comboBox1Elem.SelectedIndex = 0;
+                        break;
+                    case "month":
+                        form.comboBox1Elem.SelectedIndex = 1;
+                        break;
+                    case "day":
+                        form.comboBox1Elem.SelectedIndex = 2;
+                        break;
+                    case "hour":
+                        form.comboBox1Elem.SelectedIndex = 3;
+                        break;
+                    case "minute":
+                        form.comboBox1Elem.SelectedIndex = 4;
+                        break;
+                    case "second":
+                        form.comboBox1Elem.SelectedIndex = 5;
+                        break;
+                    default:
+                        throw new UnknownTimeIntervalType("Unknown time interval type");
+                }
             }
         }
     }

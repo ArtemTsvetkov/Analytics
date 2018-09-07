@@ -16,7 +16,7 @@ namespace Analytics.Modeling.Converters
             for (int i = 0; i < avgReport.getMaxTranzactsInQueue().Count(); i++)
             {
                 avgReport.getMaxTranzactsInQueue().ElementAt(i).value =
-                    avgReport.getMaxTranzactsInQueue().ElementAt(i).value / 
+                    avgReport.getMaxTranzactsInQueue().ElementAt(i).value /
                     (double)avgReport.getNumberOfReportsUpdates();
             }
 
@@ -41,7 +41,10 @@ namespace Analytics.Modeling.Converters
                     (double)avgReport.getNumberOfReportsUpdates();
             }
 
-            avgReport.interval = data.interval;
+            if (data.report.getConfig() != null)
+            {
+                avgReport.setConfig(data.report.getConfig().copy());
+            }
             return avgReport;
         }
     }
