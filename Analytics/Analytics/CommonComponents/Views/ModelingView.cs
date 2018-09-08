@@ -158,11 +158,6 @@ namespace Analytics.CommonComponents.Views
         {
             //Вначале отключение прослушивания управляющих елементов вью
             activateChangeListeners = false;
-            ModelingConfig configWithReset = new ModelingConfig(
-                        "D:\\Files\\MsVisualProjects\\Diplom\\Логи\\testlogs\\Database3.accdb",
-                        config.getInterval());
-            configWithReset.setWithKovar(config.getWithKovar());
-            control.setConfig(configWithReset);
             commandsStore.recoveryModel();
             activateChangeListeners = true;
         }
