@@ -489,6 +489,11 @@ namespace Analytics
                 new ResultConverter();
             return converter.convert(state);
         }
+
+        public override ModelingConfig getConfig()
+        {
+            return config.copy();
+        }
     }
 }
 /*

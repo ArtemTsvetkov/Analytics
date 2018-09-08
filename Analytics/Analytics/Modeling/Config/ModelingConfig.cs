@@ -62,6 +62,11 @@ namespace Analytics.Modeling.Config
             return interval;
         }
 
+        public void setInterval(GropByType interval)
+        {
+            this.interval = interval;
+        }
+
         public bool getWithKovar()
         {
             return withKovar;

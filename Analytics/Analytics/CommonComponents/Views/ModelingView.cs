@@ -105,21 +105,18 @@ namespace Analytics.CommonComponents.Views
 
         public void button1_Click()
         {
-            form.progressBar1Elem.Value = 0;
-            step = 100 / int.Parse(form.numericUpDown1Elem.Value.ToString())/3;
-            //commandsStore.executeCommand(
-              //  new UpdateConfigCommand<ModelingReport, ModelingConfig>(control, config));
+            //form.progressBar1Elem.Value = 0;
+            //step = 100 / int.Parse(form.numericUpDown1Elem.Value.ToString())/3;
             commandsStore.executeCommand(new RunModeling<ModelingConfig>(control));
-            form.progressBar1Elem.Value = 100;
+            //form.progressBar1Elem.Value = 100;
         }
 
         public void intervalChange(GropByType interval)
         {
             if (activateChangeListeners)
             {
-                config = new ModelingConfig(
-                    "D:\\Files\\MsVisualProjects\\Diplom\\Логи\\testlogs\\Database3.accdb",
-                    interval);
+                config = control.getConfig();
+                config.setInterval(interval);
                 commandsStore.executeCommand(
                     new UpdateConfigCommand<ModelingReport, ModelingConfig>(control, config));
                 form.progressBar1Elem.Value = 0;
@@ -132,6 +129,7 @@ namespace Analytics.CommonComponents.Views
             {
                 try
                 {
+                    config = control.getConfig();
                     config.setNumberOfStartsModeling(number);
                     commandsStore.executeCommand(
                         new UpdateConfigCommand<ModelingReport, ModelingConfig>(control, config));
@@ -148,6 +146,7 @@ namespace Analytics.CommonComponents.Views
         {
             if (activateChangeListeners)
             {
+                config = control.getConfig();
                 config.setWithKovar(flag);
                 commandsStore.executeCommand(
                     new UpdateConfigCommand<ModelingReport, ModelingConfig>(control, config));
@@ -239,14 +238,14 @@ namespace Analytics.CommonComponents.Views
                 form.dataGridView3Elem.Update();
             }
 
-            if (form.progressBar1Elem.Value + step < 100)
-            {
-                form.progressBar1Elem.Value += step;
-            }
-            else
-            {
-                form.progressBar1Elem.Value = 0;
-            }
+            //if (form.progressBar1Elem.Value + step < 100)
+            //{
+                //form.progressBar1Elem.Value += step;
+            //}
+            //else
+            //{
+                //form.progressBar1Elem.Value = 0;
+            //}
 
             //Обновление управляющих элементов
             if (report.getConfig() != null)

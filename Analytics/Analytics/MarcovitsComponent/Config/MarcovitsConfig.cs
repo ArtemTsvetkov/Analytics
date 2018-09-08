@@ -33,5 +33,10 @@ namespace Analytics.MarcovitsComponent.Config
         {
             this.pathOfDataBase = pathOfDataBase;
         }
+
+        public MarcovitsConfig copy()
+        {
+            return new MarcovitsConfig(pathOfDataBase, interval);
+        }
     }
 }
