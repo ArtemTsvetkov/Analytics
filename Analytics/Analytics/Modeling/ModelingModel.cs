@@ -28,6 +28,12 @@ namespace Analytics
         private ModelingState state;
         private ModelingReport report;
 
+        public ModelingModel()
+        {
+            state = new ModelingState();
+            report = new ModelingReport(state);
+        }
+
         public ModelingState getState()
         {
             return state;
@@ -331,7 +337,8 @@ namespace Analytics
             loader.execute();
             state.originalRules = loader.getResult();*/
 
-
+            state = new ModelingState();
+            report = new ModelingReport(state);
             //Создание модели в реалтайме
             DataWorker<ModelsCreatorConfigState, List<string>> loader = 
                 new ModelsCreatorProxy();
@@ -475,8 +482,6 @@ namespace Analytics
         public override void setConfig(ModelingConfig configData)
         {
             config = configData.copy();
-            state = new ModelingState();
-            report = new ModelingReport(state);
             report.setConfig(config.copy());
             notifyObservers();
         }
