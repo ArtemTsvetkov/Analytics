@@ -19,6 +19,7 @@ namespace Analytics.CommonComponents.BasicObjects
         abstract public ModelsState copySelf();
         abstract public void recoverySelf(ModelsState state);
         abstract public void setConfig(TConfigType configData);
+        abstract public TConfigType getConfig();
         abstract public TTypeOfResult getResult();
 
         //Уведомление подписчиков о изменении стэйта

@@ -257,13 +257,18 @@ namespace Analytics
 
         public override void setConfig(MarcovitsConfig configData)
         {
-            config = configData;
+            config = configData.copy();
             state.interval = config.getInterval();
         }
 
         public override MarcovitsModelState getResult()
         {
             return state;
+        }
+
+        public override MarcovitsConfig getConfig()
+        {
+            return config.copy();
         }
     }
 }

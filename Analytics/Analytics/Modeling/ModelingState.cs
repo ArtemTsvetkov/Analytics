@@ -13,9 +13,6 @@ namespace Analytics
     {
         public int last_tranzaktions_id;//хранение последнего id транзакта
         public List<Queue> queues = new List<Queue>();
-        //здесь могут писаться ошибка(например, синтаксическая в какой-либо функции) или 
-        //сообщение об успешном моделировании
-        public string result;
         public List<Tranzakt> tranzakts = new List<Tranzakt>();
         public List<Lable> lables = new List<Lable>();
         public List<Device> devices = new List<Device>();
@@ -30,13 +27,9 @@ namespace Analytics
         public int idProcessingTranzact;//Индекс текущего обрабатываемого транзакта
         //Он должен создаваться один раз, иначе распределение не то получится
         public Random rand = new Random();
-        //Количество прогонов модели, объявлено здесь, только чтобы в 
-        //конвертор результата пересылать
-        public int numberOfStartsModel;
         //Текущий отчет по моделированию, объявлено здесь, только чтобы в 
         //конвертор результата пересылать
         public ModelingReport report;
-        public GropByType interval;
     }
 }
 /*

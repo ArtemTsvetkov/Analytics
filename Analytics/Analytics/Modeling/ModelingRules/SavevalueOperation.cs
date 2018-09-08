@@ -78,11 +78,8 @@ namespace Analytics.Modeling.ModelingRules
                                     }
                                     else//иначе синтаксическая ошибка
                                     {
-                                        int id_str = model.getState().tranzakts.ElementAt(model.
-                                            getState().idProcessingTranzact).my_place - 1;
-                                        model.getState().result = "syntaxis_error " + id_str.
-                                            ToString() + "-ая строка, некорректная функция"+
-                                            " переменной: " + parametersName;
+                                        //ДОБАВИТЬ ВЫЗОВ ИСКЛЮЧЕНИЯ СИНТАКСИЧЕСКАЯ ОШИБКА
+                                        
                                         return;
                                     }
                                     break;
@@ -92,9 +89,7 @@ namespace Analytics.Modeling.ModelingRules
                                 {
                                     int id_str = model.getState().tranzakts.ElementAt(model.
                                         getState().idProcessingTranzact).my_place - 1;
-                                    model.getState().result = "syntaxis_error " + id_str.
-                                        ToString() + "-ая строка, переменная: " + 
-                                        parametersName + "не найдена";
+                                    //ДОБАВИТЬ ВЫЗОВ ИСКЛЮЧЕНИЯ ПЕРЕМЕННАЯ НЕ НАЙДЕНА
                                     return;
                                 }
                             }

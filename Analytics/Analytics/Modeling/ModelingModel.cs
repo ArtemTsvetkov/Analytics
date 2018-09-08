@@ -26,30 +26,22 @@ namespace Analytics
     class ModelingModel : BasicModel<ModelingReport, ModelingConfig>
     {
         private ModelingState state;
-        //Отчет по моделированию
         private ModelingReport report;
-        private int numberOfStartsModel = 0;
 
         public ModelingState getState()
         {
             return state;
         }
 
-        //Данная функция, следуя флагу resetAllState, либо полностью
-        //откатит все изменения стейта, либо только те объекты, которые участвуют
-        //непосредственно в моделировании(очереди, устройства и тд), но оставит
-        //количество запусков моделирования и отчет
         public override void recoverySelf(ModelsState backUpState)
         {
             ModelingState oldState = (ModelingState)backUpState;
             state = new ModelingState();
             state.last_tranzaktions_id = oldState.last_tranzaktions_id;
-            state.result = oldState.result;
             state.time_of_modeling = oldState.time_of_modeling;
             state.idProcessingTranzact = oldState.idProcessingTranzact;
-            state.numberOfStartsModel = oldState.numberOfStartsModel;
             state.rand = oldState.rand;
-            state.interval = oldState.interval;
+            config = oldState.report.getConfig().copy();
 
             string[] originalRulesC = new string[oldState.originalRules.Count];
             oldState.originalRules.CopyTo(originalRulesC);
@@ -98,15 +90,11 @@ namespace Analytics
                 state.newRules.Add(oldState.newRules.ElementAt(i).clone());
             }
 
-            if(config.getResetAllState())
+            //Откат report нужен только в случае отката всей 
+            //модели для просматра предыдущих результатов ее работы
+            if (config.isRollbackReport())
             {
-                state.report = oldState.report.copyReport(oldState);
                 report = oldState.report.copyReport(oldState);
-            }
-            else
-            {
-                state.numberOfStartsModel = numberOfStartsModel;
-                state.report = report.copyReport(state);
             }
 
             notifyObservers();
@@ -114,15 +102,14 @@ namespace Analytics
 
         public override ModelsState copySelf()
         {
+            state.report = report.copyReport(state);
             ModelingState copy = new ModelingState();
             copy.last_tranzaktions_id = state.last_tranzaktions_id;
-            copy.result = state.result;
             copy.time_of_modeling = state.time_of_modeling;
             copy.idProcessingTranzact = state.idProcessingTranzact;
-            copy.numberOfStartsModel = state.numberOfStartsModel;
             copy.rand = state.rand;
-            copy.interval = state.interval;
-            copy.report = state.report.copyReport(state);
+            copy.report = report.copyReport(state);
+            copy.report.setConfig(config.copy());
 
             string[] originalRulesC = new string[state.originalRules.Count];
             state.originalRules.CopyTo(originalRulesC);
@@ -308,7 +295,6 @@ namespace Analytics
                 }
             }
             state.time_of_modeling = system_time;
-            state.result = "Успех!";
         }
 
         //функция создания времени задержки, принимает разброс возможных значений
@@ -320,18 +306,19 @@ namespace Analytics
 
         public override void calculationStatistics()
         {
-            run_simulation();
-
-            state.numberOfStartsModel++;
-            numberOfStartsModel = state.numberOfStartsModel;
-            if (state.numberOfStartsModel == 1)
+            config.setRollbackReport(false);
+            ModelsState backup = copySelf();
+            for (int i = 0; i < config.getNumberOfStartsModeling(); i++)
             {
-                state.report = new ModelingReport(state);
+                run_simulation();
+                if (i == 0)
+                {
+                    report = new ModelingReport(state);
+                }
+                report.updateReport(state);
+                recoverySelf(backup);
             }
-            state.report.updateReport(state);
-            report = state.report.copyReport(state);
-
-            notifyObservers();
+            config.setRollbackReport(true);
         }
 
         public override void loadStore()
@@ -343,6 +330,8 @@ namespace Analytics
             loader.setConfig(loadersConfig);
             loader.execute();
             state.originalRules = loader.getResult();*/
+
+
             //Создание модели в реалтайме
             DataWorker<ModelsCreatorConfigState, List<string>> loader = 
                 new ModelsCreatorProxy();
@@ -375,7 +364,7 @@ namespace Analytics
                 stateForConverter.avgLicensePerTime.Add(
                     configProxyForLoadDataFromNewBDAndExecute(MsSqlServersQueryConfigurator.getAvgLicesensePerTime(
                         unicNames[i], config.getInterval())));
-        }
+            }
 
             //Перевод типа DataSet к нужному формату
             DataConverter<StateForConverterOfModelCreatorConfig,
@@ -485,22 +474,25 @@ namespace Analytics
 
         public override void setConfig(ModelingConfig configData)
         {
-            config = configData;
-            if (configData.getResetAllState())
-            {
-                state = new ModelingState();
-                state.report = new ModelingReport(state);
-            }
-            report = state.report.copyReport(state);
-            state.interval = config.getInterval();
+            config = configData.copy();
+            state = new ModelingState();
+            report = new ModelingReport(state);
+            report.setConfig(config.copy());
             notifyObservers();
         }
 
         public override ModelingReport getResult()
         {
+            state.report = report.copyReport(state);
+            state.report.setConfig(config.copy());
             DataConverter<ModelingState, ModelingReport> converter =
                 new ResultConverter();
             return converter.convert(state);
+        }
+
+        public override ModelingConfig getConfig()
+        {
+            return config.copy();
         }
     }
 }

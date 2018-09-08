@@ -1,4 +1,5 @@
-﻿using Analytics.Modeling.GroupByTypes;
+﻿using Analytics.Modeling.Config;
+using Analytics.Modeling.GroupByTypes;
 using Analytics.Modeling.Statistics;
 using System;
 using System.Collections.Generic;
@@ -18,14 +19,36 @@ namespace Analytics.Modeling
         List<ElementsNameWithElementsValue> numberRunTranzactsOnLable;
         //Значение переменных
         List<ElementsNameWithElementsValue> variablesValue;
-        //рассматриваемый промежуток времени
-        public GropByType interval;
+        //Количество обновлений
+        private int numberOfReportsUpdates;
+        //Используется ТОЛЬКО для пересылки при получении данных из модели или для ее отката
+        private ModelingConfig config;
 
         //В конструкторе только создается нужная структура, с именами элементов, но во всех
         //значения стоит 0
         public ModelingReport(ModelingState state)
         {
             reset(state);
+        }
+
+        public ModelingConfig getConfig()
+        {
+            return config;
+        }
+
+        public void setConfig(ModelingConfig config)
+        {
+            this.config = config;
+        }
+
+        public int getNumberOfReportsUpdates()
+        {
+            return numberOfReportsUpdates;
+        }
+
+        public void setNumberOfReportsUpdates(int numberOfReportsUpdates)
+        {
+            this.numberOfReportsUpdates = numberOfReportsUpdates;
         }
 
         public List<ElementsNameWithElementsValue> getMaxTranzactsInQueue()
@@ -51,6 +74,7 @@ namespace Analytics.Modeling
         //Сброс отчета
         public void reset(ModelingState state)
         {
+            numberOfReportsUpdates = 0;
             maxTranzactsInQueue = new List<ElementsNameWithElementsValue>();
             avgTranzactsInQueue = new List<ElementsNameWithElementsValue>();
             numberRunTranzactsOnLable = new List<ElementsNameWithElementsValue>();
@@ -120,10 +144,10 @@ namespace Analytics.Modeling
         public ModelingReport copyReport(ModelingState state)
         {
             ModelingReport copy = new ModelingReport(state);
-            
-            for(int i=0; i<maxTranzactsInQueue.Count(); i++)
+
+            for (int i = 0; i < maxTranzactsInQueue.Count(); i++)
             {
-                if((copy.maxTranzactsInQueue.Count - 1) >= i)
+                if ((copy.maxTranzactsInQueue.Count - 1) >= i)
                 {
                     copy.maxTranzactsInQueue.RemoveAt(i);
                     copy.maxTranzactsInQueue.Insert(i, maxTranzactsInQueue.ElementAt(i).copy());
@@ -175,6 +199,8 @@ namespace Analytics.Modeling
                 }
             }
 
+            copy.setNumberOfReportsUpdates(getNumberOfReportsUpdates());
+
             return copy;
         }
 
@@ -207,6 +233,8 @@ namespace Analytics.Modeling
                         double.Parse(state.variables.ElementAt(i).value);
                 }
             }
+
+            numberOfReportsUpdates++;
         }
     }
 }

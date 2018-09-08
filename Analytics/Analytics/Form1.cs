@@ -112,6 +112,11 @@ namespace Analytics
             get { return comboBox3; }
         }
 
+        public CheckBox checkBox1Elem
+        {
+            get { return checkBox1; }
+        }
+
         private void button2_Click(object sender, EventArgs e)
         {
             marcovitsView.button2_Click();
@@ -515,6 +520,12 @@ namespace Analytics
                     //ДОБАВИТЬ СЮДА ИСКЛЮЧЕНИЕ - НЕИЗВЕСТНЫЙ ТИП
                     throw new Exception();
             }
+        }
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+            modelingView.numberOfModelingStartsChange(
+                int.Parse(numericUpDown1.Value.ToString()));
         }
     }
 }

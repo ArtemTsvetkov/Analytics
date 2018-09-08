@@ -304,9 +304,8 @@
             this.label12.Font = new System.Drawing.Font("GDT", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label12.Location = new System.Drawing.Point(80, 310);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(176, 16);
+            this.label12.Size = new System.Drawing.Size(0, 16);
             this.label12.TabIndex = 14;
-            this.label12.Text = "Статус: анализ завершен";
             // 
             // comboBox1
             // 
@@ -404,6 +403,7 @@
             0,
             0,
             0});
+            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
             // 
             // label41
             // 

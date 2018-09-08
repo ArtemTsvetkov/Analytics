@@ -16,32 +16,35 @@ namespace Analytics.Modeling.Converters
             for (int i = 0; i < avgReport.getMaxTranzactsInQueue().Count(); i++)
             {
                 avgReport.getMaxTranzactsInQueue().ElementAt(i).value =
-                    avgReport.getMaxTranzactsInQueue().ElementAt(i).value / 
-                    (double)data.numberOfStartsModel;
+                    avgReport.getMaxTranzactsInQueue().ElementAt(i).value /
+                    (double)avgReport.getNumberOfReportsUpdates();
             }
 
             for (int i = 0; i < avgReport.getAvgTranzactsInQueue().Count(); i++)
             {
                 avgReport.getAvgTranzactsInQueue().ElementAt(i).value =
                     avgReport.getAvgTranzactsInQueue().ElementAt(i).value /
-                    (double)data.numberOfStartsModel;
+                    (double)avgReport.getNumberOfReportsUpdates();
             }
 
             for (int i = 0; i < avgReport.getNumberRunTranzactsOnLable().Count(); i++)
             {
                 avgReport.getNumberRunTranzactsOnLable().ElementAt(i).value =
                     avgReport.getNumberRunTranzactsOnLable().ElementAt(i).value /
-                    (double)data.numberOfStartsModel;
+                    (double)avgReport.getNumberOfReportsUpdates();
             }
 
             for (int i = 0; i < avgReport.getVariablesValue().Count(); i++)
             {
                 avgReport.getVariablesValue().ElementAt(i).value =
                     avgReport.getVariablesValue().ElementAt(i).value /
-                    (double)data.numberOfStartsModel;
+                    (double)avgReport.getNumberOfReportsUpdates();
             }
 
-            avgReport.interval = data.interval;
+            if (data.report.getConfig() != null)
+            {
+                avgReport.setConfig(data.report.getConfig().copy());
+            }
             return avgReport;
         }
     }

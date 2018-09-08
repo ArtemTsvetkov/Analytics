@@ -28,6 +28,7 @@ namespace Analytics.CommonComponents.ExceptionHandler.Concrete
                 handler.addException(new NotEnoughMemoryInTheModelingElement());
                 handler.addException(new UnknownOperation());
                 handler.addException(new UsingCovarianceInsteadOfCorrelation());
+                handler.addException(new IncorrectValue());
             }
             catch(Exception ex)
             {

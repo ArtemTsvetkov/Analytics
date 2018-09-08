@@ -83,20 +83,14 @@ namespace Analytics.Modeling.ModelingRules
                             }
                             else//иначе синтаксическая ошибка
                             {
-                                int id_str = model.getState().tranzakts.ElementAt(model.getState().
-                                    idProcessingTranzact).my_place - 1;
-                                model.getState().result = "syntaxis_error " + id_str.ToString() + 
-                                    "-ая строка, некорректная функция переменной: " + name;
+                                //ДОБАВИТЬ ВЫЗОВ ИСКЛЮЧЕНИЯ СИНТАКСИЧЕСКАЯ ОШИБКА
                                 return;
                             }
                             break;
                         }
                         if (k == model.getState().variables.Count() - 1)//переменная не найдена
                         {
-                            int id_str = model.getState().tranzakts.ElementAt(model.getState().
-                                idProcessingTranzact).my_place - 1;
-                            model.getState().result = "syntaxis_error " + id_str.ToString() + 
-                                "-ая строка, переменная: " + name + "не найдена";
+                            //ДОБАВИТЬ ВЫЗОВ ИСКЛЮЧЕНИЯ ПЕРЕМЕНННАЯ НЕ НАЙДЕНА
                             return;
                         }
                     }

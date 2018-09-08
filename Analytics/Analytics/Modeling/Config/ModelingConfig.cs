@@ -1,4 +1,5 @@
-﻿using Analytics.Modeling.GroupByTypes;
+﻿using Analytics.CommonComponents.Exceptions;
+using Analytics.Modeling.GroupByTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,6 @@ namespace Analytics.Modeling.Config
 {
     class ModelingConfig
     {
-        //Флаг, указывающий сброс всего стейта
-        private bool resetAllState = true;
         //Путь до БД
         private string pathOfDataBase;
         //Флаг использования корелляции между запроса на лицензии
@@ -18,6 +17,12 @@ namespace Analytics.Modeling.Config
         //Модификатор группировки для нализа(по дням/минутам и тд)
         //рассматриваемый промежуток времени
         private GropByType interval = new HourType();
+        //Необходимое количество запусков моделирования, если оно больше 1, то в итоговый
+        //отчет попадут усредненные значения
+        private int numberOfStartsModeling = 1;
+        //Восстанавливать report (для поддержки просмотра предыдущих рассчетов и вместе с тем
+        //многократного запуска модели)
+        private bool rollbackReport = true;
 
         public ModelingConfig(string pathOfDataBase, GropByType interval)
         {
@@ -25,9 +30,41 @@ namespace Analytics.Modeling.Config
             this.interval = interval;
         }
 
+        public ModelingConfig copy()
+        {
+            ModelingConfig copy = new ModelingConfig(pathOfDataBase, interval);
+            copy.setWithKovar(withKovar);
+            copy.setNumberOfStartsModeling(numberOfStartsModeling);
+            copy.setRollbackReport(rollbackReport);
+
+            return copy;
+        }
+
+        public int getNumberOfStartsModeling()
+        {
+            return numberOfStartsModeling;
+        }
+
+        public void setNumberOfStartsModeling(int numberOfStartsModeling)
+        {
+            if (numberOfStartsModeling < 1)
+            {
+                throw new IncorrectValue("Enter incorrect value: for number of starts modeling");
+            }
+            else
+            {
+                this.numberOfStartsModeling = numberOfStartsModeling;
+            }
+        }
+
         public GropByType getInterval()
         {
             return interval;
+        }
+
+        public void setInterval(GropByType interval)
+        {
+            this.interval = interval;
         }
 
         public bool getWithKovar()
@@ -40,6 +77,16 @@ namespace Analytics.Modeling.Config
             this.withKovar = withKovar;
         }
 
+        public bool isRollbackReport()
+        {
+            return rollbackReport;
+        }
+
+        public void setRollbackReport(bool rollbackReport)
+        {
+            this.rollbackReport = rollbackReport;
+        }
+
         public string getPathOfDataBase()
         {
             return pathOfDataBase;
@@ -48,16 +95,6 @@ namespace Analytics.Modeling.Config
         public void setPathOfDataBase(string pathOfDataBase)
         {
             this.pathOfDataBase = pathOfDataBase;
-        }
-
-        public bool getResetAllState()
-        {
-            return resetAllState;
-        }
-
-        public void setResetAllState(bool resetAllState)
-        {
-            this.resetAllState = resetAllState;
         }
     }
 }
