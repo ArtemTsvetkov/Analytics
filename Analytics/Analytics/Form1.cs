@@ -112,6 +112,11 @@ namespace Analytics
             get { return comboBox3; }
         }
 
+        public CheckBox checkBox1Elem
+        {
+            get { return checkBox1; }
+        }
+
         private void button2_Click(object sender, EventArgs e)
         {
             marcovitsView.button2_Click();

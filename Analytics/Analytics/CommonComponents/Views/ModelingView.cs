@@ -23,7 +23,7 @@ namespace Analytics.CommonComponents.Views
         CommandsStore<ModelingReport, ModelingConfig> commandsStore =
                 new ConcreteCommandStore<ModelingReport, ModelingConfig>();
         private ModelingConfig config;
-        int step = 1;
+        int step = 0;
         //При откате модели до предыдущего состояния, элементы вью тоже меняются,
         //но так как они прослушиваются на изменения вью, то это влечет за собой 
         //изменение модели и добавление еще одной команды, а она не нужна, так как мы
@@ -98,6 +98,7 @@ namespace Analytics.CommonComponents.Views
                 "D:\\Files\\MsVisualProjects\\Diplom\\Логи\\testlogs\\Database3.accdb",
                 BasicType.year);
             config.setWithKovar(false);
+            config.setNumberOfStartsModeling(1);
             control.setConfig(config);
             control.loadStore();
             form.progressBar1Elem.Value = 0;
@@ -105,10 +106,13 @@ namespace Analytics.CommonComponents.Views
 
         public void button1_Click()
         {
-            //form.progressBar1Elem.Value = 0;
-            //step = 100 / int.Parse(form.numericUpDown1Elem.Value.ToString())/3;
+            form.progressBar1Elem.Value = 0;
+            form.label12Elem.Text = "Статус: выполнение анализа...";
+            step = 100 / config.getNumberOfStartsModeling();
             commandsStore.executeCommand(new RunModeling<ModelingConfig>(control));
-            //form.progressBar1Elem.Value = 100;
+            form.progressBar1Elem.Value = 100;
+            form.label12Elem.Text = "Статус: анализ завершен";
+            step = 0;
         }
 
         public void intervalChange(GropByType interval)
@@ -119,8 +123,9 @@ namespace Analytics.CommonComponents.Views
                 config.setInterval(interval);
                 commandsStore.executeCommand(
                     new UpdateConfigCommand<ModelingReport, ModelingConfig>(control, config));
-                form.progressBar1Elem.Value = 0;
             }
+            form.progressBar1Elem.Value = 0;
+            form.label12Elem.Text = "";
         }
 
         public void numberOfModelingStartsChange(int number)
@@ -133,13 +138,14 @@ namespace Analytics.CommonComponents.Views
                     config.setNumberOfStartsModeling(number);
                     commandsStore.executeCommand(
                         new UpdateConfigCommand<ModelingReport, ModelingConfig>(control, config));
-                    form.progressBar1Elem.Value = 0;
                 }
                 catch (Exception ex)
                 {
                     ExceptionHandler.ExceptionHandler.getInstance().processing(ex);
                 }
             }
+            form.progressBar1Elem.Value = 0;
+            form.label12Elem.Text = "";
         }
 
         public void flagUseCovarChange(bool flag)
@@ -150,8 +156,9 @@ namespace Analytics.CommonComponents.Views
                 config.setWithKovar(flag);
                 commandsStore.executeCommand(
                     new UpdateConfigCommand<ModelingReport, ModelingConfig>(control, config));
-                form.progressBar1Elem.Value = 0;
             }
+            form.progressBar1Elem.Value = 0;
+            form.label12Elem.Text = "";
         }
 
         public void getPreviousState()
@@ -160,6 +167,8 @@ namespace Analytics.CommonComponents.Views
             activateChangeListeners = false;
             commandsStore.recoveryModel();
             activateChangeListeners = true;
+            form.label12Elem.Text = "Статус: просмотр ранее выполненного анализа";
+            form.progressBar1Elem.Value = 0;
         }
 
         public void notify()
@@ -233,16 +242,14 @@ namespace Analytics.CommonComponents.Views
                 form.dataGridView3Elem.Update();
             }
 
-            //if (form.progressBar1Elem.Value + step < 100)
-            //{
-                //form.progressBar1Elem.Value += step;
-            //}
-            //else
-            //{
-                //form.progressBar1Elem.Value = 0;
-            //}
-
             //Обновление управляющих элементов
+            if(step != 0)
+            {
+                if (form.progressBar1Elem.Value + step < 100)
+                {
+                    form.progressBar1Elem.Value += step;
+                }
+            }
             if (report.getConfig() != null)
             {
                 switch (report.getConfig().getInterval().getType())
@@ -269,6 +276,7 @@ namespace Analytics.CommonComponents.Views
                         throw new UnknownTimeIntervalType("Unknown time interval type");
                 }
                 form.numericUpDown1Elem.Value = report.getConfig().getNumberOfStartsModeling();
+                form.checkBox1Elem.Checked = report.getConfig().getWithKovar();
             }
         }
     }
