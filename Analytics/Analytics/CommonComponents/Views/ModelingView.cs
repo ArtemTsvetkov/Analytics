@@ -24,6 +24,11 @@ namespace Analytics.CommonComponents.Views
                 new ConcreteCommandStore<ModelingReport, ModelingConfig>();
         private ModelingConfig config;
         int step = 1;
+        //При откате модели до предыдущего состояния, элементы вью тоже меняются,
+        //но так как они прослушиваются на изменения вью, то это влечет за собой 
+        //изменение модели и добавление еще одной команды, а она не нужна, так как мы
+        //только что забрали предыдущую
+        private bool activateChangeListeners = true;
 
         public ModelingView(Form1 form)
         {
@@ -110,45 +115,57 @@ namespace Analytics.CommonComponents.Views
 
         public void intervalChange(GropByType interval)
         {
-            config = new ModelingConfig(
-                "D:\\Files\\MsVisualProjects\\Diplom\\Логи\\testlogs\\Database3.accdb",
-                interval);
-            commandsStore.executeCommand(
-                new UpdateConfigCommand<ModelingReport, ModelingConfig>(control, config));
-            form.progressBar1Elem.Value = 0;
-        }
-
-        public void numberOfModelingStartsChange(int number)
-        {
-            try
+            if (activateChangeListeners)
             {
-                config.setNumberOfStartsModeling(number);
+                config = new ModelingConfig(
+                    "D:\\Files\\MsVisualProjects\\Diplom\\Логи\\testlogs\\Database3.accdb",
+                    interval);
                 commandsStore.executeCommand(
                     new UpdateConfigCommand<ModelingReport, ModelingConfig>(control, config));
                 form.progressBar1Elem.Value = 0;
             }
-            catch (Exception ex)
+        }
+
+        public void numberOfModelingStartsChange(int number)
+        {
+            if (activateChangeListeners)
             {
-                ExceptionHandler.ExceptionHandler.getInstance().processing(ex);
+                try
+                {
+                    config.setNumberOfStartsModeling(number);
+                    commandsStore.executeCommand(
+                        new UpdateConfigCommand<ModelingReport, ModelingConfig>(control, config));
+                    form.progressBar1Elem.Value = 0;
+                }
+                catch (Exception ex)
+                {
+                    ExceptionHandler.ExceptionHandler.getInstance().processing(ex);
+                }
             }
         }
 
         public void flagUseCovarChange(bool flag)
         {
-            config.setWithKovar(flag);
-            commandsStore.executeCommand(
-                new UpdateConfigCommand<ModelingReport, ModelingConfig>(control, config));
-            form.progressBar1Elem.Value = 0;
+            if (activateChangeListeners)
+            {
+                config.setWithKovar(flag);
+                commandsStore.executeCommand(
+                    new UpdateConfigCommand<ModelingReport, ModelingConfig>(control, config));
+                form.progressBar1Elem.Value = 0;
+            }
         }
 
         public void getPreviousState()
         {
+            //Вначале отключение прослушивания управляющих елементов вью
+            activateChangeListeners = false;
             ModelingConfig configWithReset = new ModelingConfig(
                         "D:\\Files\\MsVisualProjects\\Diplom\\Логи\\testlogs\\Database3.accdb",
                         config.getInterval());
             configWithReset.setWithKovar(config.getWithKovar());
             control.setConfig(configWithReset);
             commandsStore.recoveryModel();
+            activateChangeListeners = true;
         }
 
         public void notify()
@@ -257,6 +274,7 @@ namespace Analytics.CommonComponents.Views
                     default:
                         throw new UnknownTimeIntervalType("Unknown time interval type");
                 }
+                form.numericUpDown1Elem.Value = report.getConfig().getNumberOfStartsModeling();
             }
         }
     }

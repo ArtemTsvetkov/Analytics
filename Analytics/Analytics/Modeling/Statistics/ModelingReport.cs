@@ -144,10 +144,10 @@ namespace Analytics.Modeling
         public ModelingReport copyReport(ModelingState state)
         {
             ModelingReport copy = new ModelingReport(state);
-            
-            for(int i=0; i<maxTranzactsInQueue.Count(); i++)
+
+            for (int i = 0; i < maxTranzactsInQueue.Count(); i++)
             {
-                if((copy.maxTranzactsInQueue.Count - 1) >= i)
+                if ((copy.maxTranzactsInQueue.Count - 1) >= i)
                 {
                     copy.maxTranzactsInQueue.RemoveAt(i);
                     copy.maxTranzactsInQueue.Insert(i, maxTranzactsInQueue.ElementAt(i).copy());

@@ -477,12 +477,14 @@ namespace Analytics
             config = configData.copy();
             state = new ModelingState();
             report = new ModelingReport(state);
+            report.setConfig(config.copy());
             notifyObservers();
         }
 
         public override ModelingReport getResult()
         {
             state.report = report.copyReport(state);
+            state.report.setConfig(config.copy());
             DataConverter<ModelingState, ModelingReport> converter =
                 new ResultConverter();
             return converter.convert(state);
