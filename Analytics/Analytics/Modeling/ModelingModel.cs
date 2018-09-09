@@ -2,6 +2,7 @@
 using Analytics.CommonComponents;
 using Analytics.CommonComponents.BasicObjects;
 using Analytics.CommonComponents.DataConverters;
+using Analytics.CommonComponents.ExceptionHandler;
 using Analytics.CommonComponents.Interfaces.Data;
 using Analytics.CommonComponents.Math;
 using Analytics.CommonComponents.MsSqlServersQueryConfigurator;
@@ -212,8 +213,16 @@ namespace Analytics
                             }
 
                             //Обработка транзакта соответствующей Operation
-                            state.newRules.ElementAt(state.tranzakts.ElementAt(i).my_place).
-                                processing();
+                            try
+                            {
+                                state.newRules.ElementAt(state.tranzakts.ElementAt(i).my_place).
+                                    processing();
+                            }
+                            catch(Exception ex)
+                            {
+                                ExceptionHandler.getInstance().processing(ex);
+                                return;
+                            }
                         }
                     }
 
