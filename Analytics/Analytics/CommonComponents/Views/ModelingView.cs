@@ -171,6 +171,11 @@ namespace Analytics.CommonComponents.Views
             form.progressBar1Elem.Value = 0;
         }
 
+        public void getNextState()
+        {
+            commandsStore.rollbackRecoveryModel();
+        }
+
         public void notify()
         {
             ModelingReport report = control.getResult();

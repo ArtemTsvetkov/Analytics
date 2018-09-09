@@ -527,5 +527,15 @@ namespace Analytics
             modelingView.numberOfModelingStartsChange(
                 int.Parse(numericUpDown1.Value.ToString()));
         }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            marcovitsView.getNextState();
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            modelingView.getNextState();
+        }
     }
 }

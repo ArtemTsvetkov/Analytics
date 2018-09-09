@@ -57,6 +57,11 @@ namespace Analytics.CommonComponents.Views
             commandsStore.recoveryModel();
         }
 
+        public void getNextState()
+        {
+            commandsStore.rollbackRecoveryModel();
+        }
+
         public void notify()
         {
             MarcovitsModelState state = model.getResult();
