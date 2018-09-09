@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Analytics.CommonComponents.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -78,9 +79,9 @@ namespace Analytics.Modeling.ModelingRules
                                     }
                                     else//иначе синтаксическая ошибка
                                     {
-                                        //ДОБАВИТЬ ВЫЗОВ ИСКЛЮЧЕНИЯ СИНТАКСИЧЕСКАЯ ОШИБКА
-                                        
-                                        return;
+                                        int id_str = model.getState().tranzakts.ElementAt(model.
+                                        getState().idProcessingTranzact).my_place - 1;
+                                        throw new SyntaxisErrorException("Syntaxis error on line: " + id_str);
                                     }
                                     break;
                                 }
@@ -89,8 +90,7 @@ namespace Analytics.Modeling.ModelingRules
                                 {
                                     int id_str = model.getState().tranzakts.ElementAt(model.
                                         getState().idProcessingTranzact).my_place - 1;
-                                    //ДОБАВИТЬ ВЫЗОВ ИСКЛЮЧЕНИЯ ПЕРЕМЕННАЯ НЕ НАЙДЕНА
-                                    return;
+                                    throw new SyntaxisErrorException("Unknown variable on line" + id_str);
                                 }
                             }
                             continue;
