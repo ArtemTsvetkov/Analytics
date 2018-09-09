@@ -20,10 +20,6 @@ namespace Analytics.CommonComponents.Views
         private BasicModel<MarcovitsModelState, MarcovitsConfig> model;
         CommandsStore<MarcovitsModelState, MarcovitsConfig> commandsStore =
                 new ConcreteCommandStore<MarcovitsModelState, MarcovitsConfig>();
-        //Для корректного отображения мапинга значение времени/стейта
-        //Из-за особенностей работы внутреннего стейта данной модели каждый
-        //3 откат не всегда верно показывал этот папинг
-        int numberOfGetingPreviousState = 0;
 
         public MarcovitsView(Form1 form)
         {
@@ -58,15 +54,14 @@ namespace Analytics.CommonComponents.Views
 
         public void getPreviousState()
         {
-            numberOfGetingPreviousState++;
             commandsStore.recoveryModel();
         }
 
         public void notify()
         {
-            //if (numberOfGetingPreviousState != 3)
-            //{
-                MarcovitsModelState state = model.getResult();
+            MarcovitsModelState state = model.getResult();
+            if (state.income != 0 & state.risk[0, 0] != 0)
+            {
                 //Вывод данных о доходности
                 form.chart1Elem.Series[0].Points.Clear();
                 form.chart1Elem.Series[0].Points.AddXY(0, (state.income * 100));
@@ -94,35 +89,31 @@ namespace Analytics.CommonComponents.Views
                     minesStr = minesStr.Remove(5, (minesStr.Length - 5));
                 }
                 form.label6Elem.Text = "Риск:" + minesStr + "%";
-                //Обновление управляющих элементов
-                switch (state.interval.getType())
-                {
-                    case "year":
-                        form.comboBox3Elem.SelectedIndex = 0;
-                        break;
-                    case "month":
-                        form.comboBox3Elem.SelectedIndex = 1;
-                        break;
-                    case "day":
-                        form.comboBox3Elem.SelectedIndex = 2;
-                        break;
-                    case "hour":
-                        form.comboBox3Elem.SelectedIndex = 3;
-                        break;
-                    case "minute":
-                        form.comboBox3Elem.SelectedIndex = 4;
-                        break;
-                    case "second":
-                        form.comboBox3Elem.SelectedIndex = 5;
-                        break;
-                    default:
-                        throw new UnknownTimeIntervalType("Unknown time interval type");
             }
-            //}
-            //else
-            //{
-            //    numberOfGetingPreviousState = 0;
-            //}
+            //Обновление управляющих элементов
+            switch (state.interval.getType())
+            {
+                case "year":
+                    form.comboBox3Elem.SelectedIndex = 0;
+                    break;
+                case "month":
+                    form.comboBox3Elem.SelectedIndex = 1;
+                    break;
+                case "day":
+                    form.comboBox3Elem.SelectedIndex = 2;
+                    break;
+                case "hour":
+                    form.comboBox3Elem.SelectedIndex = 3;
+                    break;
+                case "minute":
+                    form.comboBox3Elem.SelectedIndex = 4;
+                    break;
+                case "second":
+                    form.comboBox3Elem.SelectedIndex = 5;
+                    break;
+                default:
+                    throw new UnknownTimeIntervalType("Unknown time interval type");
+            }
         }
     }
 }
