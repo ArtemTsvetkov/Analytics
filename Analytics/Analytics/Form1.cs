@@ -35,7 +35,6 @@ namespace Analytics
                     ExceptionHandler.getInstance());
                 marcovitsView = new MarcovitsView(this);
                 modelingView = new ModelingView(this);
-                textBox1.Text = "D:\\Files\\MsVisualProjects\\Diplom\\AnaliticsMath\\rules2.txt";
                 comboBox1.SelectedIndex = 0;
                 comboBox3.SelectedIndex = 0;
                 comboBox2.SelectedIndex = 0;
@@ -70,21 +69,6 @@ namespace Analytics
         public Label label6Elem
         {
             get { return label6; }
-        }
-
-        public TextBox textBox1Elem
-        {
-            get { return textBox1; }
-        }
-
-        public DataGridView dataGridView1Elem
-        {
-            get { return dataGridView1; }
-        }
-
-        public DataGridView dataGridView3Elem
-        {
-            get { return dataGridView3; }
         }
 
         public DataGridView dataGridView2Elem

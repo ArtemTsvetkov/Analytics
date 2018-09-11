@@ -33,40 +33,6 @@ namespace Analytics.CommonComponents.Views
         public ModelingView(Form1 form)
         {
             this.form = form;
-            form.dataGridView1Elem.Rows.Clear();
-            form.dataGridView1Elem.Columns.Clear();
-            form.dataGridView1Elem.RowHeadersVisible = false;
-            //добавили колонки
-            DataGridViewTextBoxColumn coefficient;
-            coefficient = new DataGridViewTextBoxColumn();
-            coefficient.Name = "Название переменной";
-            coefficient.HeaderText = "Название переменной";
-            coefficient.Width = 150;
-            form.dataGridView1Elem.Columns.Add(coefficient);
-            DataGridViewTextBoxColumn coefficient2;
-            coefficient2 = new DataGridViewTextBoxColumn();
-            coefficient2.Name = "Значение";
-            coefficient2.HeaderText = "Значение";
-            coefficient2.Width = 100;
-            form.dataGridView1Elem.Columns.Add(coefficient2);
-            //
-            form.dataGridView3Elem.Rows.Clear();
-            form.dataGridView3Elem.Columns.Clear();
-            form.dataGridView3Elem.RowHeadersVisible = false;
-            //добавили колонки
-            DataGridViewTextBoxColumn coefficient3;
-            coefficient3 = new DataGridViewTextBoxColumn();
-            coefficient3.Name = "Название метки";
-            coefficient3.HeaderText = "Название метки";
-            coefficient3.Width = 150;
-            form.dataGridView3Elem.Columns.Add(coefficient3);
-            DataGridViewTextBoxColumn coefficient4;
-            coefficient4 = new DataGridViewTextBoxColumn();
-            coefficient4.Name = "Количество переходов";
-            coefficient4.HeaderText = "Количество переходов";
-            coefficient4.Width = 100;
-            form.dataGridView3Elem.Columns.Add(coefficient4);
-            //
             form.dataGridView2Elem.Rows.Clear();
             form.dataGridView2Elem.Columns.Clear();
             form.dataGridView2Elem.RowHeadersVisible = false;
@@ -185,13 +151,6 @@ namespace Analytics.CommonComponents.Views
         {
             ModelingReport report = control.getResult();
             //Проверка строк в таблицах
-            if (form.dataGridView1Elem.Rows.Count != report.getVariablesValue().Count()
-                && report.getVariablesValue().Count() > 0)
-            {
-                form.dataGridView1Elem.Rows.Clear();
-                form.dataGridView1Elem.Rows.Add(report.getVariablesValue().Count());
-                form.dataGridView1Elem.Rows.RemoveAt(0);
-            }
             if (form.dataGridView2Elem.Rows.Count != report.getAvgTranzactsInQueue().Count()
                 && report.getAvgTranzactsInQueue().Count() > 0)
             {
@@ -199,38 +158,13 @@ namespace Analytics.CommonComponents.Views
                 form.dataGridView2Elem.Rows.Add(report.getAvgTranzactsInQueue().Count());
                 form.dataGridView2Elem.Rows.RemoveAt(0);
             }
-            if (form.dataGridView3Elem.Rows.Count != report.getNumberRunTranzactsOnLable().Count()
-                && report.getNumberRunTranzactsOnLable().Count() > 0)
-            {
-                form.dataGridView3Elem.Rows.Clear();
-                form.dataGridView3Elem.Rows.Add(report.getNumberRunTranzactsOnLable().Count());
-                form.dataGridView3Elem.Rows.RemoveAt(0);
-            }
 
-
-            if (report.getVariablesValue().Count() == 0)
-            {
-                form.dataGridView1Elem.Rows.Clear();
-            }
             if (report.getAvgTranzactsInQueue().Count == 0)
             {
                 form.dataGridView2Elem.Rows.Clear();
             }
-            if (report.getNumberRunTranzactsOnLable().Count == 0)
-            {
-                form.dataGridView3Elem.Rows.Clear();
-            }
 
             //Заполнение таблиц
-            for (int i = 0; i < report.getVariablesValue().Count(); i++)
-            {
-                form.dataGridView1Elem.Rows[i].Cells[0].Value =
-                    report.getVariablesValue().ElementAt(i).name;
-                form.dataGridView1Elem.Rows[i].Cells[1].Value =
-                    report.getVariablesValue().ElementAt(i).value;
-
-                form.dataGridView1Elem.Update();
-            }
             for (int i = 0; i < report.getAvgTranzactsInQueue().Count(); i++)
             {
                 form.dataGridView2Elem.Rows[i].Cells[0].Value =
@@ -241,15 +175,6 @@ namespace Analytics.CommonComponents.Views
                     report.getAvgTranzactsInQueue().ElementAt(i).value;
 
                 form.dataGridView2Elem.Update();
-            }
-            for (int i = 0; i < report.getNumberRunTranzactsOnLable().Count(); i++)
-            {
-                form.dataGridView3Elem.Rows[i].Cells[0].Value =
-                    report.getNumberRunTranzactsOnLable().ElementAt(i).name;
-                form.dataGridView3Elem.Rows[i].Cells[1].Value =
-                    report.getNumberRunTranzactsOnLable().ElementAt(i).value;
-
-                form.dataGridView3Elem.Update();
             }
 
             //Обновление управляющих элементов
