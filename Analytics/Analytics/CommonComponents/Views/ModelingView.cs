@@ -173,7 +173,12 @@ namespace Analytics.CommonComponents.Views
 
         public void getNextState()
         {
+            //Вначале отключение прослушивания управляющих елементов вью
+            activateChangeListeners = false;
             commandsStore.rollbackRecoveryModel();
+            activateChangeListeners = true;
+            form.label12Elem.Text = "Статус: просмотр ранее выполненного анализа";
+            form.progressBar1Elem.Value = 0;
         }
 
         public void notify()

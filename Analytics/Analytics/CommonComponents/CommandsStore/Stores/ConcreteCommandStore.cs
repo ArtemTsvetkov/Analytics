@@ -18,7 +18,7 @@ namespace Analytics
         public void executeCommand(BasicCommand<TModelsTypeOfResult, TConfigType> command)
         {
             command.execute();
-            //rollbacksHistory.Clear();
+            rollbacksHistory.Clear();
             push(command);
         }
 
