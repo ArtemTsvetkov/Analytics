@@ -1,4 +1,5 @@
 ﻿using Analytics.CommonComponents.BasicObjects;
+using Analytics.CommonComponents.BasicObjects.Statistics;
 using Analytics.Modeling;
 using Analytics.Modeling.Config;
 using Analytics.Modeling.GroupByTypes;
@@ -10,9 +11,10 @@ using System.Threading.Tasks;
 
 namespace Analytics.CommandsStore.Commands.Modeling
 {
-    class RunModeling<TConfigType> : BasicCommand<ModelingReport, TConfigType>
+    class RunModeling<TConfigType> : BasicCommand
     {
-        public RunModeling(BasicModel<ModelingReport, TConfigType>
+        new BasicStatisticsModel<ModelingReport, TConfigType> model;
+        public RunModeling(BasicStatisticsModel<ModelingReport, TConfigType>
             model) : base(model)
         {
 

@@ -7,6 +7,7 @@ using Analytics.Modeling;
 using Analytics.Modeling.Config;
 using Analytics.Modeling.Converters;
 using Analytics.Modeling.GroupByTypes;
+using Analytics.Navigator.Basic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ using System.Windows.Forms;
 
 namespace Analytics.CommonComponents.Views
 {
-    class ModelingView : Observer
+    class ModelingView : Observer, NavigatorsView
     {
         private Form1 form;
         private ModelingModel control;
@@ -213,6 +214,17 @@ namespace Analytics.CommonComponents.Views
                 form.numericUpDown1Elem.Value = report.getConfig().getNumberOfStartsModeling();
                 form.checkBox1Elem.Checked = report.getConfig().getWithKovar();
             }
+        }
+
+        public void show()
+        {
+            form.tabControl1Elem.SelectTab(3);
+            form.tabControl2Elem.SelectTab(0);
+        }
+
+        public string getName()
+        {
+            return "ModelingView";
         }
     }
 }

@@ -1,9 +1,11 @@
 ﻿using Analytics.CommonComponents.BasicObjects;
+using Analytics.CommonComponents.BasicObjects.Statistics;
 using Analytics.CommonComponents.CommandsStore.Commands.Modeling;
 using Analytics.CommonComponents.Exceptions;
 using Analytics.MarcovitsComponent.Config;
 using Analytics.MarcovitsComponent.Converters;
 using Analytics.Modeling.GroupByTypes;
+using Analytics.Navigator.Basic;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -14,10 +16,10 @@ using System.Windows.Forms;
 
 namespace Analytics.CommonComponents.Views
 {
-    class MarcovitsView : Observer
+    class MarcovitsView : Observer, NavigatorsView
     {
         private Form1 form;
-        private BasicModel<MarcovitsModelState, MarcovitsConfig> model;
+        private BasicStatisticsModel<MarcovitsModelState, MarcovitsConfig> model;
         CommandsStore<MarcovitsModelState, MarcovitsConfig> commandsStore =
                 new ConcreteCommandStore<MarcovitsModelState, MarcovitsConfig>();
         //При откате модели до предыдущего состояния, элементы вью тоже меняются,
@@ -133,6 +135,18 @@ namespace Analytics.CommonComponents.Views
                 default:
                     throw new UnknownTimeIntervalType("Unknown time interval type");
             }
+        }
+
+
+        public void show()
+        {
+            form.tabControl1Elem.SelectTab(3);
+            form.tabControl2Elem.SelectTab(1);
+        }
+
+        public string getName()
+        {
+            return "MarcovitsView";
         }
     }
 }

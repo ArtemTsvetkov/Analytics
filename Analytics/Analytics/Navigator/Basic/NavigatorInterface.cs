@@ -8,7 +8,6 @@ namespace Analytics.Navigator.Basic
 {
     interface NavigatorInterface
     {
-        NavigatorInterface getInstance();
         void navigateTo(string viewsName);
         void addView(NavigatorsView view);
         void navigateToPreviousView();

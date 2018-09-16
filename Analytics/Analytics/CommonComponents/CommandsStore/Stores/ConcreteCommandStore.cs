@@ -10,12 +10,12 @@ namespace Analytics
     class ConcreteCommandStore<TModelsTypeOfResult, TConfigType> : 
         CommandsStore<TModelsTypeOfResult, TConfigType>
     {
-        private List<BasicCommand<TModelsTypeOfResult, TConfigType>> history = 
-            new List<BasicCommand<TModelsTypeOfResult, TConfigType>>();
-        private List<BasicCommand<TModelsTypeOfResult, TConfigType>> rollbacksHistory =
-            new List<BasicCommand<TModelsTypeOfResult, TConfigType>>();
+        private List<BasicCommand> history = 
+            new List<BasicCommand>();
+        private List<BasicCommand> rollbacksHistory =
+            new List<BasicCommand>();
 
-        public void executeCommand(BasicCommand<TModelsTypeOfResult, TConfigType> command)
+        public void executeCommand(BasicCommand command)
         {
             command.execute();
             rollbacksHistory.Clear();
@@ -24,18 +24,18 @@ namespace Analytics
 
         public void recoveryModel()
         {
-            BasicCommand<TModelsTypeOfResult, TConfigType> command = getPreviousCommand();
+            BasicCommand command = getPreviousCommand();
             if (command != null)
             {
                 command.recoveryModel();
             }
         }
 
-        public BasicCommand<TModelsTypeOfResult, TConfigType> getPreviousCommand()
+        public BasicCommand getPreviousCommand()
         {
             if (history.Count > 0)
             {
-                BasicCommand<TModelsTypeOfResult, TConfigType> command = history.Last();
+                BasicCommand command = history.Last();
                 rollbacksHistory.Add(history.Last());
                 history.RemoveAt(history.Count - 1);
                 return command;
@@ -46,11 +46,11 @@ namespace Analytics
             }
         }
 
-        public BasicCommand<TModelsTypeOfResult, TConfigType> getNextCommand()
+        public BasicCommand getNextCommand()
         {
             if (rollbacksHistory.Count > 0)
             {
-                BasicCommand<TModelsTypeOfResult, TConfigType> command = rollbacksHistory.Last();
+                BasicCommand command = rollbacksHistory.Last();
                 history.Add(rollbacksHistory.Last());
                 rollbacksHistory.RemoveAt(rollbacksHistory.Count - 1);
                 return command;
@@ -61,14 +61,14 @@ namespace Analytics
             }
         }
 
-        public void push(BasicCommand<TModelsTypeOfResult, TConfigType> command)
+        public void push(BasicCommand command)
         {
             history.Add(command);
         }
 
         public void rollbackRecoveryModel()
         {
-            BasicCommand<TModelsTypeOfResult, TConfigType> command = getNextCommand();
+            BasicCommand command = getNextCommand();
             if (command != null)
             {
                 command.recoveryModel();

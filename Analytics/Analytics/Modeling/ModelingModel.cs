@@ -1,6 +1,7 @@
 ﻿using Analytics;
 using Analytics.CommonComponents;
 using Analytics.CommonComponents.BasicObjects;
+using Analytics.CommonComponents.BasicObjects.Statistics;
 using Analytics.CommonComponents.DataConverters;
 using Analytics.CommonComponents.ExceptionHandler;
 using Analytics.CommonComponents.Interfaces.Data;
@@ -24,7 +25,7 @@ using System.Threading.Tasks;
 
 namespace Analytics
 {
-    class ModelingModel : BasicModel<ModelingReport, ModelingConfig>
+    class ModelingModel : BasicStatisticsModel<ModelingReport, ModelingConfig>
     {
         private ModelingState state;
         private ModelingReport report;

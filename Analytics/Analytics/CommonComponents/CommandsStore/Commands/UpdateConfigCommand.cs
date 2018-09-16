@@ -1,5 +1,6 @@
 ﻿using Analytics.CommandsStore;
 using Analytics.CommonComponents.BasicObjects;
+using Analytics.CommonComponents.BasicObjects.Statistics;
 using Analytics.Modeling;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,12 @@ using System.Threading.Tasks;
 
 namespace Analytics.CommonComponents.CommandsStore.Commands.Modeling
 {
-    class UpdateConfigCommand<TTypeOfResult, TConfigType> : BasicCommand<TTypeOfResult, TConfigType>
+    class UpdateConfigCommand<TTypeOfResult, TConfigType> : BasicCommand
     {
         private TConfigType config;
+        new BasicStatisticsModel<ModelingReport, TConfigType> model;
 
-        public UpdateConfigCommand(BasicModel<TTypeOfResult, TConfigType>
+        public UpdateConfigCommand(BasicStatisticsModel<TTypeOfResult, TConfigType>
             model, TConfigType config) : base(model)
         {
             this.config = config;

@@ -13,14 +13,14 @@ namespace Analytics.Navigator
         private List<string> viewsBeforeThisTime;
         private List<string> viewsAfterThisTime;
         private string currentViewsName;
-        private Navigator navigator;
+        private static Navigator navigator;
 
         private Navigator()
         {
             
         }
 
-        public NavigatorInterface getInstance()
+        public static NavigatorInterface getInstance()
         {
             if(navigator == null)
             {
@@ -63,12 +63,11 @@ namespace Analytics.Navigator
                         navigator.viewsAfterThisTime.Clear();
                     }
 
-                    if (navigator.viewsBeforeThisTime == null & 
-                        (currentViewsName != null | !currentViewsName.Equals("")))
+                    if (navigator.viewsBeforeThisTime == null)
                     {
                         navigator.viewsBeforeThisTime = new List<string>();
                     }
-                    if (currentViewsName != null | !currentViewsName.Equals(""))
+                    if (currentViewsName != null && !currentViewsName.Equals(""))
                     {
                         navigator.viewsBeforeThisTime.Add(navigator.currentViewsName);
                     }

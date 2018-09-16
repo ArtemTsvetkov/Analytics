@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommonComponents\BasicObjects\Statistics\BasicStatisticsModel.cs" />
     <Compile Include="CommonComponents\CommandsStore\BasicCommand.cs" />
     <Compile Include="CommonComponents\CommandsStore\Command.cs" />
     <Compile Include="CommonComponents\CommandsStore\CommandsStore.cs" />
@@ -81,13 +82,14 @@
     <Compile Include="CommonComponents\Exceptions\NotFoundVariableException.cs" />
     <Compile Include="CommonComponents\Exceptions\SyntaxisErrorException.cs" />
     <Compile Include="CommonComponents\Exceptions\UnknownTimeIntervalType.cs" />
+    <Compile Include="CommonComponents\Interfaces\AdwancedModelsInterfaces\RecoveredModel.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\DataConverter.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\DataWorker.cs" />
-    <Compile Include="CommonComponents\Interfaces\Data\StorageForData.cs" />
+    <Compile Include="CommonComponents\Interfaces\AdwancedModelsInterfaces\StatisticsModelInterface.cs" />
     <Compile Include="CommonComponents\Math\MathWorker.cs" />
     <Compile Include="CommonComponents\QueryConfigurator\MsSqlServersQueryConfigurator.cs" />
-    <Compile Include="CommonComponents\Views\MarcovitsView.cs" />
-    <Compile Include="CommonComponents\Views\ModelingView.cs" />
+    <Compile Include="MarcovitsComponent\MarcovitsView.cs" />
+    <Compile Include="Modeling\ModelingView.cs" />
     <Compile Include="CommonComponents\WorkWithDataBase\MsSqlServer\MsSQLServerDataWorker.cs" />
     <Compile Include="CommonComponents\WorkWithDataBase\MsSqlServer\MsSQLServerProxy.cs" />
     <Compile Include="CommonComponents\WorkWithDataBase\MsSqlServer\MsSQLServerStateFields.cs" />
@@ -102,7 +104,6 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="CommonComponents\CommandsStore\Commands\Marcovits\GetMarcovitsStatistcCommand.cs" />
-    <Compile Include="CommonComponents\CommandsStore\Commands\Marcovits\LoadDataCommand.cs" />
     <Compile Include="MarcovitsComponent\Config\MarcovitsConfig.cs" />
     <Compile Include="MarcovitsComponent\Converters\MarcovitsDataTableConverter.cs" />
     <Compile Include="MarcovitsComponent\Converters\ResultConverter.cs" />
@@ -180,6 +181,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SecurityComponent\Interfaces\SecurityControllerInterface.cs" />
+    <Compile Include="SecurityComponent\Interfaces\SecurityModelInterface.cs" />
+    <Compile Include="SecurityComponent\Interfaces\SecurityUserInterface.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

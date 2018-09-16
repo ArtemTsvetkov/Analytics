@@ -7,6 +7,8 @@ using Analytics.CommonComponents.Exceptions;
 using Analytics.CommonComponents.Views;
 using Analytics.MarcovitsComponent.Converters;
 using Analytics.Modeling.GroupByTypes;
+using Analytics.Navigator;
+using Analytics.Navigator.Basic;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -39,6 +41,8 @@ namespace Analytics
                 comboBox3.SelectedIndex = 0;
                 comboBox2.SelectedIndex = 0;
                 comboBox4.SelectedIndex = 0;
+                Navigator.Navigator.getInstance().addView(marcovitsView);
+                Navigator.Navigator.getInstance().addView(modelingView);
             }
             catch (Exception ex)
             {
@@ -84,6 +88,16 @@ namespace Analytics
         public ProgressBar progressBar1Elem
         {
             get { return progressBar1; }
+        }
+
+        public TabControl tabControl1Elem
+        {
+            get { return tabControl1; }
+        }
+
+        public TabControl tabControl2Elem
+        {
+            get { return tabControl2; }
         }
 
         public ComboBox comboBox1Elem
@@ -232,7 +246,7 @@ namespace Analytics
 
         private void button5_Click(object sender, EventArgs e)
         {
-            tabControl1.SelectTab(3);
+            Navigator.Navigator.getInstance().navigateTo("ModelingView");
         }
 
         private void button8_Click(object sender, EventArgs e)
