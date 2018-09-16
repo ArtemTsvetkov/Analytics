@@ -13,12 +13,13 @@ namespace Analytics.CommonComponents.CommandsStore.Commands.Modeling
     class UpdateConfigCommand<TTypeOfResult, TConfigType> : BasicCommand
     {
         private TConfigType config;
-        new BasicStatisticsModel<ModelingReport, TConfigType> model;
+        new BasicStatisticsModel<TTypeOfResult, TConfigType> model;
 
         public UpdateConfigCommand(BasicStatisticsModel<TTypeOfResult, TConfigType>
             model, TConfigType config) : base(model)
         {
             this.config = config;
+            this.model = model;
         }
 
         public override void execute()

@@ -17,7 +17,7 @@ namespace Analytics.CommandsStore.Commands.Modeling
         public RunModeling(BasicStatisticsModel<ModelingReport, TConfigType>
             model) : base(model)
         {
-
+            this.model = model;
         }
 
         public override void execute()

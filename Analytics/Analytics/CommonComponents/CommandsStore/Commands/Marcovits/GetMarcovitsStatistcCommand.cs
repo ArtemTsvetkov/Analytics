@@ -17,7 +17,7 @@ namespace Analytics
         public GetMarcovitsStatistcCommand(BasicStatisticsModel<MarcovitsModelState, TConfigType>
             model) : base(model)
         {
-            
+            this.model = model;
         }
 
         public override void execute()
