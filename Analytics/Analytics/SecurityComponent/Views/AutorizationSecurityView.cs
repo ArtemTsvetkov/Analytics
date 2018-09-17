@@ -1,4 +1,5 @@
-﻿using Analytics.Navigator.Basic;
+﻿using Analytics.CommonComponents.BasicObjects;
+using Analytics.Navigator.Basic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,13 +11,14 @@ namespace Analytics.SecurityComponent
     class AutorizationSecurityView : Observer, NavigatorsView
     {
         private Form1 form;
-        private SecurityModel model;
+        private BasicModel<SecurityUserInterface, SecurityUserInterface> model;
 
-        public AutorizationSecurityView(Form1 form)
+        public AutorizationSecurityView(Form1 form,
+            BasicModel<SecurityUserInterface, SecurityUserInterface> model)
         {
             this.form = form;
-            model = new SecurityModel();
-            model.subscribe(this);
+            this.model = model;
+            this.model.subscribe(this);
         }
 
         public void notify()

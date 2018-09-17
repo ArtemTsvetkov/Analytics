@@ -21,6 +21,11 @@ namespace Analytics.SecurityComponent
             enterIntoSystem = false;
         }
 
+        public void setPassword(string password)
+        {
+            this.password = password;
+        }
+
         public void setAdmin(bool isAdmin)
         {
             admin = isAdmin;

@@ -10,6 +10,7 @@ namespace Analytics.SecurityComponent
     {
         void signIn();
         void addNewUser(SecurityUserInterface user);
-        void changeUserPassword(string login, string newPassword);
+        void changeUserPassword(string oldPassword, string newPassword);
+        bool checkUser();
     }
 }

@@ -8,5 +8,10 @@ namespace Analytics.SecurityComponent.Interfaces
 {
     interface SecurityControllerInterface
     {
+        void signIn();
+        void changeUserPassword(string oldPassword, string newPassword);
+        void addNewUser(string login, string password, bool isAdmin);
+        void setConfig(string login, string password);
+        void setConfig(string login, string password, bool isAdmin);
     }
 }

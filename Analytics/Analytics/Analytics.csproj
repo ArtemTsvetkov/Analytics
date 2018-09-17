@@ -183,6 +183,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="SecurityComponent\Interfaces\SecurityQueryConfigurator.cs" />
+    <Compile Include="SecurityComponent\SecurityController.cs" />
     <Compile Include="SecurityComponent\SecurityMsSqlServerQueryConfigurator.cs" />
     <Compile Include="SecurityComponent\SecurityUser.cs" />
     <Compile Include="SecurityComponent\Views\AutorizationSecurityView.cs" />

@@ -9,6 +9,8 @@ using Analytics.MarcovitsComponent.Converters;
 using Analytics.Modeling.GroupByTypes;
 using Analytics.Navigator;
 using Analytics.Navigator.Basic;
+using Analytics.SecurityComponent;
+using Analytics.SecurityComponent.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -26,23 +28,38 @@ namespace Analytics
     {
         private MarcovitsView marcovitsView;
         private ModelingView modelingView;
-        public int timer = 0;
+        private SecurityControllerInterface securityController;
 
         public Form1()
         {
             try
             {
                 InitializeComponent();
+                //
+                //Marcovits and modeling components
+                //
                 ConcreteExceptionHandlerInitializer.initThisExceptionHandler(
                     ExceptionHandler.getInstance());
                 marcovitsView = new MarcovitsView(this);
                 modelingView = new ModelingView(this);
+                Navigator.Navigator.getInstance().addView(marcovitsView);
+                Navigator.Navigator.getInstance().addView(modelingView);
+                //
+                //Autorization component
+                //
+                SecurityModel securityModel = new SecurityModel();
+                AutorizationSecurityView securityView = 
+                    new AutorizationSecurityView(this, securityModel);
+                securityModel.subscribe(securityView);
+                securityController = new SecurityController(securityModel);
+                Navigator.Navigator.getInstance().addView(securityView);
+                //
+                //Settings elements on forms
+                //
                 comboBox1.SelectedIndex = 0;
                 comboBox3.SelectedIndex = 0;
                 comboBox2.SelectedIndex = 0;
                 comboBox4.SelectedIndex = 0;
-                Navigator.Navigator.getInstance().addView(marcovitsView);
-                Navigator.Navigator.getInstance().addView(modelingView);
             }
             catch (Exception ex)
             {

@@ -27,12 +27,33 @@ namespace Analytics.SecurityComponent
 
         public void addNewUser(SecurityUserInterface user)
         {
-            throw new NotImplementedException();
+            if (currentUser.isAdmin())
+            {
+                configProxyForLoadDataFromBDAndExecute(queryConfigurator.addNewUser(
+                    user.getLogin(), user.getPassword(), "SULT", user.isAdmin()));
+            }
+            else
+            {
+                //ADD EXCEPTION: CURRENT USER IS NOT A ADMIN.
+            }
         }
 
-        public void changeUserPassword(string login, string newPassword)
+        public void changeUserPassword(string oldPassword, string newPassword)
         {
-            throw new NotImplementedException();
+            if (converter.convert(configProxyForLoadDataFromBDAndExecute(
+                queryConfigurator.checkUser(
+                    currentUser.getLogin(), oldPassword))) == 1)
+            {
+                configProxyForLoadDataFromBDAndExecute(
+                    queryConfigurator.changePassword(currentUser.getLogin(), newPassword));
+                currentUser.setPassword(newPassword);
+
+                notifyObservers();
+            }
+            else
+            {
+                //ADD exception: incorrect oldpassword!
+            }
         }
 
         public override SecurityUserInterface getResult()
@@ -52,24 +73,15 @@ namespace Analytics.SecurityComponent
 
         public void signIn()
         {
-            if(converter.convert(configProxyForLoadDataFromBDAndExecute(
-                queryConfigurator.checkUser(
-                    currentUser.getLogin(), currentUser.getPassword()))) == 1)
-            {
-                currentUser.setEnterIntoSystem(true);
+            currentUser.setEnterIntoSystem(true);
 
-                if (converter.convert(configProxyForLoadDataFromBDAndExecute(
-                    queryConfigurator.checkUserStatus(currentUser.getLogin()))) == 1)
-                {
-                    currentUser.setAdmin(true);
-                }
-
-                notifyObservers();
-            }
-            else
+            if (converter.convert(configProxyForLoadDataFromBDAndExecute(
+                queryConfigurator.checkUserStatus(currentUser.getLogin()))) == 1)
             {
-                //ADD INTO THIS PLACE EXCEPTION: INCORRECT USER DATA
+                currentUser.setAdmin(true);
             }
+
+            notifyObservers();
         }
 
         private DataSet configProxyForLoadDataFromBDAndExecute(string query)
@@ -83,6 +95,27 @@ namespace Analytics.SecurityComponent
             accessProxy.execute();
             list.Clear();
             return accessProxy.getResult();
+        }
+
+        public bool checkUser()
+        {
+            if (currentUser.isEnterIntoSystem())
+            {
+                return true;
+            }
+            else
+            {
+                if (converter.convert(configProxyForLoadDataFromBDAndExecute(
+                    queryConfigurator.checkUser(
+                        currentUser.getLogin(), currentUser.getPassword()))) == 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
         }
     }
 }
