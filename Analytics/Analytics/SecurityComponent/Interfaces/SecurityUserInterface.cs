@@ -12,5 +12,8 @@ namespace Analytics.SecurityComponent
         string getLogin();
         bool isAdmin();
         bool isEnterIntoSystem();
+        void setAdmin(bool isAdmin);
+        void setEnterIntoSystem(bool isEnter);
+        SecurityUserInterface copy();
     }
 }

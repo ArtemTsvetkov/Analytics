@@ -56,6 +56,7 @@
     <Compile Include="CommonComponents\CommandsStore\Stores\ConcreteCommandStore.cs" />
     <Compile Include="CommonComponents\BasicObjects\BasicModel.cs" />
     <Compile Include="CommonComponents\DataConverters\DistinctSoftwareNamesConverter.cs" />
+    <Compile Include="CommonComponents\DataConverters\FromDataSetToIntDataConverter.cs" />
     <Compile Include="CommonComponents\ExceptionHandler\Concrete\ConcreteExceptionHandlerInitializer.cs" />
     <Compile Include="CommonComponents\ExceptionHandler\Concrete\ExceptionHandler.cs" />
     <Compile Include="CommonComponents\ExceptionHandler\Exceptions\AlreadyExistException.cs" />
@@ -181,9 +182,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SecurityComponent\Interfaces\SecurityQueryConfigurator.cs" />
+    <Compile Include="SecurityComponent\SecurityMsSqlServerQueryConfigurator.cs" />
+    <Compile Include="SecurityComponent\SecurityUser.cs" />
+    <Compile Include="SecurityComponent\Views\AutorizationSecurityView.cs" />
     <Compile Include="SecurityComponent\Interfaces\SecurityControllerInterface.cs" />
     <Compile Include="SecurityComponent\Interfaces\SecurityModelInterface.cs" />
     <Compile Include="SecurityComponent\Interfaces\SecurityUserInterface.cs" />
+    <Compile Include="SecurityComponent\SecurityModel.cs" />
+    <Compile Include="SecurityComponent\Views\ChangePasswordView.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

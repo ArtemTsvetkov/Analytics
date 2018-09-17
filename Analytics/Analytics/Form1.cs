@@ -292,12 +292,6 @@ namespace Analytics
                 case 1:
                     /*if (modelingView != null)
                     {
-                        modelingView.intervalChange(BasicType.month);
-                    }*/
-                    break;
-                case 2:
-                    /*if (modelingView != null)
-                    {
                         modelingView.intervalChange(BasicType.day);
                     }*/
                     tabControl1.SelectTab(2);
@@ -417,12 +411,6 @@ namespace Analytics
                 case 1:
                     /*if (modelingView != null)
                     {
-                        modelingView.intervalChange(BasicType.month);
-                    }*/
-                    break;
-                case 2:
-                    /*if (modelingView != null)
-                    {
                         modelingView.intervalChange(BasicType.day);
                     }*/
                     tabControl1.SelectTab(2);
@@ -447,6 +435,51 @@ namespace Analytics
         private void button6_Click(object sender, EventArgs e)
         {
             modelingView.getNextState();
+        }
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label14_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label13_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox8_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox9_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
