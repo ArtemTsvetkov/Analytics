@@ -23,13 +23,19 @@ namespace Analytics.SecurityComponent
 
         public void notify()
         {
-            throw new NotImplementedException();
+            if (Navigator.Navigator.getInstance().getCurrentViewsName().Equals("AutorizationSecurityView"))
+            {
+                SecurityUserInterface currentUser = model.getResult();
+                if(currentUser.isEnterIntoSystem())
+                {
+                    Navigator.Navigator.getInstance().navigateTo("ModelingView");
+                }
+            }
         }
 
         public void show()
         {
-            form.tabControl1Elem.SelectTab(3);
-            form.tabControl2Elem.SelectTab(1);
+            form.tabControl1Elem.SelectTab(0);
         }
 
         public string getName()

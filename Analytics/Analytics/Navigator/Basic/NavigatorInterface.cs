@@ -12,5 +12,6 @@ namespace Analytics.Navigator.Basic
         void addView(NavigatorsView view);
         void navigateToPreviousView();
         void navigateToNextView();
+        string getCurrentViewsName();
     }
 }

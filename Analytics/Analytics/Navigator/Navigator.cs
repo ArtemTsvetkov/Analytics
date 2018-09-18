@@ -133,5 +133,10 @@ namespace Analytics.Navigator
                 //Add into this place exception: not views history yet
             }
         }
+
+        public string getCurrentViewsName()
+        {
+            return currentViewsName;
+        }
     }
 }

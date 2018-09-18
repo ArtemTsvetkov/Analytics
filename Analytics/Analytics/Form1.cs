@@ -60,6 +60,10 @@ namespace Analytics
                 comboBox3.SelectedIndex = 0;
                 comboBox2.SelectedIndex = 0;
                 comboBox4.SelectedIndex = 0;
+                //
+                //Navigator
+                //
+                Navigator.Navigator.getInstance().navigateTo("AutorizationSecurityView");
             }
             catch (Exception ex)
             {
@@ -263,7 +267,7 @@ namespace Analytics
 
         private void button5_Click(object sender, EventArgs e)
         {
-            Navigator.Navigator.getInstance().navigateTo("ModelingView");
+            securityController.signIn();
         }
 
         private void button8_Click(object sender, EventArgs e)
@@ -497,6 +501,16 @@ namespace Analytics
         private void textBox9_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void textBox2_Leave(object sender, EventArgs e)
+        {
+            securityController.setConfig(textBox2.Text, textBox3.Text);
+        }
+
+        private void textBox3_Leave(object sender, EventArgs e)
+        {
+            securityController.setConfig(textBox2.Text, textBox3.Text);
         }
     }
 }

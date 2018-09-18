@@ -38,22 +38,22 @@ namespace Analytics.SecurityComponent
 
         public string getLogin()
         {
-            throw new NotImplementedException();
+            return login;
         }
 
         public string getPassword()
         {
-            throw new NotImplementedException();
+            return password;
         }
 
         public bool isAdmin()
         {
-            throw new NotImplementedException();
+            return admin;
         }
 
         public bool isEnterIntoSystem()
         {
-            throw new NotImplementedException();
+            return enterIntoSystem;
         }
 
         public SecurityUserInterface copy()
