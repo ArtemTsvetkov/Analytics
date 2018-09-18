@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommonComponents\BasicObjects\Statistics\BasicStatisticsModel.cs" />
     <Compile Include="CommonComponents\CommandsStore\BasicCommand.cs" />
     <Compile Include="CommonComponents\CommandsStore\Command.cs" />
     <Compile Include="CommonComponents\CommandsStore\CommandsStore.cs" />
@@ -55,6 +56,7 @@
     <Compile Include="CommonComponents\CommandsStore\Stores\ConcreteCommandStore.cs" />
     <Compile Include="CommonComponents\BasicObjects\BasicModel.cs" />
     <Compile Include="CommonComponents\DataConverters\DistinctSoftwareNamesConverter.cs" />
+    <Compile Include="CommonComponents\DataConverters\FromDataSetToIntDataConverter.cs" />
     <Compile Include="CommonComponents\ExceptionHandler\Concrete\ConcreteExceptionHandlerInitializer.cs" />
     <Compile Include="CommonComponents\ExceptionHandler\Concrete\ExceptionHandler.cs" />
     <Compile Include="CommonComponents\ExceptionHandler\Exceptions\AlreadyExistException.cs" />
@@ -81,14 +83,14 @@
     <Compile Include="CommonComponents\Exceptions\NotFoundVariableException.cs" />
     <Compile Include="CommonComponents\Exceptions\SyntaxisErrorException.cs" />
     <Compile Include="CommonComponents\Exceptions\UnknownTimeIntervalType.cs" />
+    <Compile Include="CommonComponents\Interfaces\AdwancedModelsInterfaces\RecoveredModel.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\DataConverter.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\DataWorker.cs" />
-    <Compile Include="CommonComponents\Interfaces\Data\StorageForData.cs" />
+    <Compile Include="CommonComponents\Interfaces\AdwancedModelsInterfaces\StatisticsModelInterface.cs" />
     <Compile Include="CommonComponents\Math\MathWorker.cs" />
     <Compile Include="CommonComponents\QueryConfigurator\MsSqlServersQueryConfigurator.cs" />
-    <Compile Include="CommonComponents\Views\ControlView.cs" />
-    <Compile Include="CommonComponents\Views\MarcovitsView.cs" />
-    <Compile Include="CommonComponents\Views\ModelingView.cs" />
+    <Compile Include="MarcovitsComponent\MarcovitsView.cs" />
+    <Compile Include="Modeling\ModelingView.cs" />
     <Compile Include="CommonComponents\WorkWithDataBase\MsSqlServer\MsSQLServerDataWorker.cs" />
     <Compile Include="CommonComponents\WorkWithDataBase\MsSqlServer\MsSQLServerProxy.cs" />
     <Compile Include="CommonComponents\WorkWithDataBase\MsSqlServer\MsSQLServerStateFields.cs" />
@@ -103,7 +105,6 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="CommonComponents\CommandsStore\Commands\Marcovits\GetMarcovitsStatistcCommand.cs" />
-    <Compile Include="CommonComponents\CommandsStore\Commands\Marcovits\LoadDataCommand.cs" />
     <Compile Include="MarcovitsComponent\Config\MarcovitsConfig.cs" />
     <Compile Include="MarcovitsComponent\Converters\MarcovitsDataTableConverter.cs" />
     <Compile Include="MarcovitsComponent\Converters\ResultConverter.cs" />
@@ -170,6 +171,9 @@
     <Compile Include="Modeling\ModelingRules\VariableOperation.cs" />
     <Compile Include="Modeling\ModelingState.cs" />
     <Compile Include="Modeling\RulesParser.cs" />
+    <Compile Include="Navigator\Basic\NavigatorInterface.cs" />
+    <Compile Include="Navigator\Basic\NavigatorsView.cs" />
+    <Compile Include="Navigator\Navigator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CommonComponents\WorkWithFiles\ReadWriteTextFile.cs" />
@@ -178,6 +182,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SecurityComponent\Interfaces\SecurityQueryConfigurator.cs" />
+    <Compile Include="SecurityComponent\SecurityController.cs" />
+    <Compile Include="SecurityComponent\SecurityMsSqlServerQueryConfigurator.cs" />
+    <Compile Include="SecurityComponent\SecurityUser.cs" />
+    <Compile Include="SecurityComponent\Views\AutorizationSecurityView.cs" />
+    <Compile Include="SecurityComponent\Interfaces\SecurityControllerInterface.cs" />
+    <Compile Include="SecurityComponent\Interfaces\SecurityModelInterface.cs" />
+    <Compile Include="SecurityComponent\Interfaces\SecurityUserInterface.cs" />
+    <Compile Include="SecurityComponent\SecurityModel.cs" />
+    <Compile Include="SecurityComponent\Views\ChangePasswordView.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

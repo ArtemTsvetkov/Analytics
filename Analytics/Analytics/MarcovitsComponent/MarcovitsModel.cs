@@ -1,5 +1,6 @@
 ﻿using Analytics.CommonComponents;
 using Analytics.CommonComponents.BasicObjects;
+using Analytics.CommonComponents.BasicObjects.Statistics;
 using Analytics.CommonComponents.DataConverters;
 using Analytics.CommonComponents.ExceptionHandler;
 using Analytics.CommonComponents.Interfaces.Data;
@@ -18,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace Analytics
 {
-    class MarcovitsModel : BasicModel<MarcovitsModelState, MarcovitsConfig>
+    class MarcovitsModel : BasicStatisticsModel<MarcovitsModelState, MarcovitsConfig>
     {
         private MarcovitsModelState state;
         DataConverter<DataSet, List<MarcovitsDataTable>> converter = 

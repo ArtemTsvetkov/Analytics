@@ -10,12 +10,12 @@ namespace Analytics
     interface CommandsStore<TModelsTypeOfResult, TConfigType>
     {
         //Добавление команды в стек
-        void push(BasicCommand<TModelsTypeOfResult, TConfigType> command);
+        void push(BasicCommand command);
         //Извлечение команды
-        BasicCommand<TModelsTypeOfResult, TConfigType> getNextCommand();
-        BasicCommand<TModelsTypeOfResult, TConfigType> getPreviousCommand();
+        BasicCommand getNextCommand();
+        BasicCommand getPreviousCommand();
         //Выполнение команды
-        void executeCommand(BasicCommand<TModelsTypeOfResult, TConfigType> command);
+        void executeCommand(BasicCommand command);
         void recoveryModel();//Откат изменений модели
         void rollbackRecoveryModel();//Действие, обраьное откату изменений модели
     }

@@ -1,4 +1,5 @@
 ﻿using Analytics.CommonComponents.BasicObjects;
+using Analytics.CommonComponents.Interfaces.AdwancedModelsInterfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,15 +8,14 @@ using System.Threading.Tasks;
 
 namespace Analytics.CommandsStore
 {
-    abstract class BasicCommand<TModelsTypeOfResult, TConfigType> : 
-        Command<TModelsTypeOfResult, TConfigType>
+    abstract class BasicCommand : Command
     {
         protected ModelsState modelsState;
-        protected BasicModel<TModelsTypeOfResult, TConfigType> model;
+        protected RecoveredModel model;
 
         abstract public void execute();
 
-        public BasicCommand(BasicModel<TModelsTypeOfResult, TConfigType> model)
+        public BasicCommand(RecoveredModel model)
         {
             setModel(model);
         }
@@ -30,7 +30,7 @@ namespace Analytics.CommandsStore
             model.recoverySelf(modelsState);
         }
 
-        public void setModel(BasicModel<TModelsTypeOfResult, TConfigType> model)
+        public void setModel(RecoveredModel model)
         {
             this.model = model;
         }

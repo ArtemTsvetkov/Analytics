@@ -7,6 +7,10 @@ using Analytics.CommonComponents.Exceptions;
 using Analytics.CommonComponents.Views;
 using Analytics.MarcovitsComponent.Converters;
 using Analytics.Modeling.GroupByTypes;
+using Analytics.Navigator;
+using Analytics.Navigator.Basic;
+using Analytics.SecurityComponent;
+using Analytics.SecurityComponent.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,21 +28,42 @@ namespace Analytics
     {
         private MarcovitsView marcovitsView;
         private ModelingView modelingView;
-        public int timer = 0;
+        private SecurityControllerInterface securityController;
 
         public Form1()
         {
             try
             {
                 InitializeComponent();
+                //
+                //Marcovits and modeling components
+                //
                 ConcreteExceptionHandlerInitializer.initThisExceptionHandler(
                     ExceptionHandler.getInstance());
                 marcovitsView = new MarcovitsView(this);
                 modelingView = new ModelingView(this);
+                Navigator.Navigator.getInstance().addView(marcovitsView);
+                Navigator.Navigator.getInstance().addView(modelingView);
+                //
+                //Autorization component
+                //
+                SecurityModel securityModel = new SecurityModel();
+                AutorizationSecurityView securityView = 
+                    new AutorizationSecurityView(this, securityModel);
+                securityModel.subscribe(securityView);
+                securityController = new SecurityController(securityModel);
+                Navigator.Navigator.getInstance().addView(securityView);
+                //
+                //Settings elements on forms
+                //
                 comboBox1.SelectedIndex = 0;
                 comboBox3.SelectedIndex = 0;
                 comboBox2.SelectedIndex = 0;
                 comboBox4.SelectedIndex = 0;
+                //
+                //Navigator
+                //
+                Navigator.Navigator.getInstance().navigateTo("AutorizationSecurityView");
             }
             catch (Exception ex)
             {
@@ -84,6 +109,16 @@ namespace Analytics
         public ProgressBar progressBar1Elem
         {
             get { return progressBar1; }
+        }
+
+        public TabControl tabControl1Elem
+        {
+            get { return tabControl1; }
+        }
+
+        public TabControl tabControl2Elem
+        {
+            get { return tabControl2; }
         }
 
         public ComboBox comboBox1Elem
@@ -232,7 +267,7 @@ namespace Analytics
 
         private void button5_Click(object sender, EventArgs e)
         {
-            tabControl1.SelectTab(3);
+            securityController.signIn();
         }
 
         private void button8_Click(object sender, EventArgs e)
@@ -276,12 +311,6 @@ namespace Analytics
                     }*/
                     break;
                 case 1:
-                    /*if (modelingView != null)
-                    {
-                        modelingView.intervalChange(BasicType.month);
-                    }*/
-                    break;
-                case 2:
                     /*if (modelingView != null)
                     {
                         modelingView.intervalChange(BasicType.day);
@@ -403,12 +432,6 @@ namespace Analytics
                 case 1:
                     /*if (modelingView != null)
                     {
-                        modelingView.intervalChange(BasicType.month);
-                    }*/
-                    break;
-                case 2:
-                    /*if (modelingView != null)
-                    {
                         modelingView.intervalChange(BasicType.day);
                     }*/
                     tabControl1.SelectTab(2);
@@ -433,6 +456,61 @@ namespace Analytics
         private void button6_Click(object sender, EventArgs e)
         {
             modelingView.getNextState();
+        }
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label14_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label13_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox8_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox9_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox2_Leave(object sender, EventArgs e)
+        {
+            securityController.setConfig(textBox2.Text, textBox3.Text);
+        }
+
+        private void textBox3_Leave(object sender, EventArgs e)
+        {
+            securityController.setConfig(textBox2.Text, textBox3.Text);
         }
     }
 }

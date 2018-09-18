@@ -1,5 +1,6 @@
 ﻿using Analytics.CommandsStore;
 using Analytics.CommonComponents.BasicObjects;
+using Analytics.CommonComponents.BasicObjects.Statistics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +10,14 @@ using System.Threading.Tasks;
 namespace Analytics
 {
     class GetMarcovitsStatistcCommand<TConfigType>
-        : BasicCommand<MarcovitsModelState, TConfigType>
+        : BasicCommand
     {
+        new BasicStatisticsModel<MarcovitsModelState, TConfigType> model;
 
-        public GetMarcovitsStatistcCommand(BasicModel<MarcovitsModelState, TConfigType>
+        public GetMarcovitsStatistcCommand(BasicStatisticsModel<MarcovitsModelState, TConfigType>
             model) : base(model)
         {
-            
+            this.model = model;
         }
 
         public override void execute()
