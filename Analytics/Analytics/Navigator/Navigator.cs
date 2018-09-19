@@ -1,4 +1,5 @@
-﻿using Analytics.Navigator.Basic;
+﻿using Analytics.CommonComponents.Exceptions.Navigator;
+using Analytics.Navigator.Basic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,7 +49,7 @@ namespace Analytics.Navigator
             }
             else
             {
-                //Add into this place exception: view already added
+                throw new ViewAlreadyAddedException();
             }
         }
 
@@ -74,9 +75,10 @@ namespace Analytics.Navigator
                     navigator.currentViewsName = viewsName;
 
                     navigator.views.ElementAt(i).show();
+                    return;
                 }
             }
-            //Add into this place exception: view is not found
+            throw new NotFoundView();
         }
 
         public void navigateToNextView()
@@ -94,13 +96,14 @@ namespace Analytics.Navigator
                     {
                         navigator.currentViewsName = nextView;
                         navigator.views.ElementAt(i).show();
+                        return;
                     }
                 }
-                //Add into this place exception: view is not found
+                throw new NotFoundView();
             }
             else
             {
-                //Add into this place exception: not views history yet
+                throw new ViewsHistoryIsEmtptyException();
             }
         }
 
@@ -124,13 +127,14 @@ namespace Analytics.Navigator
                     {
                         navigator.currentViewsName = previousView;
                         navigator.views.ElementAt(i).show();
+                        return;
                     }
                 }
-                //Add into this place exception: view is not found
+                throw new NotFoundView();
             }
             else
             {
-                //Add into this place exception: not views history yet
+                throw new ViewsHistoryIsEmtptyException();
             }
         }
 

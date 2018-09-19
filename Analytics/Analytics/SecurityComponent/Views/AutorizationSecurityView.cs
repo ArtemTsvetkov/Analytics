@@ -1,4 +1,5 @@
 ﻿using Analytics.CommonComponents.BasicObjects;
+using Analytics.CommonComponents.ExceptionHandler;
 using Analytics.Navigator.Basic;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,14 @@ namespace Analytics.SecurityComponent
                 SecurityUserInterface currentUser = model.getResult();
                 if(currentUser.isEnterIntoSystem())
                 {
-                    Navigator.Navigator.getInstance().navigateTo("ModelingView");
+                    try
+                    {
+                        Navigator.Navigator.getInstance().navigateTo("ModelingView");
+                    }
+                    catch (Exception ex)
+                    {
+                        ExceptionHandler.getInstance().processing(ex);
+                    }
                 }
             }
         }

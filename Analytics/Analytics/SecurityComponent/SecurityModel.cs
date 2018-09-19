@@ -1,5 +1,6 @@
 ﻿using Analytics.CommonComponents.BasicObjects;
 using Analytics.CommonComponents.DataConverters;
+using Analytics.CommonComponents.Exceptions.Security;
 using Analytics.CommonComponents.Interfaces.Data;
 using Analytics.CommonComponents.WorkWithDataBase.MsSqlServer;
 using Analytics.SecurityComponent.Interfaces;
@@ -34,7 +35,8 @@ namespace Analytics.SecurityComponent
             }
             else
             {
-                //ADD EXCEPTION: CURRENT USER IS NOT A ADMIN.
+                throw new InsufficientPermissionsException("This user does not"
+                    + "have sufficient rights to perform the specified operation");
             }
         }
 
@@ -52,7 +54,7 @@ namespace Analytics.SecurityComponent
             }
             else
             {
-                //ADD exception: incorrect oldpassword!
+                throw new IncorrectOldPassword("Exception: old password is not a right");
             }
         }
 

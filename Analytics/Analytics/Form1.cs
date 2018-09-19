@@ -267,7 +267,14 @@ namespace Analytics
 
         private void button5_Click(object sender, EventArgs e)
         {
-            securityController.signIn();
+            try
+            {
+                securityController.signIn();
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.getInstance().processing(ex);
+            }
         }
 
         private void button8_Click(object sender, EventArgs e)

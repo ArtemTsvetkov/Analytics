@@ -77,10 +77,16 @@
     <Compile Include="CommonComponents\Exceptions\ErrorWithFile.cs" />
     <Compile Include="CommonComponents\Exceptions\IncorrectValue.cs" />
     <Compile Include="CommonComponents\Exceptions\InvalidArraySize.cs" />
+    <Compile Include="CommonComponents\Exceptions\Navigator\NotFoundView.cs" />
+    <Compile Include="CommonComponents\Exceptions\Navigator\ViewAlreadyAddedException.cs" />
+    <Compile Include="CommonComponents\Exceptions\Navigator\ViewsHistoryIsEmtptyException.cs" />
     <Compile Include="CommonComponents\Exceptions\NoConfigurationSpecified.cs" />
     <Compile Include="CommonComponents\Exceptions\NoDataBaseConnection.cs" />
     <Compile Include="CommonComponents\Exceptions\NoFilesConnection.cs" />
     <Compile Include="CommonComponents\Exceptions\NotFoundVariableException.cs" />
+    <Compile Include="CommonComponents\Exceptions\Security\IncorrectOldPassword.cs" />
+    <Compile Include="CommonComponents\Exceptions\Security\IncorrectUserData.cs" />
+    <Compile Include="CommonComponents\Exceptions\Security\InsufficientPermissionsException.cs" />
     <Compile Include="CommonComponents\Exceptions\SyntaxisErrorException.cs" />
     <Compile Include="CommonComponents\Exceptions\UnknownTimeIntervalType.cs" />
     <Compile Include="CommonComponents\Interfaces\AdwancedModelsInterfaces\RecoveredModel.cs" />

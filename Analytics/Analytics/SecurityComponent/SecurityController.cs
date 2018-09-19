@@ -1,4 +1,6 @@
-﻿using Analytics.SecurityComponent;
+﻿using Analytics.CommonComponents.ExceptionHandler;
+using Analytics.CommonComponents.Exceptions.Security;
+using Analytics.SecurityComponent;
 using Analytics.SecurityComponent.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -19,22 +21,37 @@ namespace Analytics.SecurityComponent
 
         public void addNewUser(string login, string password, bool isAdmin)
         {
-            if (model.checkUser())
+            try
             {
-                SecurityUserInterface user = new SecurityUser(login, password);
-                user.setAdmin(isAdmin);
+                if (model.checkUser())
+                {
+                    SecurityUserInterface user = new SecurityUser(login, password);
+                    user.setAdmin(isAdmin);
 
-                model.addNewUser(user);
+                    model.addNewUser(user);
+                }
+                else
+                {
+                    throw new InsufficientPermissionsException("This user does not"
+                        + "have sufficient rights to perform the specified operation");
+                }
             }
-            else
+            catch(Exception ex)
             {
-                //ADD EXCEPTION: INCORRECT USERS DATA
+                ExceptionHandler.getInstance().processing(ex);
             }
         }
 
         public void changeUserPassword(string oldPassword, string newPassword)
         {
-            model.changeUserPassword(oldPassword, newPassword);
+            try
+            {
+                model.changeUserPassword(oldPassword, newPassword);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.getInstance().processing(ex);
+            }
         }
 
         public void setConfig(string login, string password, bool isAdmin)
@@ -53,13 +70,20 @@ namespace Analytics.SecurityComponent
 
         public void signIn()
         {
-            if (model.checkUser())
+            try
             {
-                model.signIn();
+                if (model.checkUser())
+                {
+                    model.signIn();
+                }
+                else
+                {
+                    throw new IncorrectUserData("Invalid login or password");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                //ADD EXCEPTION: INCORRECT USERS DATA
+                ExceptionHandler.getInstance().processing(ex);
             }
         }
     }
