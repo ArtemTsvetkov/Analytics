@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea29 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend29 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series29 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea30 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend30 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series30 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tabPage11 = new System.Windows.Forms.TabPage();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage6 = new System.Windows.Forms.TabPage();
@@ -59,6 +59,7 @@
             this.label45 = new System.Windows.Forms.Label();
             this.pictureBox6 = new System.Windows.Forms.PictureBox();
             this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.button13 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
             this.label49 = new System.Windows.Forms.Label();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
@@ -76,6 +77,8 @@
             this.label57 = new System.Windows.Forms.Label();
             this.pictureBox8 = new System.Windows.Forms.PictureBox();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.label22 = new System.Windows.Forms.Label();
+            this.button14 = new System.Windows.Forms.Button();
             this.button11 = new System.Windows.Forms.Button();
             this.button19 = new System.Windows.Forms.Button();
             this.button20 = new System.Windows.Forms.Button();
@@ -91,6 +94,8 @@
             this.label20 = new System.Windows.Forms.Label();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.label24 = new System.Windows.Forms.Label();
+            this.button15 = new System.Windows.Forms.Button();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.label15 = new System.Windows.Forms.Label();
             this.textBox6 = new System.Windows.Forms.TextBox();
@@ -112,6 +117,8 @@
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label23 = new System.Windows.Forms.Label();
+            this.button10 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox8 = new System.Windows.Forms.TextBox();
             this.textBox9 = new System.Windows.Forms.TextBox();
@@ -122,21 +129,15 @@
             this.button12 = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.button16 = new System.Windows.Forms.Button();
+            this.button24 = new System.Windows.Forms.Button();
+            this.button23 = new System.Windows.Forms.Button();
+            this.button22 = new System.Windows.Forms.Button();
+            this.button21 = new System.Windows.Forms.Button();
+            this.label25 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.button13 = new System.Windows.Forms.Button();
-            this.button14 = new System.Windows.Forms.Button();
-            this.label22 = new System.Windows.Forms.Label();
-            this.label23 = new System.Windows.Forms.Label();
-            this.button10 = new System.Windows.Forms.Button();
-            this.label24 = new System.Windows.Forms.Label();
-            this.button15 = new System.Windows.Forms.Button();
-            this.label25 = new System.Windows.Forms.Label();
-            this.button21 = new System.Windows.Forms.Button();
-            this.button22 = new System.Windows.Forms.Button();
-            this.button23 = new System.Windows.Forms.Button();
-            this.button24 = new System.Windows.Forms.Button();
-            this.button16 = new System.Windows.Forms.Button();
+            this.button25 = new System.Windows.Forms.Button();
             this.tabPage11.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage6.SuspendLayout();
@@ -463,6 +464,17 @@
             this.tabPage8.Text = "Модель Марковица";
             this.tabPage8.UseVisualStyleBackColor = true;
             // 
+            // button13
+            // 
+            this.button13.Font = new System.Drawing.Font("GDT", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button13.Location = new System.Drawing.Point(3, 32);
+            this.button13.Name = "button13";
+            this.button13.Size = new System.Drawing.Size(54, 25);
+            this.button13.TabIndex = 50;
+            this.button13.Text = "Меню";
+            this.button13.UseVisualStyleBackColor = true;
+            this.button13.Click += new System.EventHandler(this.button13_Click);
+            // 
             // button7
             // 
             this.button7.Font = new System.Drawing.Font("GDT", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -539,18 +551,18 @@
             // 
             // chart2
             // 
-            chartArea29.Name = "ChartArea1";
-            this.chart2.ChartAreas.Add(chartArea29);
-            legend29.Name = "Legend1";
-            this.chart2.Legends.Add(legend29);
+            chartArea1.Name = "ChartArea1";
+            this.chart2.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chart2.Legends.Add(legend1);
             this.chart2.Location = new System.Drawing.Point(519, 229);
             this.chart2.Name = "chart2";
-            series29.ChartArea = "ChartArea1";
-            series29.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
-            series29.IsVisibleInLegend = false;
-            series29.Legend = "Legend1";
-            series29.Name = "Series1";
-            this.chart2.Series.Add(series29);
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
+            series1.IsVisibleInLegend = false;
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chart2.Series.Add(series1);
             this.chart2.Size = new System.Drawing.Size(322, 194);
             this.chart2.TabIndex = 5;
             this.chart2.Text = "chart2";
@@ -569,18 +581,18 @@
             // chart1
             // 
             this.chart1.BorderlineColor = System.Drawing.Color.Gray;
-            chartArea30.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea30);
-            legend30.Name = "Legend1";
-            this.chart1.Legends.Add(legend30);
+            chartArea2.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chart1.Legends.Add(legend2);
             this.chart1.Location = new System.Drawing.Point(80, 229);
             this.chart1.Name = "chart1";
-            series30.ChartArea = "ChartArea1";
-            series30.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
-            series30.IsVisibleInLegend = false;
-            series30.Legend = "Legend1";
-            series30.Name = "Series1";
-            this.chart1.Series.Add(series30);
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
+            series2.IsVisibleInLegend = false;
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.chart1.Series.Add(series2);
             this.chart1.Size = new System.Drawing.Size(322, 194);
             this.chart1.TabIndex = 3;
             this.chart1.Text = "chart1";
@@ -661,6 +673,7 @@
             // 
             // tabPage5
             // 
+            this.tabPage5.Controls.Add(this.button25);
             this.tabPage5.Controls.Add(this.label22);
             this.tabPage5.Controls.Add(this.button14);
             this.tabPage5.Controls.Add(this.button11);
@@ -684,6 +697,26 @@
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "tabPage5";
             this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Font = new System.Drawing.Font("GDT", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label22.Location = new System.Drawing.Point(5, 8);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(0, 25);
+            this.label22.TabIndex = 78;
+            // 
+            // button14
+            // 
+            this.button14.Font = new System.Drawing.Font("GDT", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button14.Location = new System.Drawing.Point(5, 36);
+            this.button14.Name = "button14";
+            this.button14.Size = new System.Drawing.Size(54, 25);
+            this.button14.TabIndex = 77;
+            this.button14.Text = "Меню";
+            this.button14.UseVisualStyleBackColor = true;
+            this.button14.Click += new System.EventHandler(this.button14_Click);
             // 
             // button11
             // 
@@ -843,6 +876,26 @@
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "tabPage4";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Font = new System.Drawing.Font("GDT", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label24.Location = new System.Drawing.Point(5, 8);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(0, 25);
+            this.label24.TabIndex = 80;
+            // 
+            // button15
+            // 
+            this.button15.Font = new System.Drawing.Font("GDT", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button15.Location = new System.Drawing.Point(5, 36);
+            this.button15.Name = "button15";
+            this.button15.Size = new System.Drawing.Size(54, 25);
+            this.button15.TabIndex = 79;
+            this.button15.Text = "Меню";
+            this.button15.UseVisualStyleBackColor = true;
+            this.button15.Click += new System.EventHandler(this.button15_Click);
             // 
             // checkBox2
             // 
@@ -1074,6 +1127,26 @@
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Font = new System.Drawing.Font("GDT", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label23.Location = new System.Drawing.Point(4, 8);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(0, 25);
+            this.label23.TabIndex = 80;
+            // 
+            // button10
+            // 
+            this.button10.Font = new System.Drawing.Font("GDT", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button10.Location = new System.Drawing.Point(5, 36);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(54, 25);
+            this.button10.TabIndex = 79;
+            this.button10.Text = "Меню";
+            this.button10.UseVisualStyleBackColor = true;
+            this.button10.Click += new System.EventHandler(this.button10_Click);
+            // 
             // textBox1
             // 
             this.textBox1.Font = new System.Drawing.Font("GDT", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -1178,6 +1251,70 @@
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // button16
+            // 
+            this.button16.Font = new System.Drawing.Font("GDT", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button16.Location = new System.Drawing.Point(372, 301);
+            this.button16.Name = "button16";
+            this.button16.Size = new System.Drawing.Size(189, 25);
+            this.button16.TabIndex = 85;
+            this.button16.Text = "Перейти к анализу";
+            this.button16.UseVisualStyleBackColor = true;
+            this.button16.Click += new System.EventHandler(this.button16_Click_1);
+            // 
+            // button24
+            // 
+            this.button24.Font = new System.Drawing.Font("GDT", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button24.Location = new System.Drawing.Point(372, 332);
+            this.button24.Name = "button24";
+            this.button24.Size = new System.Drawing.Size(189, 25);
+            this.button24.TabIndex = 84;
+            this.button24.Text = "Выход из системы";
+            this.button24.UseVisualStyleBackColor = true;
+            this.button24.Click += new System.EventHandler(this.button24_Click);
+            // 
+            // button23
+            // 
+            this.button23.Font = new System.Drawing.Font("GDT", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button23.Location = new System.Drawing.Point(372, 239);
+            this.button23.Name = "button23";
+            this.button23.Size = new System.Drawing.Size(189, 25);
+            this.button23.TabIndex = 83;
+            this.button23.Text = "Добавить пользователя";
+            this.button23.UseVisualStyleBackColor = true;
+            this.button23.Click += new System.EventHandler(this.button23_Click_1);
+            // 
+            // button22
+            // 
+            this.button22.Font = new System.Drawing.Font("GDT", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button22.Location = new System.Drawing.Point(372, 270);
+            this.button22.Name = "button22";
+            this.button22.Size = new System.Drawing.Size(189, 25);
+            this.button22.TabIndex = 82;
+            this.button22.Text = "Изменить пароль";
+            this.button22.UseVisualStyleBackColor = true;
+            this.button22.Click += new System.EventHandler(this.button22_Click);
+            // 
+            // button21
+            // 
+            this.button21.Font = new System.Drawing.Font("GDT", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button21.Location = new System.Drawing.Point(5, 36);
+            this.button21.Name = "button21";
+            this.button21.Size = new System.Drawing.Size(56, 25);
+            this.button21.TabIndex = 81;
+            this.button21.Text = "Назад";
+            this.button21.UseVisualStyleBackColor = true;
+            this.button21.Click += new System.EventHandler(this.button21_Click_1);
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Font = new System.Drawing.Font("GDT", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label25.Location = new System.Drawing.Point(4, 8);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(0, 25);
+            this.label25.TabIndex = 80;
+            // 
             // label21
             // 
             this.label21.AutoSize = true;
@@ -1199,140 +1336,15 @@
             this.pictureBox2.TabIndex = 43;
             this.pictureBox2.TabStop = false;
             // 
-            // button13
+            // button25
             // 
-            this.button13.Font = new System.Drawing.Font("GDT", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button13.Location = new System.Drawing.Point(3, 32);
-            this.button13.Name = "button13";
-            this.button13.Size = new System.Drawing.Size(54, 25);
-            this.button13.TabIndex = 50;
-            this.button13.Text = "Меню";
-            this.button13.UseVisualStyleBackColor = true;
-            this.button13.Click += new System.EventHandler(this.button13_Click);
-            // 
-            // button14
-            // 
-            this.button14.Font = new System.Drawing.Font("GDT", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button14.Location = new System.Drawing.Point(5, 36);
-            this.button14.Name = "button14";
-            this.button14.Size = new System.Drawing.Size(54, 25);
-            this.button14.TabIndex = 77;
-            this.button14.Text = "Меню";
-            this.button14.UseVisualStyleBackColor = true;
-            this.button14.Click += new System.EventHandler(this.button14_Click);
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Font = new System.Drawing.Font("GDT", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label22.Location = new System.Drawing.Point(5, 8);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(0, 25);
-            this.label22.TabIndex = 78;
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Font = new System.Drawing.Font("GDT", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label23.Location = new System.Drawing.Point(4, 8);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(0, 25);
-            this.label23.TabIndex = 80;
-            // 
-            // button10
-            // 
-            this.button10.Font = new System.Drawing.Font("GDT", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button10.Location = new System.Drawing.Point(5, 36);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(54, 25);
-            this.button10.TabIndex = 79;
-            this.button10.Text = "Меню";
-            this.button10.UseVisualStyleBackColor = true;
-            this.button10.Click += new System.EventHandler(this.button10_Click);
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Font = new System.Drawing.Font("GDT", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label24.Location = new System.Drawing.Point(5, 8);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(0, 25);
-            this.label24.TabIndex = 80;
-            // 
-            // button15
-            // 
-            this.button15.Font = new System.Drawing.Font("GDT", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button15.Location = new System.Drawing.Point(5, 36);
-            this.button15.Name = "button15";
-            this.button15.Size = new System.Drawing.Size(54, 25);
-            this.button15.TabIndex = 79;
-            this.button15.Text = "Меню";
-            this.button15.UseVisualStyleBackColor = true;
-            this.button15.Click += new System.EventHandler(this.button15_Click);
-            // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.Font = new System.Drawing.Font("GDT", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label25.Location = new System.Drawing.Point(4, 8);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(0, 25);
-            this.label25.TabIndex = 80;
-            // 
-            // button21
-            // 
-            this.button21.Font = new System.Drawing.Font("GDT", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button21.Location = new System.Drawing.Point(5, 36);
-            this.button21.Name = "button21";
-            this.button21.Size = new System.Drawing.Size(56, 25);
-            this.button21.TabIndex = 81;
-            this.button21.Text = "Назад";
-            this.button21.UseVisualStyleBackColor = true;
-            this.button21.Click += new System.EventHandler(this.button21_Click_1);
-            // 
-            // button22
-            // 
-            this.button22.Font = new System.Drawing.Font("GDT", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button22.Location = new System.Drawing.Point(372, 270);
-            this.button22.Name = "button22";
-            this.button22.Size = new System.Drawing.Size(189, 25);
-            this.button22.TabIndex = 82;
-            this.button22.Text = "Изменить пароль";
-            this.button22.UseVisualStyleBackColor = true;
-            this.button22.Click += new System.EventHandler(this.button22_Click);
-            // 
-            // button23
-            // 
-            this.button23.Font = new System.Drawing.Font("GDT", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button23.Location = new System.Drawing.Point(372, 239);
-            this.button23.Name = "button23";
-            this.button23.Size = new System.Drawing.Size(189, 25);
-            this.button23.TabIndex = 83;
-            this.button23.Text = "Добавить пользователя";
-            this.button23.UseVisualStyleBackColor = true;
-            this.button23.Click += new System.EventHandler(this.button23_Click_1);
-            // 
-            // button24
-            // 
-            this.button24.Font = new System.Drawing.Font("GDT", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button24.Location = new System.Drawing.Point(372, 332);
-            this.button24.Name = "button24";
-            this.button24.Size = new System.Drawing.Size(189, 25);
-            this.button24.TabIndex = 84;
-            this.button24.Text = "Выход из системы";
-            this.button24.UseVisualStyleBackColor = true;
-            this.button24.Click += new System.EventHandler(this.button24_Click);
-            // 
-            // button16
-            // 
-            this.button16.Font = new System.Drawing.Font("GDT", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button16.Location = new System.Drawing.Point(372, 301);
-            this.button16.Name = "button16";
-            this.button16.Size = new System.Drawing.Size(189, 25);
-            this.button16.TabIndex = 85;
-            this.button16.Text = "Перейти к анализу";
-            this.button16.UseVisualStyleBackColor = true;
-            this.button16.Click += new System.EventHandler(this.button16_Click_1);
+            this.button25.Font = new System.Drawing.Font("GDT", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button25.Location = new System.Drawing.Point(396, 239);
+            this.button25.Name = "button25";
+            this.button25.Size = new System.Drawing.Size(133, 27);
+            this.button25.TabIndex = 79;
+            this.button25.Text = "Сохранить в БД";
+            this.button25.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -1479,6 +1491,7 @@
         private System.Windows.Forms.Button button23;
         private System.Windows.Forms.Button button22;
         private System.Windows.Forms.Button button16;
+        private System.Windows.Forms.Button button25;
     }
 }
 

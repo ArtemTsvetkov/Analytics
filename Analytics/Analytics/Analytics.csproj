@@ -97,6 +97,13 @@
     <Compile Include="CommonComponents\Interfaces\AdwancedModelsInterfaces\StatisticsModelInterface.cs" />
     <Compile Include="CommonComponents\Math\MathWorker.cs" />
     <Compile Include="CommonComponents\QueryConfigurator\MsSqlServersQueryConfigurator.cs" />
+    <Compile Include="HandModifiedDataPanel\HandModifiedDataConfig.cs" />
+    <Compile Include="HandModifiedDataPanel\HandModifiedDataController.cs" />
+    <Compile Include="HandModifiedDataPanel\HandModifiedDataModel.cs" />
+    <Compile Include="HandModifiedDataPanel\HandModifiedDataState.cs" />
+    <Compile Include="HandModifiedDataPanel\HandModifiedDataView.cs" />
+    <Compile Include="HandModifiedDataPanel\Interfaces\HandModifiedDataControllerInterface.cs" />
+    <Compile Include="HandModifiedDataPanel\Interfaces\HandModifiedDataModelInterface.cs" />
     <Compile Include="MarcovitsComponent\MarcovitsView.cs" />
     <Compile Include="MenuComponent\MenuView.cs" />
     <Compile Include="Modeling\ModelingView.cs" />

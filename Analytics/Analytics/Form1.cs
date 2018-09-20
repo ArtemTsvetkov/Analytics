@@ -6,6 +6,8 @@ using Analytics.CommonComponents.ExceptionHandler.View;
 using Analytics.CommonComponents.Exceptions;
 using Analytics.CommonComponents.Exceptions.Security;
 using Analytics.CommonComponents.Views;
+using Analytics.HandModifiedDataPanel;
+using Analytics.HandModifiedDataPanel.Interfaces;
 using Analytics.MarcovitsComponent.Converters;
 using Analytics.MenuComponent;
 using Analytics.Modeling.GroupByTypes;
@@ -32,6 +34,7 @@ namespace Analytics
         private MarcovitsView marcovitsView;
         private ModelingView modelingView;
         private SecurityControllerInterface securityController;
+        private HandModifiedDataControllerInterface handModifiedDataController;
 
         public Form1()
         {
@@ -53,7 +56,6 @@ namespace Analytics
                 SecurityModel securityModel = new SecurityModel();
                 AutorizationSecurityView securityView = 
                     new AutorizationSecurityView(this, securityModel);
-                securityModel.subscribe(securityView);
                 securityController = new SecurityController(securityModel);
                 Navigator.Navigator.getInstance().addView(securityView);
                 //
@@ -63,6 +65,14 @@ namespace Analytics
                 comboBox3.SelectedIndex = 0;
                 comboBox2.SelectedIndex = 0;
                 comboBox4.SelectedIndex = 0;
+                //
+                //Hand modified data component
+                //
+                HandModifiedDataModel handModifiedDataModel = new HandModifiedDataModel();
+                HandModifiedDataView handModifiedDataView =
+                    new HandModifiedDataView(this, handModifiedDataModel);
+                handModifiedDataController = new HandModifiedDataController(handModifiedDataModel);
+                Navigator.Navigator.getInstance().addView(handModifiedDataView);
                 //
                 //Menu
                 //
