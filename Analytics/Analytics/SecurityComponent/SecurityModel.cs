@@ -3,11 +3,13 @@ using Analytics.CommonComponents.DataConverters;
 using Analytics.CommonComponents.Exceptions.Security;
 using Analytics.CommonComponents.Interfaces.Data;
 using Analytics.CommonComponents.WorkWithDataBase.MsSqlServer;
+using Analytics.SecurityComponent.Hash;
 using Analytics.SecurityComponent.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,18 +22,27 @@ namespace Analytics.SecurityComponent
         private DataConverter<DataSet, int> converter =
             new FromDataSetToIntDataConverter();
         private SecurityUserInterface currentUser;
+        private HashWorkerInterface<HashConfig> hashWorker;
 
         public SecurityModel()
         {
             queryConfigurator = new SecurityMsSqlServerQueryConfigurator();
+            hashWorker = new HashWorker();
+            HashConfig hc = new HashConfig();
+            hc.numberOfHashing = 100000;
+            hc.sultLength = 20;
+            hashWorker.setConfig(hc);
         }
 
         public void addNewUser(SecurityUserInterface user)
         {
+            string sult = hashWorker.getSult(user);
+
+
             if (currentUser.isAdmin())
             {
                 configProxyForLoadDataFromBDAndExecute(queryConfigurator.addNewUser(
-                    user.getLogin(), user.getPassword(), "SULT", user.isAdmin()));
+                    user.getLogin(), hashWorker.getHash(user.getPassword(),sult), sult, user.isAdmin()));
             }
             else
             {
@@ -107,9 +118,37 @@ namespace Analytics.SecurityComponent
             }
             else
             {
+                FromDataSetToString newConverter = new FromDataSetToString();
+                if(newConverter.convert(configProxyForLoadDataFromBDAndExecute(
+                        queryConfigurator.getSult(
+                        currentUser.getLogin()))) == null)
+                {
+                    return false;
+                }
+
+                string currentSult = newConverter.convert(configProxyForLoadDataFromBDAndExecute(
+                    queryConfigurator.getSult(
+                    currentUser.getLogin())));
+                //MS Sql Server дописывает пробелы в конец, их нужно убрать
+                bool goNext = false;
+                while (goNext == false)
+                {
+                    if (currentSult.ElementAt(currentSult.Length - 1).Equals(' '))
+                    {
+                        currentSult = currentSult.Remove(currentSult.Length - 1);
+                    }
+                    else
+                    {
+                        goNext = true;
+                    }
+                }
+
+                string currentPassword = hashWorker.getHash(currentUser.getPassword(), currentSult);
+                
+
                 if (converter.convert(configProxyForLoadDataFromBDAndExecute(
-                    queryConfigurator.checkUser(
-                        currentUser.getLogin(), currentUser.getPassword()))) == 1)
+                        queryConfigurator.checkUser(
+                        currentUser.getLogin(), currentPassword))) == 1)
                 {
                     return true;
                 }

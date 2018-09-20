@@ -32,6 +32,7 @@ namespace Analytics.SecurityComponent
                     try
                     {
                         Navigator.Navigator.getInstance().navigateTo("ModelingView");
+                        form.setUserName(currentUser.getLogin()+"bbbb");
                     }
                     catch (Exception ex)
                     {

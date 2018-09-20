@@ -12,5 +12,6 @@ namespace Analytics.SecurityComponent.Interfaces
         string changePassword(string login, string newPassword);
         string checkUserStatus(string login);
         string addNewUser(string login, string password, string sult, bool isAdmin);
+        string getSult(string login);
     }
 }

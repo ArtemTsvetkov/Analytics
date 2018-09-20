@@ -9,6 +9,12 @@ namespace Analytics.SecurityComponent
 {
     class SecurityMsSqlServerQueryConfigurator : SecurityQueryConfigurator
     {
+        public string getSult(string login)
+        {
+            return "SELECT Sult FROM UST WHERE Login='"+ login + 
+                "'";
+        }
+
         public string addNewUser(string login, string password, string sult, bool isAdmin)
         {
             if (isAdmin)

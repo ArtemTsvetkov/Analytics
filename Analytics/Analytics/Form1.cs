@@ -71,6 +71,18 @@ namespace Analytics
             }
         }
 
+        public void setUserName(string userName)
+        {
+            if(userName.Length>5)
+            {
+                userName = userName.Substring(0,4);
+                userName += "...";
+            }
+            label37.Text = userName;
+            label52.Text = userName;
+            label11.Text = userName;
+        }
+
         public Chart chart1Elem
         {
             get { return chart1; }

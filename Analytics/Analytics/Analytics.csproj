@@ -57,6 +57,7 @@
     <Compile Include="CommonComponents\BasicObjects\BasicModel.cs" />
     <Compile Include="CommonComponents\DataConverters\DistinctSoftwareNamesConverter.cs" />
     <Compile Include="CommonComponents\DataConverters\FromDataSetToIntDataConverter.cs" />
+    <Compile Include="CommonComponents\DataConverters\FromDataSetToString.cs" />
     <Compile Include="CommonComponents\ExceptionHandler\Concrete\ConcreteExceptionHandlerInitializer.cs" />
     <Compile Include="CommonComponents\ExceptionHandler\Concrete\ExceptionHandler.cs" />
     <Compile Include="CommonComponents\ExceptionHandler\Exceptions\AlreadyExistException.cs" />
@@ -188,6 +189,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SecurityComponent\Hash\HashConfig.cs" />
+    <Compile Include="SecurityComponent\Hash\HashWorker.cs" />
+    <Compile Include="SecurityComponent\Interfaces\HashWorkerInterface.cs" />
     <Compile Include="SecurityComponent\Interfaces\SecurityQueryConfigurator.cs" />
     <Compile Include="SecurityComponent\SecurityController.cs" />
     <Compile Include="SecurityComponent\SecurityMsSqlServerQueryConfigurator.cs" />
