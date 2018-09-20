@@ -4,13 +4,16 @@ using Analytics.CommonComponents.ExceptionHandler.Concrete;
 using Analytics.CommonComponents.ExceptionHandler.Interfaces;
 using Analytics.CommonComponents.ExceptionHandler.View;
 using Analytics.CommonComponents.Exceptions;
+using Analytics.CommonComponents.Exceptions.Security;
 using Analytics.CommonComponents.Views;
 using Analytics.MarcovitsComponent.Converters;
+using Analytics.MenuComponent;
 using Analytics.Modeling.GroupByTypes;
 using Analytics.Navigator;
 using Analytics.Navigator.Basic;
 using Analytics.SecurityComponent;
 using Analytics.SecurityComponent.Interfaces;
+using Analytics.SecurityComponent.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -61,6 +64,18 @@ namespace Analytics
                 comboBox2.SelectedIndex = 0;
                 comboBox4.SelectedIndex = 0;
                 //
+                //Menu
+                //
+                Navigator.Navigator.getInstance().addView(new MenuView(this));
+                //
+                //Menu
+                //
+                Navigator.Navigator.getInstance().addView(new AddUserView(this));
+                //
+                //Menu
+                //
+                Navigator.Navigator.getInstance().addView(new ChangePasswordView(this));
+                //
                 //Navigator
                 //
                 Navigator.Navigator.getInstance().navigateTo("AutorizationSecurityView");
@@ -80,7 +95,10 @@ namespace Analytics
             }
             label37.Text = userName;
             label52.Text = userName;
-            label11.Text = userName;
+            label22.Text = userName;
+            label23.Text = userName;
+            label24.Text = userName;
+            label25.Text = userName;
         }
 
         public Chart chart1Elem
@@ -128,6 +146,16 @@ namespace Analytics
             get { return tabControl1; }
         }
 
+        public TextBox textBox2Elem
+        {
+            get { return textBox2; }
+        }
+
+        public TextBox textBox3Elem
+        {
+            get { return textBox3; }
+        }
+
         public TabControl tabControl2Elem
         {
             get { return tabControl2; }
@@ -141,6 +169,11 @@ namespace Analytics
         public ComboBox comboBox3Elem
         {
             get { return comboBox3; }
+        }
+
+        public Button button23Elem
+        {
+            get { return button23; }
         }
 
         public CheckBox checkBox1Elem
@@ -291,7 +324,35 @@ namespace Analytics
 
         private void button8_Click(object sender, EventArgs e)
         {
-            tabControl1.SelectTab(3);
+            if (textBox4.Text.Equals(textBox6.Text) & textBox5.Text!="" & textBox6.Text!="")
+            {
+                try
+                {
+                    if (checkBox2.Checked)
+                    {
+                        securityController.addNewUser(textBox5.Text, textBox6.Text, true);
+                    }
+                    else
+                    {
+                        securityController.addNewUser(textBox5.Text, textBox6.Text, false);
+                    }
+                }
+                catch(Exception ex)
+                {
+                    ExceptionHandler.getInstance().processing(ex);
+                }
+            }
+            else
+            {
+                try
+                {
+                    throw new BadCheckedPasswords();
+                }
+                catch (Exception ex)
+                {
+                    ExceptionHandler.getInstance().processing(ex);
+                }
+            }
         }
 
         private void button9_Click(object sender, EventArgs e)
@@ -311,7 +372,7 @@ namespace Analytics
 
         private void button17_Click(object sender, EventArgs e)
         {
-            tabControl1.SelectTab(1);
+            navigatoToMenuView();
         }
 
         private void button21_Click(object sender, EventArgs e)
@@ -476,52 +537,25 @@ namespace Analytics
         {
             modelingView.getNextState();
         }
-
-        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label14_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label13_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label9_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label8_Click(object sender, EventArgs e)
-        {
-
-        }
-
+        
         private void button12_Click(object sender, EventArgs e)
         {
-
+            if(textBox8.Text.Equals(textBox1.Text) & 
+                !textBox8.Text.Equals("") & !textBox9.Equals(""))
+            securityController.changeUserPassword(textBox9.Text, textBox8.Text);
+            else
+            {
+                try
+                {
+                    throw new BadCheckedPasswords();
+                }
+                catch (Exception ex)
+                {
+                    ExceptionHandler.getInstance().processing(ex);
+                }
+            }
         }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox8_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox9_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
+        
         private void textBox2_Leave(object sender, EventArgs e)
         {
             securityController.setConfig(textBox2.Text, textBox3.Text);
@@ -530,6 +564,99 @@ namespace Analytics
         private void textBox3_Leave(object sender, EventArgs e)
         {
             securityController.setConfig(textBox2.Text, textBox3.Text);
+        }
+
+        private void button23_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                Navigator.Navigator.getInstance().navigateTo("AddUserView");
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.getInstance().processing(ex);
+            }
+        }
+
+        private void button22_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Navigator.Navigator.getInstance().navigateTo("ChangePasswordView");
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.getInstance().processing(ex);
+            }
+        }
+
+        private void button16_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                Navigator.Navigator.getInstance().navigateTo("ModelingView");
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.getInstance().processing(ex);
+            }
+        }
+
+        private void button24_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Navigator.Navigator.getInstance().navigateTo("AutorizationSecurityView");
+                securityController.signOut();
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.getInstance().processing(ex);
+            }
+        }
+
+        private void button21_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                Navigator.Navigator.getInstance().navigateToPreviousView();
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.getInstance().processing(ex);
+            }
+        }
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+            navigatoToMenuView();
+        }
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+            navigatoToMenuView();
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            navigatoToMenuView();
+        }
+
+        private void navigatoToMenuView()
+        {
+            try
+            {
+                Navigator.Navigator.getInstance().navigateTo("MenuView");
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.getInstance().processing(ex);
+            }
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            navigatoToMenuView();
         }
     }
 }

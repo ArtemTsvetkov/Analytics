@@ -36,6 +36,7 @@ namespace Analytics.CommonComponents.ExceptionHandler.Concrete
                 handler.addException(new IncorrectOldPassword());
                 handler.addException(new IncorrectUserData());
                 handler.addException(new InsufficientPermissionsException());
+                handler.addException(new BadCheckedPasswords());
             }
             catch(Exception ex)
             {

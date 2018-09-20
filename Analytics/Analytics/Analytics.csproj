@@ -85,6 +85,7 @@
     <Compile Include="CommonComponents\Exceptions\NoDataBaseConnection.cs" />
     <Compile Include="CommonComponents\Exceptions\NoFilesConnection.cs" />
     <Compile Include="CommonComponents\Exceptions\NotFoundVariableException.cs" />
+    <Compile Include="CommonComponents\Exceptions\Security\BadCheckedPasswords.cs" />
     <Compile Include="CommonComponents\Exceptions\Security\IncorrectOldPassword.cs" />
     <Compile Include="CommonComponents\Exceptions\Security\IncorrectUserData.cs" />
     <Compile Include="CommonComponents\Exceptions\Security\InsufficientPermissionsException.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="CommonComponents\Math\MathWorker.cs" />
     <Compile Include="CommonComponents\QueryConfigurator\MsSqlServersQueryConfigurator.cs" />
     <Compile Include="MarcovitsComponent\MarcovitsView.cs" />
+    <Compile Include="MenuComponent\MenuView.cs" />
     <Compile Include="Modeling\ModelingView.cs" />
     <Compile Include="CommonComponents\WorkWithDataBase\MsSqlServer\MsSQLServerDataWorker.cs" />
     <Compile Include="CommonComponents\WorkWithDataBase\MsSqlServer\MsSQLServerProxy.cs" />
@@ -196,6 +198,7 @@
     <Compile Include="SecurityComponent\SecurityController.cs" />
     <Compile Include="SecurityComponent\SecurityMsSqlServerQueryConfigurator.cs" />
     <Compile Include="SecurityComponent\SecurityUser.cs" />
+    <Compile Include="SecurityComponent\Views\AddUserView.cs" />
     <Compile Include="SecurityComponent\Views\AutorizationSecurityView.cs" />
     <Compile Include="SecurityComponent\Interfaces\SecurityControllerInterface.cs" />
     <Compile Include="SecurityComponent\Interfaces\SecurityModelInterface.cs" />

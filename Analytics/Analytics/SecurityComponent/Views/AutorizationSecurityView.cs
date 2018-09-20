@@ -32,12 +32,26 @@ namespace Analytics.SecurityComponent
                     try
                     {
                         Navigator.Navigator.getInstance().navigateTo("ModelingView");
-                        form.setUserName(currentUser.getLogin()+"bbbb");
+                        form.setUserName(currentUser.getLogin());
+                        if (currentUser.isAdmin())
+                        {
+                            form.button23Elem.Visible = true;
+                        }
+                        else
+                        {
+                            form.button23Elem.Visible = false;
+                        }
                     }
                     catch (Exception ex)
                     {
                         ExceptionHandler.getInstance().processing(ex);
                     }
+                }
+                else
+                {
+                    form.textBox2Elem.Text = "";
+                    form.textBox3Elem.Text = "";
+                    Navigator.Navigator.getInstance().navigateTo("AutorizationSecurityView");
                 }
             }
         }

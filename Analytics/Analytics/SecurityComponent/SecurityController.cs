@@ -86,5 +86,10 @@ namespace Analytics.SecurityComponent
                 ExceptionHandler.getInstance().processing(ex);
             }
         }
+
+        public void signOut()
+        {
+            model.signOut();
+        }
     }
 }

@@ -26,8 +26,7 @@ namespace Analytics.SecurityComponent.Views
 
         public void show()
         {
-            form.tabControl1Elem.SelectTab(3);
-            form.tabControl2Elem.SelectTab(1);
+            form.tabControl1Elem.SelectTab(4);
         }
 
         public string getName()

@@ -38,7 +38,7 @@ namespace Analytics.SecurityComponent
         public string checkUser(string login, string password)
         {
             return "SELECT COUNT(*) FROM UST WHERE Login='"+ login + 
-                "' AND Password='" + password + "';";
+                "' AND Password='" + password + "'";
         }
 
         public string checkUserStatus(string login)

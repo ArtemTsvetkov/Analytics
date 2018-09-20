@@ -9,6 +9,7 @@ namespace Analytics.SecurityComponent
     interface SecurityModelInterface<TTypeOfResult>
     {
         void signIn();
+        void signOut();
         void addNewUser(SecurityUserInterface user);
         void changeUserPassword(string oldPassword, string newPassword);
         bool checkUser();
