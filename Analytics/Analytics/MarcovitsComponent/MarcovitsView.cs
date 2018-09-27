@@ -3,7 +3,6 @@ using Analytics.CommonComponents.BasicObjects.Statistics;
 using Analytics.CommonComponents.CommandsStore.Commands.Modeling;
 using Analytics.CommonComponents.Exceptions;
 using Analytics.MarcovitsComponent.Config;
-using Analytics.MarcovitsComponent.Converters;
 using Analytics.Modeling.GroupByTypes;
 using Analytics.Navigator.Basic;
 using System;
@@ -20,8 +19,7 @@ namespace Analytics.CommonComponents.Views
     {
         private Form1 form;
         private BasicStatisticsModel<MarcovitsModelState, MarcovitsConfig> model;
-        CommandsStore<MarcovitsModelState, MarcovitsConfig> commandsStore =
-                new ConcreteCommandStore<MarcovitsModelState, MarcovitsConfig>();
+        CommandsStoreInterface commandsStore = new ConcreteCommandStore();
         //При откате модели до предыдущего состояния, элементы вью тоже меняются,
         //но так как они прослушиваются на изменения вью, то это влечет за собой 
         //изменение модели и добавление еще одной команды, а она не нужна, так как мы

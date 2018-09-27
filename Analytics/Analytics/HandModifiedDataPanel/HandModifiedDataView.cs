@@ -1,4 +1,5 @@
-﻿using Analytics.Navigator.Basic;
+﻿using Analytics.HandModifiedDataPanel.DataConverters;
+using Analytics.Navigator.Basic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,15 +11,17 @@ namespace Analytics.HandModifiedDataPanel
     class HandModifiedDataView : Observer, NavigatorsView
     {
         private Form1 form;
-        private CommandsStore<HandModifiedDataState, HandModifiedDataConfig> commandsStore =
-                new ConcreteCommandStore<HandModifiedDataState, HandModifiedDataConfig>();
         private HandModifiedDataModel model;
+        private DataConverter<HandModifiedDataState, FormsElementsValues>
+            converter;
 
         public HandModifiedDataView(Form1 form, HandModifiedDataModel model)
         {
             this.form = form;
             this.model = model;
             model.subscribe(this);
+            converter = new ResultConverter();
+            model.loadStore();
         }
 
         public string getName()
@@ -28,12 +31,17 @@ namespace Analytics.HandModifiedDataPanel
 
         public void notify()
         {
-            throw new NotImplementedException();
+            setValuesToFormsElements(converter.convert(model.getResult()));
         }
 
         public void show()
         {
             form.tabControl1Elem.SelectTab(2);
+        }
+
+        private void setValuesToFormsElements(FormsElementsValues values)
+        {
+
         }
     }
 }

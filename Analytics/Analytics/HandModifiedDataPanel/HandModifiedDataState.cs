@@ -8,5 +8,9 @@ namespace Analytics.HandModifiedDataPanel
 {
     class HandModifiedDataState : ModelsState
     {
+        public HandModifiedDataState copy()
+        {
+            return new HandModifiedDataState();
+        }
     }
 }

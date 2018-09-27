@@ -1,6 +1,7 @@
 ﻿using Analytics.CommonComponents.BasicObjects;
 using Analytics.CommonComponents.Interfaces.AdwancedModelsInterfaces;
 using Analytics.HandModifiedDataPanel.Interfaces;
+using Analytics.HandModifiedDataPanel.ModelConfigurator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,27 +11,39 @@ using System.Threading.Tasks;
 namespace Analytics.HandModifiedDataPanel
 {
     class HandModifiedDataModel :
-        BasicModel<HandModifiedDataState, HandModifiedDataState>, RecoveredModel, 
+        BasicModel<HandModifiedDataState, ModelConfiguratorInterface<HandModifiedDataState>>, 
+        RecoveredModel, 
         HandModifiedDataModelInterface
     {
+        private HandModifiedDataState state;
+
+        public HandModifiedDataModel()
+        {
+            state = new HandModifiedDataState();
+        }
+
         public ModelsState copySelf()
         {
-            throw new NotImplementedException();
+            return state.copy();
         }
 
         public override HandModifiedDataState getResult()
         {
-            throw new NotImplementedException();
+            return state.copy();
         }
 
         public override void loadStore()
         {
             throw new NotImplementedException();
+            //Загрузка данных для таблиц
+            notifyObservers();
         }
 
         public void recoverySelf(ModelsState state)
         {
-            throw new NotImplementedException();
+            HandModifiedDataState copy = (HandModifiedDataState)state;
+            this.state = copy.copy();
+            notifyObservers();
         }
 
         public void saveNewData()
@@ -38,9 +51,9 @@ namespace Analytics.HandModifiedDataPanel
             throw new NotImplementedException();
         }
 
-        public override void setConfig(HandModifiedDataState configData)
+        public override void setConfig(ModelConfiguratorInterface<HandModifiedDataState> configData)
         {
-            throw new NotImplementedException();
+            state = configData.configureMe(state);
         }
     }
 }

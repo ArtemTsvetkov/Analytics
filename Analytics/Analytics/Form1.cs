@@ -7,8 +7,9 @@ using Analytics.CommonComponents.Exceptions;
 using Analytics.CommonComponents.Exceptions.Security;
 using Analytics.CommonComponents.Views;
 using Analytics.HandModifiedDataPanel;
+using Analytics.HandModifiedDataPanel.DataConverters;
 using Analytics.HandModifiedDataPanel.Interfaces;
-using Analytics.MarcovitsComponent.Converters;
+using Analytics.HandModifiedDataPanel.ModelConfigurator;
 using Analytics.MenuComponent;
 using Analytics.Modeling.GroupByTypes;
 using Analytics.Navigator;
@@ -71,7 +72,8 @@ namespace Analytics
                 HandModifiedDataModel handModifiedDataModel = new HandModifiedDataModel();
                 HandModifiedDataView handModifiedDataView =
                     new HandModifiedDataView(this, handModifiedDataModel);
-                handModifiedDataController = new HandModifiedDataController(handModifiedDataModel);
+                handModifiedDataController = new HandModifiedDataController(handModifiedDataModel,
+                    securityModel);
                 Navigator.Navigator.getInstance().addView(handModifiedDataView);
                 //
                 //Menu
@@ -189,6 +191,21 @@ namespace Analytics
         public CheckBox checkBox1Elem
         {
             get { return checkBox1; }
+        }
+
+        public DataGridView DataGridView4Elem
+        {
+            get { return dataGridView4; }
+        }
+
+        public DataGridView DataGridView6Elem
+        {
+            get { return dataGridView6; }
+        }
+
+        public Label label7Elem
+        {
+            get { return label7; }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -667,6 +684,42 @@ namespace Analytics
         private void button10_Click(object sender, EventArgs e)
         {
             navigatoToMenuView();
+        }
+
+        private void textBox7_TextChanged(object sender, EventArgs e)
+        {
+            ModelConfiguratorInterface<HandModifiedDataState> configurator =
+                new UpdateTableItem();
+            handModifiedDataController.updateModelsConfig(configurator);
+        }
+
+        private void button18_Click(object sender, EventArgs e)
+        {
+            ModelConfiguratorInterface<HandModifiedDataState> configurator =
+               new UpdateNumberOfLicensesWithModificator();
+            handModifiedDataController.updateModelsConfig(configurator);
+        }
+
+        private void button25_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                handModifiedDataController.saveNewData();
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.getInstance().processing(ex);
+            }
+        }
+
+        private void button20_Click(object sender, EventArgs e)
+        {
+            handModifiedDataController.getPreviousState();
+        }
+
+        private void button19_Click(object sender, EventArgs e)
+        {
+            handModifiedDataController.getNextState();
         }
     }
 }

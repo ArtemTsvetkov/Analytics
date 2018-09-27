@@ -21,8 +21,7 @@ namespace Analytics.CommonComponents.Views
     {
         private Form1 form;
         private ModelingModel control;
-        CommandsStore<ModelingReport, ModelingConfig> commandsStore =
-                new ConcreteCommandStore<ModelingReport, ModelingConfig>();
+        CommandsStoreInterface commandsStore = new ConcreteCommandStore();
         private ModelingConfig config;
         int step = 0;
         //При откате модели до предыдущего состояния, элементы вью тоже меняются,

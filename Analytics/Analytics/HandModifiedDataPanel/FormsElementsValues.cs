@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Analytics.HandModifiedDataPanel
 {
-    class HandModifiedDataConfig
+    class FormsElementsValues
     {
     }
 }

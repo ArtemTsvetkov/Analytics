@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Analytics
 {
-    interface CommandsStore<TModelsTypeOfResult, TConfigType>
+    interface CommandsStoreInterface
     {
         //Добавление команды в стек
         void push(BasicCommand command);

@@ -50,7 +50,8 @@
     <Compile Include="CommonComponents\BasicObjects\Statistics\BasicStatisticsModel.cs" />
     <Compile Include="CommonComponents\CommandsStore\BasicCommand.cs" />
     <Compile Include="CommonComponents\CommandsStore\Command.cs" />
-    <Compile Include="CommonComponents\CommandsStore\CommandsStore.cs" />
+    <Compile Include="CommonComponents\CommandsStore\CommandsStoreInterface.cs" />
+    <Compile Include="CommonComponents\CommandsStore\Commands\HandModifiedData\UpdateConfigModel.cs" />
     <Compile Include="CommonComponents\CommandsStore\Commands\Modeling\RunModeling.cs" />
     <Compile Include="CommonComponents\CommandsStore\Commands\UpdateConfigCommand.cs" />
     <Compile Include="CommonComponents\CommandsStore\Stores\ConcreteCommandStore.cs" />
@@ -97,13 +98,17 @@
     <Compile Include="CommonComponents\Interfaces\AdwancedModelsInterfaces\StatisticsModelInterface.cs" />
     <Compile Include="CommonComponents\Math\MathWorker.cs" />
     <Compile Include="CommonComponents\QueryConfigurator\MsSqlServersQueryConfigurator.cs" />
-    <Compile Include="HandModifiedDataPanel\HandModifiedDataConfig.cs" />
+    <Compile Include="HandModifiedDataPanel\DataConverters\ResultConverter.cs" />
+    <Compile Include="HandModifiedDataPanel\FormsElementsValues.cs" />
     <Compile Include="HandModifiedDataPanel\HandModifiedDataController.cs" />
     <Compile Include="HandModifiedDataPanel\HandModifiedDataModel.cs" />
     <Compile Include="HandModifiedDataPanel\HandModifiedDataState.cs" />
     <Compile Include="HandModifiedDataPanel\HandModifiedDataView.cs" />
     <Compile Include="HandModifiedDataPanel\Interfaces\HandModifiedDataControllerInterface.cs" />
     <Compile Include="HandModifiedDataPanel\Interfaces\HandModifiedDataModelInterface.cs" />
+    <Compile Include="CommonComponents\Interfaces\ModelConfiguratorInterface.cs" />
+    <Compile Include="HandModifiedDataPanel\ModelConfigurator\UpdateNumberOfLicensesWithModificator.cs" />
+    <Compile Include="HandModifiedDataPanel\ModelConfigurator\UpdateTableItem.cs" />
     <Compile Include="MarcovitsComponent\MarcovitsView.cs" />
     <Compile Include="MenuComponent\MenuView.cs" />
     <Compile Include="Modeling\ModelingView.cs" />
@@ -123,7 +128,6 @@
     <Compile Include="CommonComponents\CommandsStore\Commands\Marcovits\GetMarcovitsStatistcCommand.cs" />
     <Compile Include="MarcovitsComponent\Config\MarcovitsConfig.cs" />
     <Compile Include="MarcovitsComponent\Converters\MarcovitsDataTableConverter.cs" />
-    <Compile Include="MarcovitsComponent\Converters\ResultConverter.cs" />
     <Compile Include="MarcovitsComponent\Exceptions\NotEnoughDataToAnalyze.cs" />
     <Compile Include="MarcovitsComponent\MarcovitsDataTable.cs" />
     <Compile Include="MarcovitsComponent\MarcovitsModel.cs" />
