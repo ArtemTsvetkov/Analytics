@@ -1,5 +1,4 @@
-﻿using Analytics.HandModifiedDataPanel.DataConverters;
-using Analytics.HandModifiedDataPanel.Interfaces;
+﻿using Analytics.HandModifiedDataPanel.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -798,9 +798,8 @@
             this.label7.Font = new System.Drawing.Font("GDT", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label7.Location = new System.Drawing.Point(551, 377);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(157, 16);
+            this.label7.Size = new System.Drawing.Size(0, 16);
             this.label7.TabIndex = 62;
-            this.label7.Text = "Сумма долей: 1.22/1.0";
             // 
             // label32
             // 

@@ -98,8 +98,7 @@
     <Compile Include="CommonComponents\Interfaces\AdwancedModelsInterfaces\StatisticsModelInterface.cs" />
     <Compile Include="CommonComponents\Math\MathWorker.cs" />
     <Compile Include="CommonComponents\QueryConfigurator\MsSqlServersQueryConfigurator.cs" />
-    <Compile Include="HandModifiedDataPanel\DataConverters\ResultConverter.cs" />
-    <Compile Include="HandModifiedDataPanel\FormsElementsValues.cs" />
+    <Compile Include="HandModifiedDataPanel\Helpers\TablesStructureCreater.cs" />
     <Compile Include="HandModifiedDataPanel\HandModifiedDataController.cs" />
     <Compile Include="HandModifiedDataPanel\HandModifiedDataModel.cs" />
     <Compile Include="HandModifiedDataPanel\HandModifiedDataState.cs" />
@@ -109,6 +108,7 @@
     <Compile Include="CommonComponents\Interfaces\ModelConfiguratorInterface.cs" />
     <Compile Include="HandModifiedDataPanel\ModelConfigurator\UpdateNumberOfLicensesWithModificator.cs" />
     <Compile Include="HandModifiedDataPanel\ModelConfigurator\UpdateTableItem.cs" />
+    <Compile Include="HandModifiedDataPanel\Helpers\StoreLoader.cs" />
     <Compile Include="MarcovitsComponent\MarcovitsView.cs" />
     <Compile Include="MenuComponent\MenuView.cs" />
     <Compile Include="Modeling\ModelingView.cs" />

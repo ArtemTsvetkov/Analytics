@@ -1,4 +1,4 @@
-﻿using Analytics.HandModifiedDataPanel.DataConverters;
+﻿using Analytics.HandModifiedDataPanel.Halpers;
 using Analytics.Navigator.Basic;
 using System;
 using System.Collections.Generic;
@@ -12,16 +12,19 @@ namespace Analytics.HandModifiedDataPanel
     {
         private Form1 form;
         private HandModifiedDataModel model;
-        private DataConverter<HandModifiedDataState, FormsElementsValues>
-            converter;
 
         public HandModifiedDataView(Form1 form, HandModifiedDataModel model)
         {
             this.form = form;
             this.model = model;
             model.subscribe(this);
-            converter = new ResultConverter();
             model.loadStore();
+            createTablesStruct();
+        }
+
+        private void createTablesStruct()
+        {
+
         }
 
         public string getName()
@@ -31,7 +34,7 @@ namespace Analytics.HandModifiedDataPanel
 
         public void notify()
         {
-            setValuesToFormsElements(converter.convert(model.getResult()));
+            setValuesToFormsElements(model.getResult());
         }
 
         public void show()
@@ -39,9 +42,34 @@ namespace Analytics.HandModifiedDataPanel
             form.tabControl1Elem.SelectTab(2);
         }
 
-        private void setValuesToFormsElements(FormsElementsValues values)
+        private void setValuesToFormsElements(HandModifiedDataState state)
         {
+            TablesStructureCreater creater = new TablesStructureCreater();
+            creater.create(form);
 
+            form.DataGridView4Elem.Rows.Add(state.unicSoftwareNames.Count());
+            form.DataGridView4Elem.Rows.RemoveAt(0);
+
+            form.DataGridView6Elem.Rows.Add(state.unicSoftwareNames.Count());
+            form.DataGridView6Elem.Rows.RemoveAt(0);
+
+            for(int i=0; i<state.unicSoftwareNames.Count(); i++)
+            {
+                form.DataGridView4Elem.Rows[i].Cells[0].Value = state.unicSoftwareNames[i];
+                form.DataGridView6Elem.Rows[i].Cells[0].Value = state.unicSoftwareNames[i];
+            }
+
+            for (int i = 0; i < state.unicSoftwareNames.Count(); i++)
+            {
+                form.DataGridView4Elem.Rows[i].Cells[1].Value = state.numberOfPurcharedLicenses[i];
+            }
+
+            for (int i = 0; i < state.unicSoftwareNames.Count(); i++)
+            {
+                form.DataGridView6Elem.Rows[i].Cells[1].Value = state.percents[i];
+            }
+
+            form.label7Elem.Text = "Сумма долей: " + state.sumOfParts.ToString()+ "/1.0";
         }
     }
 }

@@ -1,9 +1,14 @@
 ﻿using Analytics.CommonComponents.BasicObjects;
+using Analytics.CommonComponents.DataConverters;
 using Analytics.CommonComponents.Interfaces.AdwancedModelsInterfaces;
+using Analytics.CommonComponents.Interfaces.Data;
+using Analytics.CommonComponents.MsSqlServersQueryConfigurator;
+using Analytics.CommonComponents.WorkWithDataBase.MsSqlServer;
 using Analytics.HandModifiedDataPanel.Interfaces;
 using Analytics.HandModifiedDataPanel.ModelConfigurator;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,13 +34,15 @@ namespace Analytics.HandModifiedDataPanel
 
         public override HandModifiedDataState getResult()
         {
+            state.calculateSumOfParts();
             return state.copy();
         }
 
         public override void loadStore()
         {
-            throw new NotImplementedException();
-            //Загрузка данных для таблиц
+            StoreLoader loader = new StoreLoader();
+            state = loader.loadData();
+
             notifyObservers();
         }
 
