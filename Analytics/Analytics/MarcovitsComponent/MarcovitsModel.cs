@@ -260,6 +260,9 @@ namespace Analytics
         {
             config = configData.copy();
             state.interval = config.getInterval();
+            state.income = 0;
+            state.risk[0, 0] = 0;
+            notifyObservers();
         }
 
         public override MarcovitsModelState getResult()

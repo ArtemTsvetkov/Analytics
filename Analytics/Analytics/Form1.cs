@@ -9,6 +9,7 @@ using Analytics.CommonComponents.Views;
 using Analytics.HandModifiedDataPanel;
 using Analytics.HandModifiedDataPanel.Interfaces;
 using Analytics.HandModifiedDataPanel.ModelConfigurator;
+using Analytics.MarcovitsComponent;
 using Analytics.MenuComponent;
 using Analytics.Modeling.GroupByTypes;
 using Analytics.Navigator;
@@ -31,10 +32,10 @@ namespace Analytics
 {
     public partial class Form1 : Form
     {
-        private MarcovitsView marcovitsView;
         private ModelingView modelingView;
         private SecurityControllerInterface securityController;
         private HandModifiedDataControllerInterface handModifiedDataController;
+        MarcovitsControllerInterface marcovitsController;
 
         public Form1()
         {
@@ -42,11 +43,16 @@ namespace Analytics
             {
                 InitializeComponent();
                 //
-                //Marcovits and modeling components
+                //Exceptions init
                 //
                 ConcreteExceptionHandlerInitializer.initThisExceptionHandler(
                     ExceptionHandler.getInstance());
-                marcovitsView = new MarcovitsView(this);
+                //
+                //Marcovits and modeling components
+                //
+                MarcovitsModel model = new MarcovitsModel();
+                MarcovitsView marcovitsView = new MarcovitsView(this, model);
+                marcovitsController = new MarcovitsController(model);
                 modelingView = new ModelingView(this);
                 Navigator.Navigator.getInstance().addView(marcovitsView);
                 Navigator.Navigator.getInstance().addView(modelingView);
@@ -209,7 +215,7 @@ namespace Analytics
 
         private void button2_Click(object sender, EventArgs e)
         {
-            marcovitsView.button2_Click();
+            marcovitsController.getStatistics();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -281,39 +287,39 @@ namespace Analytics
                 switch (comboBox3.SelectedIndex)
                 {
                     case 0:
-                        if (marcovitsView != null)
+                        if (marcovitsController != null)
                         {
-                            marcovitsView.intervalChange(BasicType.year);
+                            marcovitsController.intervalChange(BasicType.year);
                         }
                         break;
                     case 1:
-                        if (marcovitsView != null)
+                        if (marcovitsController != null)
                         {
-                            marcovitsView.intervalChange(BasicType.month);
+                            marcovitsController.intervalChange(BasicType.month);
                         }
                         break;
                     case 2:
-                        if (marcovitsView != null)
+                        if (marcovitsController != null)
                         {
-                            marcovitsView.intervalChange(BasicType.day);
+                            marcovitsController.intervalChange(BasicType.day);
                         }
                         break;
                     case 3:
-                        if (marcovitsView != null)
+                        if (marcovitsController != null)
                         {
-                            marcovitsView.intervalChange(BasicType.hour);
+                            marcovitsController.intervalChange(BasicType.hour);
                         }
                         break;
                     case 4:
-                        if (marcovitsView != null)
+                        if (marcovitsController != null)
                         {
-                            marcovitsView.intervalChange(BasicType.minute);
+                            marcovitsController.intervalChange(BasicType.minute);
                         }
                         break;
                     case 5:
-                        if (marcovitsView != null)
+                        if (marcovitsController != null)
                         {
-                            marcovitsView.intervalChange(BasicType.second);
+                            marcovitsController.intervalChange(BasicType.second);
                         }
                         break;
                     default:
@@ -328,7 +334,7 @@ namespace Analytics
 
         private void button3_Click(object sender, EventArgs e)
         {
-            marcovitsView.getPreviousState();
+            marcovitsController.getPreviousState();
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -460,7 +466,7 @@ namespace Analytics
 
         private void button7_Click(object sender, EventArgs e)
         {
-            marcovitsView.getNextState();
+            marcovitsController.getNextState();
         }
 
         private void button6_Click(object sender, EventArgs e)

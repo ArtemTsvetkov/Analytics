@@ -110,6 +110,8 @@
     <Compile Include="HandModifiedDataPanel\ModelConfigurator\UpdateNumberOfLicensesWithModificator.cs" />
     <Compile Include="HandModifiedDataPanel\ModelConfigurator\UpdateTableItem.cs" />
     <Compile Include="HandModifiedDataPanel\Helpers\StoreLoader.cs" />
+    <Compile Include="MarcovitsComponent\MarcovitsController.cs" />
+    <Compile Include="MarcovitsComponent\MarcovitsControllerInterface.cs" />
     <Compile Include="MarcovitsComponent\MarcovitsView.cs" />
     <Compile Include="MenuComponent\MenuView.cs" />
     <Compile Include="Modeling\ModelingView.cs" />
