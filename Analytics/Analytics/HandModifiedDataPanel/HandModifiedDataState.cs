@@ -30,7 +30,7 @@ namespace Analytics.HandModifiedDataPanel
             HandModifiedDataState copy = new HandModifiedDataState();
             copy.numberOfPurcharedLicenses = (double[])numberOfPurcharedLicenses.Clone();
             copy.unicSoftwareNames = (string[])unicSoftwareNames.Clone();
-            copy.percents = (double[])percents;
+            copy.percents = (double[])percents.Clone();
             copy.sumOfParts = sumOfParts;
 
             return copy;

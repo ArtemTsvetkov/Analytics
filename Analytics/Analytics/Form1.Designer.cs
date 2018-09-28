@@ -738,6 +738,7 @@
             this.button11.TabIndex = 76;
             this.button11.Text = "Отмена";
             this.button11.UseVisualStyleBackColor = true;
+            this.button11.Click += new System.EventHandler(this.button11_Click);
             // 
             // button19
             // 
@@ -780,7 +781,7 @@
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(69, 20);
             this.textBox7.TabIndex = 68;
-            this.textBox7.TextChanged += new System.EventHandler(this.textBox7_TextChanged);
+            this.textBox7.TextChanged += new System.EventHandler(this.textBox7_TextChanged_1);
             // 
             // label10
             // 
@@ -828,6 +829,7 @@
             this.dataGridView6.Name = "dataGridView6";
             this.dataGridView6.Size = new System.Drawing.Size(329, 240);
             this.dataGridView6.TabIndex = 50;
+            this.dataGridView6.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView6_CellEndEdit);
             // 
             // dataGridView4
             // 
@@ -836,6 +838,7 @@
             this.dataGridView4.Name = "dataGridView4";
             this.dataGridView4.Size = new System.Drawing.Size(329, 240);
             this.dataGridView4.TabIndex = 45;
+            this.dataGridView4.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView4_CellEndEdit);
             // 
             // button9
             // 

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Analytics.HandModifiedDataPanel
 {
@@ -18,13 +19,9 @@ namespace Analytics.HandModifiedDataPanel
             this.form = form;
             this.model = model;
             model.subscribe(this);
+            TablesStructureCreater creater = new TablesStructureCreater();
+            creater.create(form);
             model.loadStore();
-            createTablesStruct();
-        }
-
-        private void createTablesStruct()
-        {
-
         }
 
         public string getName()
@@ -44,14 +41,11 @@ namespace Analytics.HandModifiedDataPanel
 
         private void setValuesToFormsElements(HandModifiedDataState state)
         {
-            TablesStructureCreater creater = new TablesStructureCreater();
-            creater.create(form);
-
-            form.DataGridView4Elem.Rows.Add(state.unicSoftwareNames.Count());
-            form.DataGridView4Elem.Rows.RemoveAt(0);
-
-            form.DataGridView6Elem.Rows.Add(state.unicSoftwareNames.Count());
-            form.DataGridView6Elem.Rows.RemoveAt(0);
+            if (form.DataGridView4Elem.Rows.Count == 1)
+            {
+                form.DataGridView4Elem.Rows.Add(state.unicSoftwareNames.Count() - 1);
+                form.DataGridView6Elem.Rows.Add(state.unicSoftwareNames.Count() - 1);
+            }
 
             for(int i=0; i<state.unicSoftwareNames.Count(); i++)
             {

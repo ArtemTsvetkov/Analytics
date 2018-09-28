@@ -28,6 +28,7 @@ namespace Analytics.HandModifiedDataPanel
         {
             this.model = model;
             this.securityModel = securityModel;
+            this.securityModel.subscribe(this);
         }
 
         public void getPreviousState()
@@ -62,15 +63,21 @@ namespace Analytics.HandModifiedDataPanel
                 throw new InsufficientPermissionsException("This user does not"
                     + "have sufficient rights to perform the specified operation");
             }
-            throw new NotImplementedException();
         }
 
         public void updateModelsConfig(ModelConfiguratorInterface<HandModifiedDataState> config)
         {
             if (activateChangeListeners)
             {
+                activateChangeListeners = false;
                 commandsStore.executeCommand(new UpdateConfigModel(model, config));
+                activateChangeListeners = true;
             }
+        }
+
+        public void loadStore()
+        {
+            model.loadStore();
         }
     }
 }

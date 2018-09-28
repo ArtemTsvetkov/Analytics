@@ -20,7 +20,7 @@ namespace Analytics.CommonComponents.Exceptions.Security
         {
             ExceptionViewInterface<ErrorPopupWindowConfig> view = new ErrorPopupWindow();
             ErrorPopupWindowConfig config = new ErrorPopupWindowConfig(
-                "У данного пользователя недостаточно прав для выполения заданной операции");
+                "У данного пользователя недостаточно прав для выполнения заданной операции");
             view.setConfig(config);
             view.show();
 

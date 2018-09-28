@@ -383,17 +383,17 @@ namespace Analytics
 
         private void button9_Click(object sender, EventArgs e)
         {
-            tabControl1.SelectTab(3);
+            Navigator.Navigator.getInstance().navigateToPreviousView();
         }
 
         private void button16_Click(object sender, EventArgs e)
         {
-            tabControl1.SelectTab(0);
+            //tabControl1.SelectTab(0);
         }
 
         private void button23_Click(object sender, EventArgs e)
         {
-            tabControl1.SelectTab(0);
+            //tabControl1.SelectTab(0);
         }
 
         private void button17_Click(object sender, EventArgs e)
@@ -403,7 +403,7 @@ namespace Analytics
 
         private void button21_Click(object sender, EventArgs e)
         {
-            tabControl1.SelectTab(1);
+            //tabControl1.SelectTab(1);
         }
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
@@ -421,7 +421,7 @@ namespace Analytics
                     {
                         modelingView.intervalChange(BasicType.day);
                     }*/
-                    tabControl1.SelectTab(2);
+                    Navigator.Navigator.getInstance().navigateTo("HandModifiedDataView");
                     break;
                 default:
                     //ДОБАВИТЬ СЮДА ИСКЛЮЧЕНИЕ - НЕИЗВЕСТНЫЙ ТИП
@@ -444,7 +444,7 @@ namespace Analytics
                     {
                         modelingView.intervalChange(BasicType.day);
                     }*/
-                    tabControl1.SelectTab(2);
+                    Navigator.Navigator.getInstance().navigateTo("HandModifiedDataView");
                     break;
                 default:
                     //ДОБАВИТЬ СЮДА ИСКЛЮЧЕНИЕ - НЕИЗВЕСТНЫЙ ТИП
@@ -589,17 +589,11 @@ namespace Analytics
             navigatoToMenuView();
         }
 
-        private void textBox7_TextChanged(object sender, EventArgs e)
-        {
-            ModelConfiguratorInterface<HandModifiedDataState> configurator =
-                new UpdateTableItem();
-            handModifiedDataController.updateModelsConfig(configurator);
-        }
-
         private void button18_Click(object sender, EventArgs e)
         {
+            double value = double.Parse(textBox7.Text);
             ModelConfiguratorInterface<HandModifiedDataState> configurator =
-               new UpdateNumberOfLicensesWithModificator();
+                new UpdateNumberOfLicensesWithModificator(value);
             handModifiedDataController.updateModelsConfig(configurator);
         }
 
@@ -623,6 +617,56 @@ namespace Analytics
         private void button19_Click(object sender, EventArgs e)
         {
             handModifiedDataController.getNextState();
+        }
+
+        private void dataGridView4_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            ModelConfiguratorInterface<HandModifiedDataState> configurator =
+            new UpdateTableItem(dataGridView4.Rows[e.RowIndex].
+            Cells[e.ColumnIndex].Value.ToString(), e.RowIndex, true);
+            handModifiedDataController.updateModelsConfig(configurator);
+        }
+
+        private void textBox7_TextChanged_1(object sender, EventArgs e)
+        {
+            try
+            {
+                string text = textBox7.Text;
+                for (int i=0; i<textBox7.Text.Length; i++)
+                {
+                    if(text[i].Equals('.'))
+                    {
+                        text = text.Remove(i,1);
+                        text = text.Insert(i, ",");
+                    }
+                }
+
+                double value = double.Parse(text);
+                button18.Enabled = true;
+                textBox7.Text = text;
+            }
+            catch(Exception ex)
+            {
+                button18.Enabled = false;
+                ExceptionHandler.getInstance().processing(
+                    new ValueMastBeANumberException());
+            }
+        }
+
+        private void dataGridView6_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            ModelConfiguratorInterface<HandModifiedDataState> configurator =
+            new UpdateTableItem(dataGridView6.Rows[e.RowIndex].
+            Cells[e.ColumnIndex].Value.ToString(), e.RowIndex, false);
+            handModifiedDataController.updateModelsConfig(configurator);
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            handModifiedDataController.loadStore();
+            comboBox2.SelectedIndex = 0;
+            comboBox4.SelectedIndex = 0;
+            Navigator.Navigator.getInstance().navigateToPreviousView();
         }
     }
 }

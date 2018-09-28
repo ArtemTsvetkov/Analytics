@@ -92,6 +92,7 @@
     <Compile Include="CommonComponents\Exceptions\Security\InsufficientPermissionsException.cs" />
     <Compile Include="CommonComponents\Exceptions\SyntaxisErrorException.cs" />
     <Compile Include="CommonComponents\Exceptions\UnknownTimeIntervalType.cs" />
+    <Compile Include="CommonComponents\Exceptions\ValueMastBeANumberException.cs" />
     <Compile Include="CommonComponents\Interfaces\AdwancedModelsInterfaces\RecoveredModel.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\DataConverter.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\DataWorker.cs" />

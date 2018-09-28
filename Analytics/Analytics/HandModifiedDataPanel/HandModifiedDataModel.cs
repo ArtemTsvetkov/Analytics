@@ -61,6 +61,7 @@ namespace Analytics.HandModifiedDataPanel
         public override void setConfig(ModelConfiguratorInterface<HandModifiedDataState> configData)
         {
             state = configData.configureMe(state);
+            notifyObservers();
         }
     }
 }

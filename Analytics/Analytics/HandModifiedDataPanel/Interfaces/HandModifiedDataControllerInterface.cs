@@ -13,5 +13,6 @@ namespace Analytics.HandModifiedDataPanel.Interfaces
         void updateModelsConfig(ModelConfiguratorInterface<HandModifiedDataState> config);
         void getPreviousState();
         void getNextState();
+        void loadStore();
     }
 }
