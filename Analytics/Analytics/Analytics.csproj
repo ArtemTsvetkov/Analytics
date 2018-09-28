@@ -114,6 +114,8 @@
     <Compile Include="MarcovitsComponent\MarcovitsControllerInterface.cs" />
     <Compile Include="MarcovitsComponent\MarcovitsView.cs" />
     <Compile Include="MenuComponent\MenuView.cs" />
+    <Compile Include="Modeling\ModelingController.cs" />
+    <Compile Include="Modeling\ModelingControllerInterface.cs" />
     <Compile Include="Modeling\ModelingView.cs" />
     <Compile Include="CommonComponents\WorkWithDataBase\MsSqlServer\MsSQLServerDataWorker.cs" />
     <Compile Include="CommonComponents\WorkWithDataBase\MsSqlServer\MsSQLServerProxy.cs" />

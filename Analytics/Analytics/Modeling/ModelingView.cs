@@ -20,17 +20,11 @@ namespace Analytics.CommonComponents.Views
     class ModelingView : Observer, NavigatorsView
     {
         private Form1 form;
-        private ModelingModel control;
-        CommandsStoreInterface commandsStore = new ConcreteCommandStore();
+        private ModelingModel model;
         private ModelingConfig config;
         int step = 0;
-        //При откате модели до предыдущего состояния, элементы вью тоже меняются,
-        //но так как они прослушиваются на изменения вью, то это влечет за собой 
-        //изменение модели и добавление еще одной команды, а она не нужна, так как мы
-        //только что забрали предыдущую
-        private bool activateChangeListeners = true;
 
-        public ModelingView(Form1 form)
+        public ModelingView(Form1 form, ModelingModel model)
         {
             this.form = form;
             form.dataGridView2Elem.Rows.Clear();
@@ -58,100 +52,40 @@ namespace Analytics.CommonComponents.Views
             form.progressBar1Elem.Value = 0;
 
 
-            control = new ModelingModel();
-            control.subscribe(this);
+            this.model = model;
+            this.model.subscribe(this);
             config = new ModelingConfig(
                 "D:\\Files\\MsVisualProjects\\Diplom\\Логи\\testlogs\\Database3.accdb",
                 BasicType.year);
             config.setWithKovar(false);
             config.setNumberOfStartsModeling(1);
-            control.setConfig(config);
-            control.loadStore();
-            form.progressBar1Elem.Value = 0;
-        }
-
-        public void button1_Click()
-        {
-            form.progressBar1Elem.Value = 0;
-            form.label12Elem.Text = "Статус: выполнение анализа...";
-            step = 100 / config.getNumberOfStartsModeling();
-            commandsStore.executeCommand(new RunModeling<ModelingConfig>(control));
-            form.progressBar1Elem.Value = 100;
-            form.label12Elem.Text = "Статус: анализ завершен";
-            step = 0;
-        }
-
-        public void intervalChange(GropByType interval)
-        {
-            if (activateChangeListeners)
-            {
-                config = control.getConfig();
-                config.setInterval(interval);
-                commandsStore.executeCommand(
-                    new UpdateConfigCommand<ModelingReport, ModelingConfig>(control, config));
-            }
-            form.progressBar1Elem.Value = 0;
-            form.label12Elem.Text = "";
-        }
-
-        public void numberOfModelingStartsChange(int number)
-        {
-            if (activateChangeListeners)
-            {
-                try
-                {
-                    config = control.getConfig();
-                    config.setNumberOfStartsModeling(number);
-                    commandsStore.executeCommand(
-                        new UpdateConfigCommand<ModelingReport, ModelingConfig>(control, config));
-                }
-                catch (Exception ex)
-                {
-                    ExceptionHandler.ExceptionHandler.getInstance().processing(ex);
-                }
-            }
-            form.progressBar1Elem.Value = 0;
-            form.label12Elem.Text = "";
-        }
-
-        public void flagUseCovarChange(bool flag)
-        {
-            if (activateChangeListeners)
-            {
-                config = control.getConfig();
-                config.setWithKovar(flag);
-                commandsStore.executeCommand(
-                    new UpdateConfigCommand<ModelingReport, ModelingConfig>(control, config));
-            }
-            form.progressBar1Elem.Value = 0;
-            form.label12Elem.Text = "";
-        }
-
-        public void getPreviousState()
-        {
-            //Вначале отключение прослушивания управляющих елементов вью
-            activateChangeListeners = false;
-            commandsStore.recoveryModel();
-            activateChangeListeners = true;
-            form.label12Elem.Text = "Статус: просмотр ранее выполненного анализа";
-            form.progressBar1Elem.Value = 0;
-        }
-
-        public void getNextState()
-        {
-            //Вначале отключение прослушивания управляющих елементов вью
-            activateChangeListeners = false;
-            commandsStore.rollbackRecoveryModel();
-            activateChangeListeners = true;
-            form.label12Elem.Text = "Статус: просмотр ранее выполненного анализа";
+            model.setConfig(config);
+            model.loadStore();
             form.progressBar1Elem.Value = 0;
         }
 
         public void notify()
         {
-            ModelingReport report = control.getResult();
-            //Проверка строк в таблицах
-            if (form.dataGridView2Elem.Rows.Count != report.getAvgTranzactsInQueue().Count()
+            form.label12Elem.Text = "";
+            if(form.progressBar1Elem.Value>=100)
+            {
+                form.progressBar1Elem.Value = 0;
+            }
+            ModelingReport report = model.getResult();
+            step = 100 / report.getConfig().getNumberOfStartsModeling();
+            if (report.getConfig().getNumberOfStartsModeling() == 
+                report.getNumberOfReportsUpdates())
+            {
+                form.progressBar1Elem.Value = 100;
+                form.label12Elem.Text = "Статус: анализ завершен";
+            }
+            if (report.getConfig().getNumberOfStartsModeling() >
+                report.getNumberOfReportsUpdates() & report.getNumberOfReportsUpdates()!=0)
+            {
+                form.progressBar1Elem.Value += step;
+            }
+                //Проверка строк в таблицах
+                if (form.dataGridView2Elem.Rows.Count != report.getAvgTranzactsInQueue().Count()
                 && report.getAvgTranzactsInQueue().Count() > 0)
             {
                 form.dataGridView2Elem.Rows.Clear();
@@ -178,13 +112,6 @@ namespace Analytics.CommonComponents.Views
             }
 
             //Обновление управляющих элементов
-            if(step != 0)
-            {
-                if (form.progressBar1Elem.Value + step < 100)
-                {
-                    form.progressBar1Elem.Value += step;
-                }
-            }
             if (report.getConfig() != null)
             {
                 switch (report.getConfig().getInterval().getType())

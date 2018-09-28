@@ -11,6 +11,7 @@ using Analytics.HandModifiedDataPanel.Interfaces;
 using Analytics.HandModifiedDataPanel.ModelConfigurator;
 using Analytics.MarcovitsComponent;
 using Analytics.MenuComponent;
+using Analytics.Modeling;
 using Analytics.Modeling.GroupByTypes;
 using Analytics.Navigator;
 using Analytics.Navigator.Basic;
@@ -32,7 +33,7 @@ namespace Analytics
 {
     public partial class Form1 : Form
     {
-        private ModelingView modelingView;
+        private ModelingControllerInterface modelingController;
         private SecurityControllerInterface securityController;
         private HandModifiedDataControllerInterface handModifiedDataController;
         MarcovitsControllerInterface marcovitsController;
@@ -48,13 +49,18 @@ namespace Analytics
                 ConcreteExceptionHandlerInitializer.initThisExceptionHandler(
                     ExceptionHandler.getInstance());
                 //
-                //Marcovits and modeling components
+                //Marcovits component
                 //
-                MarcovitsModel model = new MarcovitsModel();
-                MarcovitsView marcovitsView = new MarcovitsView(this, model);
-                marcovitsController = new MarcovitsController(model);
-                modelingView = new ModelingView(this);
+                MarcovitsModel marcovitsModel = new MarcovitsModel();
+                MarcovitsView marcovitsView = new MarcovitsView(this, marcovitsModel);
+                marcovitsController = new MarcovitsController(marcovitsModel);
                 Navigator.Navigator.getInstance().addView(marcovitsView);
+                //
+                //Modeling component
+                //
+                ModelingModel modelingModel = new ModelingModel();
+                ModelingView modelingView = new ModelingView(this, modelingModel);
+                modelingController = new ModelingController(modelingModel);
                 Navigator.Navigator.getInstance().addView(modelingView);
                 //
                 //Autorization component
@@ -220,7 +226,7 @@ namespace Analytics
 
         private void button1_Click(object sender, EventArgs e)
         {
-            modelingView.button1_Click();
+            modelingController.getStatistics();
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -230,39 +236,39 @@ namespace Analytics
                 switch (comboBox1.SelectedIndex)
                 {
                     case 0:
-                        if (modelingView != null)
+                        if (modelingController != null)
                         {
-                            modelingView.intervalChange(BasicType.year);
+                            modelingController.intervalChange(BasicType.year);
                         }
                         break;
                     case 1:
-                        if (modelingView != null)
+                        if (modelingController != null)
                         {
-                            modelingView.intervalChange(BasicType.month);
+                            modelingController.intervalChange(BasicType.month);
                         }
                         break;
                     case 2:
-                        if (modelingView != null)
+                        if (modelingController != null)
                         {
-                            modelingView.intervalChange(BasicType.day);
+                            modelingController.intervalChange(BasicType.day);
                         }
                         break;
                     case 3:
-                        if (modelingView != null)
+                        if (modelingController != null)
                         {
-                            modelingView.intervalChange(BasicType.hour);
+                            modelingController.intervalChange(BasicType.hour);
                         }
                         break;
                     case 4:
-                        if (modelingView != null)
+                        if (modelingController != null)
                         {
-                            modelingView.intervalChange(BasicType.minute);
+                            modelingController.intervalChange(BasicType.minute);
                         }
                         break;
                     case 5:
-                        if (modelingView != null)
+                        if (modelingController != null)
                         {
-                            modelingView.intervalChange(BasicType.second);
+                            modelingController.intervalChange(BasicType.second);
                         }
                         break;
                     default:
@@ -277,7 +283,7 @@ namespace Analytics
 
         private void button4_Click(object sender, EventArgs e)
         {
-            modelingView.getPreviousState();
+            modelingController.getPreviousState();
         }
 
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
@@ -339,7 +345,7 @@ namespace Analytics
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            modelingView.flagUseCovarChange(checkBox1.Checked);
+            modelingController.flagUseCovarChange(checkBox1.Checked);
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -460,7 +466,7 @@ namespace Analytics
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-            modelingView.numberOfModelingStartsChange(
+            modelingController.numberOfModelingStartsChange(
                 int.Parse(numericUpDown1.Value.ToString()));
         }
 
@@ -471,7 +477,7 @@ namespace Analytics
 
         private void button6_Click(object sender, EventArgs e)
         {
-            modelingView.getNextState();
+            modelingController.getNextState();
         }
         
         private void button12_Click(object sender, EventArgs e)
