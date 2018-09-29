@@ -48,8 +48,11 @@ namespace Analytics.MarcovitsComponent
             config.NumberOfPurcharedLicenses = result.numberOfPurcharedLicenses;
             config.Percents = result.percents;
             config.NotifyObservers = false;
-            commandsStore.executeCommand(
-                    new UpdateConfigCommand<MarcovitsModelState, MarcovitsConfig>(model, config));
+            UpdateConfigCommand<MarcovitsModelState, MarcovitsConfig> command =
+                new UpdateConfigCommand<MarcovitsModelState, MarcovitsConfig>(model, config);
+            command.execute();
+            //commandsStore.executeCommand(
+                    //new UpdateConfigCommand<MarcovitsModelState, MarcovitsConfig>(model, config));
         }
     }
 }

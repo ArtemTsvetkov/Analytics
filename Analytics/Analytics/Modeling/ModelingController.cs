@@ -73,8 +73,11 @@ namespace Analytics.Modeling
             config.NumberOfPurcharedLicenses = result.numberOfPurcharedLicenses;
             config.Percents = result.percents;
             config.NotifyObservers = false;
-            commandsStore.executeCommand(
-                    new UpdateConfigCommand<ModelingReport, ModelingConfig>(model, config));
+            UpdateConfigCommand <ModelingReport, ModelingConfig> command =
+                  new UpdateConfigCommand<ModelingReport, ModelingConfig>(model, config);
+            command.execute();
+            //commandsStore.executeCommand(
+              //      new UpdateConfigCommand<ModelingReport, ModelingConfig>(model, config));
         }
     }
 }
