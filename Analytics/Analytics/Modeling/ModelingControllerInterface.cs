@@ -13,7 +13,5 @@ namespace Analytics.Modeling
         void intervalChange(GropByType interval);
         void numberOfModelingStartsChange(int number);
         void flagUseCovarChange(bool flag);
-        void getPreviousState();
-        void getNextState();
     }
 }

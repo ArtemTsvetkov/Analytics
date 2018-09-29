@@ -21,7 +21,6 @@ namespace Analytics.HandModifiedDataPanel
             model.subscribe(this);
             TablesStructureCreater creater = new TablesStructureCreater();
             creater.create(form);
-            model.loadStore();
         }
 
         public string getName()

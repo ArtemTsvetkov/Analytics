@@ -7,38 +7,23 @@ using Analytics.Modeling.GroupByTypes;
 using Analytics.CommonComponents.BasicObjects.Statistics;
 using Analytics.MarcovitsComponent.Config;
 using Analytics.CommonComponents.CommandsStore.Commands.Modeling;
+using Analytics.HandModifiedDataPanel;
 
 namespace Analytics.MarcovitsComponent
 {
-    class MarcovitsController : MarcovitsControllerInterface
+    class MarcovitsController : MarcovitsControllerInterface, Observer
     {
         private BasicStatisticsModel<MarcovitsModelState, MarcovitsConfig> model;
-        CommandsStoreInterface commandsStore = new ConcreteCommandStore();
-        //При откате модели до предыдущего состояния, элементы вью тоже меняются,
-        //но так как они прослушиваются на изменения вью, то это влечет за собой 
-        //изменение модели и добавление еще одной команды, а она не нужна, так как мы
-        //только что забрали предыдущую
-        private bool activateChangeListeners = true;
+        private HandModifiedDataModel handModifiedDataModel;
+        CommandsStoreInterface commandsStore;
 
-        public MarcovitsController(MarcovitsModel model)
+        public MarcovitsController(MarcovitsModel model, 
+            HandModifiedDataModel handModifiedDataModel, CommandsStoreInterface commandsStore)
         {
             this.model = model;
-        }
-
-        public void getNextState()
-        {
-            //Вначале отключение прослушивания управляющих елементов вью
-            activateChangeListeners = false;
-            commandsStore.rollbackRecoveryModel();
-            activateChangeListeners = true;
-        }
-
-        public void getPreviousState()
-        {
-            //Вначале отключение прослушивания управляющих елементов вью
-            activateChangeListeners = false;
-            commandsStore.recoveryModel();
-            activateChangeListeners = true;
+            this.handModifiedDataModel = handModifiedDataModel;
+            this.handModifiedDataModel.subscribe(this);
+            this.commandsStore = commandsStore;
         }
 
         public void getStatistics()
@@ -48,14 +33,23 @@ namespace Analytics.MarcovitsComponent
 
         public void intervalChange(GropByType interval)
         {
-            if (activateChangeListeners)
-            {
-                MarcovitsConfig config = new MarcovitsConfig(
-                    "D:\\Files\\MsVisualProjects\\Diplom\\Логи\\testlogs\\Database3.accdb",
-                    interval);
-                commandsStore.executeCommand(
+            MarcovitsConfig config = model.getConfig();
+            config.setInterval(interval);
+            commandsStore.executeCommand(
+                new UpdateConfigCommand<MarcovitsModelState, MarcovitsConfig>(model, config));
+        }
+
+        //Подписка на модель с данными о количестве и процентном соотношении лицензий
+        public void notify()
+        {
+            HandModifiedDataState result = handModifiedDataModel.getResult();
+            MarcovitsConfig config = model.getConfig();
+            config.UnicSoftwareNames = result.unicSoftwareNames;
+            config.NumberOfPurcharedLicenses = result.numberOfPurcharedLicenses;
+            config.Percents = result.percents;
+            config.NotifyObservers = false;
+            commandsStore.executeCommand(
                     new UpdateConfigCommand<MarcovitsModelState, MarcovitsConfig>(model, config));
-            }
         }
     }
 }

@@ -16,35 +16,15 @@ namespace Analytics.HandModifiedDataPanel
         private HandModifiedDataModel model;
         private SecurityModel securityModel;
         private bool currentUserIsAdmin;
-        private CommandsStoreInterface commandsStore =
-                new ConcreteCommandStore();
-        //При откате модели до предыдущего состояния, элементы вью тоже меняются,
-        //но так как они прослушиваются на изменения вью, то это влечет за собой 
-        //изменение модели и добавление еще одной команды, а она не нужна, так как мы
-        //только что забрали предыдущую
-        private bool activateChangeListeners = true;
+        private CommandsStoreInterface commandsStore;
 
-        public HandModifiedDataController(HandModifiedDataModel model, SecurityModel securityModel)
+        public HandModifiedDataController(HandModifiedDataModel model, 
+            SecurityModel securityModel, CommandsStoreInterface commandsStore)
         {
             this.model = model;
             this.securityModel = securityModel;
             this.securityModel.subscribe(this);
-        }
-
-        public void getPreviousState()
-        {
-            //Вначале отключение прослушивания управляющих елементов вью
-            activateChangeListeners = false;
-            commandsStore.recoveryModel();
-            activateChangeListeners = true;
-        }
-
-        public void getNextState()
-        {
-            //Вначале отключение прослушивания управляющих елементов вью
-            activateChangeListeners = false;
-            commandsStore.rollbackRecoveryModel();
-            activateChangeListeners = true;
+            this.commandsStore = commandsStore;
         }
 
         public void notify()
@@ -67,12 +47,7 @@ namespace Analytics.HandModifiedDataPanel
 
         public void updateModelsConfig(ModelConfiguratorInterface<HandModifiedDataState> config)
         {
-            if (activateChangeListeners)
-            {
-                activateChangeListeners = false;
-                commandsStore.executeCommand(new UpdateConfigModel(model, config));
-                activateChangeListeners = true;
-            }
+            commandsStore.executeCommand(new UpdateConfigModel(model, config));
         }
 
         public void loadStore()

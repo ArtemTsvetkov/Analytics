@@ -23,11 +23,70 @@ namespace Analytics.Modeling.Config
         //Восстанавливать report (для поддержки просмотра предыдущих рассчетов и вместе с тем
         //многократного запуска модели)
         private bool rollbackReport = true;
+        private string[] unicSoftwareNames;
+        private double[] numberOfPurcharedLicenses;
+        private double[] percents;
+        private bool notifyObservers = true;
 
         public ModelingConfig(string pathOfDataBase, GropByType interval)
         {
             this.pathOfDataBase = pathOfDataBase;
             this.interval = interval;
+            unicSoftwareNames = new string[0];
+            numberOfPurcharedLicenses = new double[0];
+            percents = new double[0];
+        }
+
+        public string[] UnicSoftwareNames
+        {
+            get
+            {
+                return unicSoftwareNames;
+            }
+
+            set
+            {
+                unicSoftwareNames = value;
+            }
+        }
+
+        public double[] NumberOfPurcharedLicenses
+        {
+            get
+            {
+                return numberOfPurcharedLicenses;
+            }
+
+            set
+            {
+                numberOfPurcharedLicenses = value;
+            }
+        }
+
+        public double[] Percents
+        {
+            get
+            {
+                return percents;
+            }
+
+            set
+            {
+                percents = value;
+            }
+        }
+
+        public bool NotifyObservers
+        {
+            get
+            {
+                return notifyObservers;
+            }
+
+            set
+            {
+                notifyObservers = value;
+            }
         }
 
         public ModelingConfig copy()
@@ -36,6 +95,10 @@ namespace Analytics.Modeling.Config
             copy.setWithKovar(withKovar);
             copy.setNumberOfStartsModeling(numberOfStartsModeling);
             copy.setRollbackReport(rollbackReport);
+            copy.NotifyObservers = NotifyObservers;
+            copy.NumberOfPurcharedLicenses = (double[])NumberOfPurcharedLicenses.Clone();
+            copy.Percents = (double[])Percents.Clone();
+            copy.UnicSoftwareNames = (string[])UnicSoftwareNames.Clone();
 
             return copy;
         }

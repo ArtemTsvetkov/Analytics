@@ -493,7 +493,14 @@ namespace Analytics
         {
             config = configData.copy();
             report.setConfig(config.copy());
-            notifyObservers();
+            if (configData.NotifyObservers)
+            {
+                notifyObservers();
+            }
+            else
+            {
+                configData.NotifyObservers = true;
+            }
         }
 
         public override ModelingReport getResult()

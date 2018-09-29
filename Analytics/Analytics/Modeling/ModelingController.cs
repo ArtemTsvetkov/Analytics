@@ -9,49 +9,31 @@ using Analytics.Modeling.Config;
 using Analytics.CommandsStore.Commands.Modeling;
 using Analytics.CommonComponents.CommandsStore.Commands.Modeling;
 using Analytics.CommonComponents.ExceptionHandler;
+using Analytics.HandModifiedDataPanel;
 
 namespace Analytics.Modeling
 {
-    class ModelingController : ModelingControllerInterface
+    class ModelingController : ModelingControllerInterface, Observer
     {
         private BasicStatisticsModel<ModelingReport, ModelingConfig> model;
-        CommandsStoreInterface commandsStore = new ConcreteCommandStore();
-        //При откате модели до предыдущего состояния, элементы вью тоже меняются,
-        //но так как они прослушиваются на изменения вью, то это влечет за собой 
-        //изменение модели и добавление еще одной команды, а она не нужна, так как мы
-        //только что забрали предыдущую
-        private bool activateChangeListeners = true;
+        private HandModifiedDataModel handModifiedDataModel;
+        CommandsStoreInterface commandsStore;
 
-        public ModelingController(ModelingModel model)
+        public ModelingController(ModelingModel model, 
+            HandModifiedDataModel handModifiedDataModel, CommandsStoreInterface commandsStore)
         {
             this.model = model;
+            this.handModifiedDataModel = handModifiedDataModel;
+            this.handModifiedDataModel.subscribe(this);
+            this.commandsStore = commandsStore;
         }
 
         public void flagUseCovarChange(bool flag)
         {
-            if (activateChangeListeners)
-            {
-                ModelingConfig config = model.getConfig();
-                config.setWithKovar(flag);
-                commandsStore.executeCommand(
-                    new UpdateConfigCommand<ModelingReport, ModelingConfig>(model, config));
-            }
-        }
-
-        public void getNextState()
-        {
-            //Вначале отключение прослушивания управляющих елементов вью
-            activateChangeListeners = false;
-            commandsStore.rollbackRecoveryModel();
-            activateChangeListeners = true;
-        }
-
-        public void getPreviousState()
-        {
-            //Вначале отключение прослушивания управляющих елементов вью
-            activateChangeListeners = false;
-            commandsStore.recoveryModel();
-            activateChangeListeners = true;
+            ModelingConfig config = model.getConfig();
+            config.setWithKovar(flag);
+            commandsStore.executeCommand(
+                new UpdateConfigCommand<ModelingReport, ModelingConfig>(model, config));
         }
 
         public void getStatistics()
@@ -61,31 +43,38 @@ namespace Analytics.Modeling
 
         public void intervalChange(GropByType interval)
         {
-            if (activateChangeListeners)
-            {
-                ModelingConfig config = model.getConfig();
-                config.setInterval(interval);
-                commandsStore.executeCommand(
-                    new UpdateConfigCommand<ModelingReport, ModelingConfig>(model, config));
-            }
+            ModelingConfig config = model.getConfig();
+            config.setInterval(interval);
+            commandsStore.executeCommand(
+                new UpdateConfigCommand<ModelingReport, ModelingConfig>(model, config));
         }
 
         public void numberOfModelingStartsChange(int number)
         {
-            if (activateChangeListeners)
+            try
             {
-                try
-                {
-                    ModelingConfig config = model.getConfig();
-                    config.setNumberOfStartsModeling(number);
-                    commandsStore.executeCommand(
-                        new UpdateConfigCommand<ModelingReport, ModelingConfig>(model, config));
-                }
-                catch (Exception ex)
-                {
-                    ExceptionHandler.getInstance().processing(ex);
-                }
+                ModelingConfig config = model.getConfig();
+                config.setNumberOfStartsModeling(number);
+                commandsStore.executeCommand(
+                    new UpdateConfigCommand<ModelingReport, ModelingConfig>(model, config));
             }
+            catch (Exception ex)
+            {
+                ExceptionHandler.getInstance().processing(ex);
+            }
+        }
+
+        //Подписка на модель с данными о количестве и процентном соотношении лицензий
+        public void notify()
+        {
+            HandModifiedDataState result = handModifiedDataModel.getResult();
+            ModelingConfig config = model.getConfig();
+            config.UnicSoftwareNames = result.unicSoftwareNames;
+            config.NumberOfPurcharedLicenses = result.numberOfPurcharedLicenses;
+            config.Percents = result.percents;
+            config.NotifyObservers = false;
+            commandsStore.executeCommand(
+                    new UpdateConfigCommand<ModelingReport, ModelingConfig>(model, config));
         }
     }
 }

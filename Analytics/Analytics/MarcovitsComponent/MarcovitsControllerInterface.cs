@@ -11,7 +11,5 @@ namespace Analytics.MarcovitsComponent
     {
         void getStatistics();
         void intervalChange(GropByType interval);
-        void getPreviousState();
-        void getNextState();
     }
 }

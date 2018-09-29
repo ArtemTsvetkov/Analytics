@@ -36,7 +36,14 @@ namespace Analytics
         private ModelingControllerInterface modelingController;
         private SecurityControllerInterface securityController;
         private HandModifiedDataControllerInterface handModifiedDataController;
-        MarcovitsControllerInterface marcovitsController;
+        private MarcovitsControllerInterface marcovitsController;
+        private CommandsStoreInterface commandsStore;
+
+        //При откате модели до предыдущего состояния, элементы вью тоже меняются,
+        //но так как они прослушиваются на изменения вью, то это влечет за собой 
+        //изменение модели и добавление еще одной команды, а она не нужна, так как мы
+        //только что забрали предыдущую
+        private bool activateChangeListeners = true;
 
         public Form1()
         {
@@ -44,39 +51,22 @@ namespace Analytics
             {
                 InitializeComponent();
                 //
+                //CommandStore
+                //
+                commandsStore = new ConcreteCommandStore();
+                //
                 //Exceptions init
                 //
                 ConcreteExceptionHandlerInitializer.initThisExceptionHandler(
                     ExceptionHandler.getInstance());
                 //
-                //Marcovits component
-                //
-                MarcovitsModel marcovitsModel = new MarcovitsModel();
-                MarcovitsView marcovitsView = new MarcovitsView(this, marcovitsModel);
-                marcovitsController = new MarcovitsController(marcovitsModel);
-                Navigator.Navigator.getInstance().addView(marcovitsView);
-                //
-                //Modeling component
-                //
-                ModelingModel modelingModel = new ModelingModel();
-                ModelingView modelingView = new ModelingView(this, modelingModel);
-                modelingController = new ModelingController(modelingModel);
-                Navigator.Navigator.getInstance().addView(modelingView);
-                //
-                //Autorization component
+                //Security component
                 //
                 SecurityModel securityModel = new SecurityModel();
-                AutorizationSecurityView securityView = 
+                AutorizationSecurityView securityView =
                     new AutorizationSecurityView(this, securityModel);
                 securityController = new SecurityController(securityModel);
                 Navigator.Navigator.getInstance().addView(securityView);
-                //
-                //Settings elements on forms
-                //
-                comboBox1.SelectedIndex = 0;
-                comboBox3.SelectedIndex = 0;
-                comboBox2.SelectedIndex = 0;
-                comboBox4.SelectedIndex = 0;
                 //
                 //Hand modified data component
                 //
@@ -84,8 +74,31 @@ namespace Analytics
                 HandModifiedDataView handModifiedDataView =
                     new HandModifiedDataView(this, handModifiedDataModel);
                 handModifiedDataController = new HandModifiedDataController(handModifiedDataModel,
-                    securityModel);
+                    securityModel, commandsStore);
                 Navigator.Navigator.getInstance().addView(handModifiedDataView);
+                //
+                //Marcovits component
+                //
+                MarcovitsModel marcovitsModel = new MarcovitsModel();
+                MarcovitsView marcovitsView = new MarcovitsView(this, marcovitsModel);
+                marcovitsController = new MarcovitsController(marcovitsModel, 
+                    handModifiedDataModel, commandsStore);
+                Navigator.Navigator.getInstance().addView(marcovitsView);
+                //
+                //Modeling component
+                //
+                ModelingModel modelingModel = new ModelingModel();
+                ModelingView modelingView = new ModelingView(this, modelingModel);
+                modelingController = new ModelingController(modelingModel, 
+                    handModifiedDataModel, commandsStore);
+                Navigator.Navigator.getInstance().addView(modelingView);
+                //
+                //Settings elements on forms
+                //
+                comboBox1.SelectedIndex = 0;
+                comboBox3.SelectedIndex = 0;
+                comboBox2.SelectedIndex = 0;
+                comboBox4.SelectedIndex = 0;
                 //
                 //Menu
                 //
@@ -102,6 +115,10 @@ namespace Analytics
                 //Navigator
                 //
                 Navigator.Navigator.getInstance().navigateTo("AutorizationSecurityView");
+                //
+                //Load models stores;
+                //
+                handModifiedDataController.loadStore();
             }
             catch (Exception ex)
             {
@@ -231,121 +248,134 @@ namespace Analytics
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
+            if (activateChangeListeners)
             {
-                switch (comboBox1.SelectedIndex)
+                try
                 {
-                    case 0:
-                        if (modelingController != null)
-                        {
-                            modelingController.intervalChange(BasicType.year);
-                        }
-                        break;
-                    case 1:
-                        if (modelingController != null)
-                        {
-                            modelingController.intervalChange(BasicType.month);
-                        }
-                        break;
-                    case 2:
-                        if (modelingController != null)
-                        {
-                            modelingController.intervalChange(BasicType.day);
-                        }
-                        break;
-                    case 3:
-                        if (modelingController != null)
-                        {
-                            modelingController.intervalChange(BasicType.hour);
-                        }
-                        break;
-                    case 4:
-                        if (modelingController != null)
-                        {
-                            modelingController.intervalChange(BasicType.minute);
-                        }
-                        break;
-                    case 5:
-                        if (modelingController != null)
-                        {
-                            modelingController.intervalChange(BasicType.second);
-                        }
-                        break;
-                    default:
-                        throw new UnknownTimeIntervalType("Unknown time interval type");
+                    switch (comboBox1.SelectedIndex)
+                    {
+                        case 0:
+                            if (modelingController != null)
+                            {
+                                modelingController.intervalChange(BasicType.year);
+                            }
+                            break;
+                        case 1:
+                            if (modelingController != null)
+                            {
+                                modelingController.intervalChange(BasicType.month);
+                            }
+                            break;
+                        case 2:
+                            if (modelingController != null)
+                            {
+                                modelingController.intervalChange(BasicType.day);
+                            }
+                            break;
+                        case 3:
+                            if (modelingController != null)
+                            {
+                                modelingController.intervalChange(BasicType.hour);
+                            }
+                            break;
+                        case 4:
+                            if (modelingController != null)
+                            {
+                                modelingController.intervalChange(BasicType.minute);
+                            }
+                            break;
+                        case 5:
+                            if (modelingController != null)
+                            {
+                                modelingController.intervalChange(BasicType.second);
+                            }
+                            break;
+                        default:
+                            throw new UnknownTimeIntervalType("Unknown time interval type");
+                    }
                 }
-            }
-            catch(Exception ex)
-            {
-                ExceptionHandler.getInstance().processing(ex);
+                catch (Exception ex)
+                {
+                    ExceptionHandler.getInstance().processing(ex);
+                }
             }
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            modelingController.getPreviousState();
+            activateChangeListeners = false;
+            commandsStore.recoveryModel();
+            activateChangeListeners = true;
         }
 
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
+            if (activateChangeListeners)
             {
-                switch (comboBox3.SelectedIndex)
+                try
                 {
-                    case 0:
-                        if (marcovitsController != null)
-                        {
-                            marcovitsController.intervalChange(BasicType.year);
-                        }
-                        break;
-                    case 1:
-                        if (marcovitsController != null)
-                        {
-                            marcovitsController.intervalChange(BasicType.month);
-                        }
-                        break;
-                    case 2:
-                        if (marcovitsController != null)
-                        {
-                            marcovitsController.intervalChange(BasicType.day);
-                        }
-                        break;
-                    case 3:
-                        if (marcovitsController != null)
-                        {
-                            marcovitsController.intervalChange(BasicType.hour);
-                        }
-                        break;
-                    case 4:
-                        if (marcovitsController != null)
-                        {
-                            marcovitsController.intervalChange(BasicType.minute);
-                        }
-                        break;
-                    case 5:
-                        if (marcovitsController != null)
-                        {
-                            marcovitsController.intervalChange(BasicType.second);
-                        }
-                        break;
-                    default:
-                        throw new UnknownTimeIntervalType("Unknown time interval type");
+                    switch (comboBox3.SelectedIndex)
+                    {
+                        case 0:
+                            if (marcovitsController != null)
+                            {
+                                marcovitsController.intervalChange(BasicType.year);
+                            }
+                            break;
+                        case 1:
+                            if (marcovitsController != null)
+                            {
+                                marcovitsController.intervalChange(BasicType.month);
+                            }
+                            break;
+                        case 2:
+                            if (marcovitsController != null)
+                            {
+                                marcovitsController.intervalChange(BasicType.day);
+                            }
+                            break;
+                        case 3:
+                            if (marcovitsController != null)
+                            {
+                                marcovitsController.intervalChange(BasicType.hour);
+                            }
+                            break;
+                        case 4:
+                            if (marcovitsController != null)
+                            {
+                                marcovitsController.intervalChange(BasicType.minute);
+                            }
+                            break;
+                        case 5:
+                            if (marcovitsController != null)
+                            {
+                                marcovitsController.intervalChange(BasicType.second);
+                            }
+                            break;
+                        default:
+                            throw new UnknownTimeIntervalType("Unknown time interval type");
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                ExceptionHandler.getInstance().processing(ex);
+                catch (Exception ex)
+                {
+                    ExceptionHandler.getInstance().processing(ex);
+                }
             }
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            marcovitsController.getPreviousState();
+            activateChangeListeners = false;
+            commandsStore.recoveryModel();
+            activateChangeListeners = true;
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            modelingController.flagUseCovarChange(checkBox1.Checked);
+            if (activateChangeListeners)
+            {
+                modelingController.flagUseCovarChange(checkBox1.Checked);
+            }
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -466,18 +496,25 @@ namespace Analytics
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-            modelingController.numberOfModelingStartsChange(
-                int.Parse(numericUpDown1.Value.ToString()));
+            if (activateChangeListeners)
+            {
+                modelingController.numberOfModelingStartsChange(
+                    int.Parse(numericUpDown1.Value.ToString()));
+            }
         }
 
         private void button7_Click(object sender, EventArgs e)
         {
-            marcovitsController.getNextState();
+            activateChangeListeners = false;
+            commandsStore.rollbackRecoveryModel();
+            activateChangeListeners = true;
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
-            modelingController.getNextState();
+            activateChangeListeners = false;
+            commandsStore.rollbackRecoveryModel();
+            activateChangeListeners = true;
         }
         
         private void button12_Click(object sender, EventArgs e)
@@ -603,10 +640,12 @@ namespace Analytics
 
         private void button18_Click(object sender, EventArgs e)
         {
+            activateChangeListeners = false;
             double value = double.Parse(textBox7.Text);
             ModelConfiguratorInterface<HandModifiedDataState> configurator =
                 new UpdateNumberOfLicensesWithModificator(value);
             handModifiedDataController.updateModelsConfig(configurator);
+            activateChangeListeners = true;
         }
 
         private void button25_Click(object sender, EventArgs e)
@@ -623,20 +662,29 @@ namespace Analytics
 
         private void button20_Click(object sender, EventArgs e)
         {
-            handModifiedDataController.getPreviousState();
+            activateChangeListeners = false;
+            commandsStore.recoveryModel();
+            activateChangeListeners = true;
         }
 
         private void button19_Click(object sender, EventArgs e)
         {
-            handModifiedDataController.getNextState();
+            activateChangeListeners = false;
+            commandsStore.rollbackRecoveryModel();
+            activateChangeListeners = true;
         }
 
         private void dataGridView4_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            ModelConfiguratorInterface<HandModifiedDataState> configurator =
-            new UpdateTableItem(dataGridView4.Rows[e.RowIndex].
-            Cells[e.ColumnIndex].Value.ToString(), e.RowIndex, true);
-            handModifiedDataController.updateModelsConfig(configurator);
+            if (activateChangeListeners)
+            {
+                activateChangeListeners = false;
+                ModelConfiguratorInterface<HandModifiedDataState> configurator =
+                    new UpdateTableItem(dataGridView4.Rows[e.RowIndex].
+                    Cells[e.ColumnIndex].Value.ToString(), e.RowIndex, true);
+                handModifiedDataController.updateModelsConfig(configurator);
+                activateChangeListeners = true;
+            }
         }
 
         private void textBox7_TextChanged_1(object sender, EventArgs e)
@@ -667,10 +715,15 @@ namespace Analytics
 
         private void dataGridView6_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            ModelConfiguratorInterface<HandModifiedDataState> configurator =
-            new UpdateTableItem(dataGridView6.Rows[e.RowIndex].
-            Cells[e.ColumnIndex].Value.ToString(), e.RowIndex, false);
-            handModifiedDataController.updateModelsConfig(configurator);
+            if (activateChangeListeners)
+            {
+                activateChangeListeners = false;
+                ModelConfiguratorInterface<HandModifiedDataState> configurator =
+                    new UpdateTableItem(dataGridView6.Rows[e.RowIndex].
+                    Cells[e.ColumnIndex].Value.ToString(), e.RowIndex, false);
+                handModifiedDataController.updateModelsConfig(configurator);
+                activateChangeListeners = true;
+            }
         }
 
         private void button11_Click(object sender, EventArgs e)

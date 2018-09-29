@@ -40,11 +40,12 @@ namespace Analytics
             try
             {
                 //Получение уникальных имен лицензий
-                DataSet ds = configProxyForLoadDataFromNewBDAndExecute(
+                /*DataSet ds = configProxyForLoadDataFromNewBDAndExecute(
                 MsSqlServersQueryConfigurator.getUnicLicensesName());
-                state.unicSoftwareNames = unucNamesConverter.convert(ds);
+                state.unicSoftwareNames = unucNamesConverter.convert(ds);*/
+                state.unicSoftwareNames = (string[])config.UnicSoftwareNames.Clone();
                 //Формирование запроса на получение данных
-                ds = configProxyForLoadDataFromNewBDAndExecute(MsSqlServersQueryConfigurator.
+                DataSet ds = configProxyForLoadDataFromNewBDAndExecute(MsSqlServersQueryConfigurator.
                     getDataOfUseAllLicenses(state.unicSoftwareNames, config.getInterval()));
                 state.data = converter.convert(ds);
                 if (state.data.Count < 5)
@@ -68,14 +69,15 @@ namespace Analytics
                 }
 
                 //Число закупленных лицензий читается из таблицы PurchasedLicenses
-                ds = configProxyForLoadDataFromNewBDAndExecute(
+                /*ds = configProxyForLoadDataFromNewBDAndExecute(
                     MsSqlServersQueryConfigurator.getNumberOfPurchasedLicenses());
                 DataTable table = ds.Tables[0];
                 state.numberBuyLicense = new double[state.unicSoftwareNames.Count()];
                 for (int i = 0; i < state.unicSoftwareNames.Count(); i++)
                 {
                     state.numberBuyLicense[i] = int.Parse(table.Rows[i][1].ToString());
-                }
+                }*/
+                state.numberBuyLicense = (double[])config.NumberOfPurcharedLicenses.Clone();
                 //Расчет разницы между кол-вом закупленных и текущих лицензий
                 for (int i = 0; i < state.data.Count; i++)
                 {
@@ -108,15 +110,19 @@ namespace Analytics
                     }
                 }
                 //Cоотношения в процентах читается из таблицы PercentageOfLicense
-                ds = configProxyForLoadDataFromNewBDAndExecute(
+                /*ds = configProxyForLoadDataFromNewBDAndExecute(
                     MsSqlServersQueryConfigurator.getPartsInPersentOfPurchasedLicenses());
-                table = ds.Tables[0];
+                DataTable table = ds.Tables[0];
                 state.percents = new double[state.unicSoftwareNames.Count(), 1];
                 for (int i = 0; i < state.unicSoftwareNames.Count(); i++)
                 {
                     state.percents[i, 0] = double.Parse(table.Rows[i][1].ToString());
+                }*/
+                state.percents = new double[state.unicSoftwareNames.Count(), 1];
+                for (int i = 0; i < state.unicSoftwareNames.Count(); i++)
+                {
+                    state.percents[i, 0] = config.Percents[i];
                 }
-
                 //Подсчет общего риска
                 state.risk = MathWorker.multiplyMatrix(covarMas, state.percents);
 
@@ -262,7 +268,14 @@ namespace Analytics
             state.interval = config.getInterval();
             state.income = 0;
             state.risk[0, 0] = 0;
-            notifyObservers();
+            if (configData.NotifyObservers)
+            {
+                notifyObservers();
+            }
+            else
+            {
+                configData.NotifyObservers = true;
+            }
         }
 
         public override MarcovitsModelState getResult()
