@@ -104,6 +104,7 @@
     <Compile Include="HandModifiedDataPanel\HandModifiedDataModel.cs" />
     <Compile Include="HandModifiedDataPanel\HandModifiedDataState.cs" />
     <Compile Include="HandModifiedDataPanel\HandModifiedDataView.cs" />
+    <Compile Include="HandModifiedDataPanel\Helpers\UpdaterNewData.cs" />
     <Compile Include="HandModifiedDataPanel\Interfaces\HandModifiedDataControllerInterface.cs" />
     <Compile Include="HandModifiedDataPanel\Interfaces\HandModifiedDataModelInterface.cs" />
     <Compile Include="CommonComponents\Interfaces\ModelConfiguratorInterface.cs" />

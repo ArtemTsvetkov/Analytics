@@ -4,6 +4,7 @@ using Analytics.CommonComponents.Interfaces.AdwancedModelsInterfaces;
 using Analytics.CommonComponents.Interfaces.Data;
 using Analytics.CommonComponents.MsSqlServersQueryConfigurator;
 using Analytics.CommonComponents.WorkWithDataBase.MsSqlServer;
+using Analytics.HandModifiedDataPanel.Helpers;
 using Analytics.HandModifiedDataPanel.Interfaces;
 using Analytics.HandModifiedDataPanel.ModelConfigurator;
 using System;
@@ -55,7 +56,8 @@ namespace Analytics.HandModifiedDataPanel
 
         public void saveNewData()
         {
-            throw new NotImplementedException();
+            UpdaterNewData updater = new UpdaterNewData(state.copy());
+            updater.update();
         }
 
         public override void setConfig(ModelConfiguratorInterface<HandModifiedDataState> configData)
