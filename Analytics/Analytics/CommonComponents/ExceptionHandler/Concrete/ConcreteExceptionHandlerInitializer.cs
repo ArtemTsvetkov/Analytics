@@ -1,6 +1,8 @@
 ﻿using Analytics.CommonComponents.ExceptionHandler.Exceptions;
 using Analytics.CommonComponents.ExceptionHandler.Interfaces;
 using Analytics.CommonComponents.Exceptions;
+using Analytics.CommonComponents.Exceptions.Navigator;
+using Analytics.CommonComponents.Exceptions.Security;
 using Analytics.MarcovitsComponent.Exceptions;
 using Analytics.Modeling.ModelingExceptions;
 using System;
@@ -28,7 +30,14 @@ namespace Analytics.CommonComponents.ExceptionHandler.Concrete
                 handler.addException(new NotEnoughMemoryInTheModelingElement());
                 handler.addException(new UnknownOperation());
                 handler.addException(new UsingCovarianceInsteadOfCorrelation());
-                handler.addException(new IncorrectValue());
+                handler.addException(new NotFoundView());
+                handler.addException(new ViewAlreadyAddedException());
+                handler.addException(new ViewsHistoryIsEmtptyException());
+                handler.addException(new IncorrectOldPassword());
+                handler.addException(new IncorrectUserData());
+                handler.addException(new InsufficientPermissionsException());
+                handler.addException(new BadCheckedPasswords());
+                handler.addException(new ValueMastBeANumberException());
             }
             catch(Exception ex)
             {

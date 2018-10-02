@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace Analytics
 {
-    class ConcreteCommandStore<TModelsTypeOfResult, TConfigType> : 
-        CommandsStore<TModelsTypeOfResult, TConfigType>
+    class ConcreteCommandStore : CommandsStoreInterface
     {
         private List<BasicCommand> history = 
             new List<BasicCommand>();

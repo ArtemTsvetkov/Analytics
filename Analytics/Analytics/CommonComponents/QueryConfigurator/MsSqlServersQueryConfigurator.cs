@@ -446,5 +446,20 @@ namespace Analytics.CommonComponents.MsSqlServersQueryConfigurator
             }
             throw new UnknownTimeIntervalType("Unknown time interval type");
         }
+
+        //Обновление данных о количестве лицензий
+        public static string updateCountOfLicense(string licenseName, double newCount)
+        {
+            return "UPDATE Software SET NumberOfPurchased="+ newCount.ToString().Replace(',','.') + 
+                " WHERE Code='" + licenseName + "'";
+        }
+        //Обновление данных о распределнии бюджета на покупку лицензий
+        public static string updatePartInPersentOfPurchasedLicenses(string licenseName,
+            double newPersent)
+        {
+            return "UPDATE Software SET AmountOfInvestments="+
+                newPersent.ToString().Replace(',', '.') +
+                " WHERE Code='" + licenseName + "'";
+        }
     }
 }

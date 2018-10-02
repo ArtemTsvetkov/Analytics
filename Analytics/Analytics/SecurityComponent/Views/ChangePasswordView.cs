@@ -10,13 +10,10 @@ namespace Analytics.SecurityComponent.Views
     class ChangePasswordView : Observer, NavigatorsView
     {
         private Form1 form;
-        private SecurityModel model;
 
         public ChangePasswordView(Form1 form)
         {
             this.form = form;
-            model = new SecurityModel();
-            model.subscribe(this);
         }
 
         public void notify()
@@ -26,8 +23,7 @@ namespace Analytics.SecurityComponent.Views
 
         public void show()
         {
-            form.tabControl1Elem.SelectTab(3);
-            form.tabControl2Elem.SelectTab(1);
+            form.tabControl1Elem.SelectTab(4);
         }
 
         public string getName()

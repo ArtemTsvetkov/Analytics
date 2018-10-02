@@ -3,7 +3,6 @@ using Analytics.CommonComponents.BasicObjects.Statistics;
 using Analytics.CommonComponents.CommandsStore.Commands.Modeling;
 using Analytics.CommonComponents.Exceptions;
 using Analytics.MarcovitsComponent.Config;
-using Analytics.MarcovitsComponent.Converters;
 using Analytics.Modeling.GroupByTypes;
 using Analytics.Navigator.Basic;
 using System;
@@ -20,18 +19,11 @@ namespace Analytics.CommonComponents.Views
     {
         private Form1 form;
         private BasicStatisticsModel<MarcovitsModelState, MarcovitsConfig> model;
-        CommandsStore<MarcovitsModelState, MarcovitsConfig> commandsStore =
-                new ConcreteCommandStore<MarcovitsModelState, MarcovitsConfig>();
-        //При откате модели до предыдущего состояния, элементы вью тоже меняются,
-        //но так как они прослушиваются на изменения вью, то это влечет за собой 
-        //изменение модели и добавление еще одной команды, а она не нужна, так как мы
-        //только что забрали предыдущую
-        private bool activateChangeListeners = true;
 
-        public MarcovitsView(Form1 form)
+        public MarcovitsView(Form1 form, MarcovitsModel model)
         {
             this.form = form;
-            model = new MarcovitsModel();
+            this.model = model;
             MarcovitsConfig config = new MarcovitsConfig(
                 "D:\\Files\\MsVisualProjects\\Diplom\\Логи\\testlogs\\Database3.accdb",
                 BasicType.year);
@@ -39,47 +31,17 @@ namespace Analytics.CommonComponents.Views
             model.subscribe(this);
         }
 
-        public void button2_Click()
-        {
-            commandsStore.executeCommand(new GetMarcovitsStatistcCommand<MarcovitsConfig>(model));
-        }
-
-        public void intervalChange(GropByType interval)
-        {
-            if (activateChangeListeners)
-            {
-                form.chart1Elem.Series[0].Points.Clear();
-                form.chart2Elem.Series[0].Points.Clear();
-                form.label5Elem.Text = "";
-                form.label6Elem.Text = "";
-                form.label5Elem.Visible = false;
-                form.label6Elem.Visible = false;
-                MarcovitsConfig config = new MarcovitsConfig(
-                    "D:\\Files\\MsVisualProjects\\Diplom\\Логи\\testlogs\\Database3.accdb",
-                    interval);
-                commandsStore.executeCommand(
-                    new UpdateConfigCommand<MarcovitsModelState, MarcovitsConfig>(model, config));
-            }
-        }
-
-        public void getPreviousState()
-        {
-            //Вначале отключение прослушивания управляющих елементов вью
-            activateChangeListeners = false;
-            commandsStore.recoveryModel();
-            activateChangeListeners = true;
-        }
-
-        public void getNextState()
-        {
-            //Вначале отключение прослушивания управляющих елементов вью
-            activateChangeListeners = false;
-            commandsStore.rollbackRecoveryModel();
-            activateChangeListeners = true;
-        }
-
         public void notify()
         {
+            form.chart1Elem.Series[0].Points.Clear();
+            form.chart2Elem.Series[0].Points.Clear();
+            form.label5Elem.Text = "";
+            form.label6Elem.Text = "";
+            form.label5Elem.Visible = false;
+            form.label6Elem.Visible = false;
+
+
+
             MarcovitsModelState state = model.getResult();
             if (state.income != 0 & state.risk[0, 0] != 0)
             {
@@ -136,7 +98,6 @@ namespace Analytics.CommonComponents.Views
                     throw new UnknownTimeIntervalType("Unknown time interval type");
             }
         }
-
 
         public void show()
         {
