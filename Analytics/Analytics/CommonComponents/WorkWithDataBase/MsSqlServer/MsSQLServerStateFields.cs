@@ -14,7 +14,7 @@ namespace Analytics.CommonComponents.WorkWithDataBase.MsSqlServer
 
         public MsSQLServerStateFields(List<string> query)
         {
-            connectionString = "Provider=SQLNCLI11;Data Source=DESKTOP-CG8MSKG;Integrated Security=SSPI;Initial Catalog=LicenseInformationSystem";
+            connectionString = Properties.Resources.connectionString;
             this.query = query;
         }
 
