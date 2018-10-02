@@ -69,14 +69,5 @@ namespace Analytics.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Provider=SQLNCLI11;Data Source=DESKTOP-CG8MSKG;Integrated Security=SSPI;Initial Catalog=LicenseInformationSystem.
-        /// </summary>
-        internal static string connectionString {
-            get {
-                return ResourceManager.GetString("connectionString", resourceCulture);
-            }
-        }
     }
 }

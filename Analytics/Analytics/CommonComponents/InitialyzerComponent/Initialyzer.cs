@@ -28,6 +28,10 @@ namespace Analytics.CommonComponents.InitialyzerComponent
         public void init()
         {
             //
+            //ReadConfig
+            //
+            ConfigReader.getInstance().read();
+            //
             //CommandStore
             //
             components.commandsStore = new ConcreteCommandStore();

@@ -121,7 +121,4 @@
   <data name="BackGroundImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\BackGroundImage.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="connectionString" xml:space="preserve">
-    <value>Provider=SQLNCLI11;Data Source=DESKTOP-CG8MSKG;Integrated Security=SSPI;Initial Catalog=LicenseInformationSystem</value>
-  </data>
 </root>

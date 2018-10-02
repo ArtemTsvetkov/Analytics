@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Analytics.CommonComponents.InitialyzerComponent;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,13 +9,12 @@ namespace Analytics.CommonComponents.WorkWithDataBase.MsSqlServer
 {
     class MsSQLServerStateFields
     {
-        //ВРЕМЕННО
         private string connectionString;
         private List<string> query;
 
         public MsSQLServerStateFields(List<string> query)
         {
-            connectionString = Properties.Resources.connectionString;
+            connectionString = ConfigReader.getInstance().getConnectionString();
             this.query = query;
         }
 
