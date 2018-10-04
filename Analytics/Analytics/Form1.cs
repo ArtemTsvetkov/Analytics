@@ -97,6 +97,11 @@ namespace Analytics
             get { return label6; }
         }
 
+        public Button button5Elem
+        {
+            get { return button5; }
+        }
+
         public DataGridView dataGridView2Elem
         {
             get { return dataGridView2; }

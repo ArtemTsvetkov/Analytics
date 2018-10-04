@@ -28,6 +28,17 @@ namespace Analytics.CommonComponents.InitialyzerComponent
         public void init()
         {
             //
+            //Exceptions init
+            //
+            ConcreteExceptionHandlerInitializer.initThisExceptionHandler(
+                ExceptionHandler.ExceptionHandler.getInstance());
+            //
+            //Set unvisible elements on first form(for check reading config)
+            //
+            form.textBox2Elem.Visible = false;
+            form.textBox3Elem.Visible = false;
+            form.button5Elem.Visible = false;
+            //
             //ReadConfig
             //
             ConfigReader.getInstance().read();
@@ -35,11 +46,6 @@ namespace Analytics.CommonComponents.InitialyzerComponent
             //CommandStore
             //
             components.commandsStore = new ConcreteCommandStore();
-            //
-            //Exceptions init
-            //
-            ConcreteExceptionHandlerInitializer.initThisExceptionHandler(
-                ExceptionHandler.ExceptionHandler.getInstance());
             //
             //Security component
             //
@@ -100,6 +106,12 @@ namespace Analytics.CommonComponents.InitialyzerComponent
             //Load models stores;
             //
             components.handModifiedDataController.loadStore();
+            //
+            //Set visible elements on first form
+            //
+            form.textBox2Elem.Visible = true;
+            form.textBox3Elem.Visible = true;
+            form.button5Elem.Visible = true;
         }
     }
 }

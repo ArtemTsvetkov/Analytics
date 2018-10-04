@@ -93,9 +93,10 @@
     <Compile Include="CommonComponents\Exceptions\SyntaxisErrorException.cs" />
     <Compile Include="CommonComponents\Exceptions\UnknownTimeIntervalType.cs" />
     <Compile Include="CommonComponents\Exceptions\ValueMastBeANumberException.cs" />
-    <Compile Include="CommonComponents\InitialyzerComponent\ConfigReader.cs" />
+    <Compile Include="CommonComponents\InitialyzerComponent\ReadConfig\ConfigReader.cs" />
     <Compile Include="CommonComponents\InitialyzerComponent\InitComponents.cs" />
     <Compile Include="CommonComponents\InitialyzerComponent\Initialyzer.cs" />
+    <Compile Include="CommonComponents\InitialyzerComponent\ReadConfig\IniFiles.cs" />
     <Compile Include="CommonComponents\Interfaces\AdwancedModelsInterfaces\RecoveredModel.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\DataConverter.cs" />
     <Compile Include="CommonComponents\Interfaces\Data\DataWorker.cs" />

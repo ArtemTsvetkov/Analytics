@@ -1,4 +1,6 @@
-﻿using Analytics.CommonComponents.Interfaces.Data;
+﻿using Analytics.CommonComponents.Exceptions;
+using Analytics.CommonComponents.InitialyzerComponent.ReadConfig;
+using Analytics.CommonComponents.Interfaces.Data;
 using Analytics.CommonComponents.WorkWithFiles.Load;
 using System;
 using System.Collections.Generic;
@@ -13,7 +15,8 @@ namespace Analytics.CommonComponents.InitialyzerComponent
     {
         private static ConfigReader reader;
         private string connectionString;
-        
+        private IniFiles INI = new IniFiles("config.ini");
+
         private ConfigReader()
         {
 
@@ -31,17 +34,14 @@ namespace Analytics.CommonComponents.InitialyzerComponent
 
         public void read()
         {
-            TextFilesConfigFieldsOnLoad proxyConfig =
-                    new TextFilesConfigFieldsOnLoad(Directory.GetCurrentDirectory() +
-                    "\\Config.txt");
-
-            DataWorker<TextFilesConfigFieldsOnLoad, List<string>> saver = 
-                new TextFilesDataLoader();
-            saver.setConfig(proxyConfig);
-            saver.connect();
-            saver.execute();
-            List<string> configList = saver.getResult();
-            reader.connectionString = configList.ElementAt(0);
+            if (INI.KeyExists("connectionString", "Settings"))
+            {
+                connectionString = INI.ReadINI("Settings", "connectionString");
+            }
+            else
+            {
+                throw new NoConfigurationSpecified("No configuration specified, check ini-files");
+            }
         }
 
         public string getConnectionString()
