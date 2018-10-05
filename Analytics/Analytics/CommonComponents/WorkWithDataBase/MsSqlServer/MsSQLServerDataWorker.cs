@@ -81,7 +81,8 @@ namespace Analytics.CommonComponents.WorkWithDataBase.MsSqlServer
                     }
                     catch (Exception ex)
                     {
-                        throw new NoDataBaseConnection("There is no database connection");
+                        throw new DatabaseQueryError("Database query error. Query:" +
+                            query.ElementAt(i));
                     }
                 }
                 return dataSet;

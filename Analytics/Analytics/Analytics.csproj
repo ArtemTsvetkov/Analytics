@@ -76,6 +76,7 @@
     <Compile Include="CommonComponents\ExceptionHandler\View\Question\PopupWindow\QuestionPopupWindow.cs" />
     <Compile Include="CommonComponents\ExceptionHandler\View\Question\PopupWindow\QuestionPopupWindowConfig.cs" />
     <Compile Include="CommonComponents\ExceptionHandler\View\Question\PopupWindow\QuestionPopupWindowObserver.cs" />
+    <Compile Include="CommonComponents\Exceptions\DatabaseQueryError.cs" />
     <Compile Include="CommonComponents\Exceptions\ErrorWithFile.cs" />
     <Compile Include="CommonComponents\Exceptions\IncorrectValue.cs" />
     <Compile Include="CommonComponents\Exceptions\InvalidArraySize.cs" />

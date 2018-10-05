@@ -53,14 +53,22 @@ namespace Analytics.CommonComponents.WorkWithDataBase.MsSqlServer
             try
             {
                 conn = new OleDbConnection(connStr);
-                conn.Open();
+                conn.Open();   
                 for (int i = 0; i < currentQuerys.Count; i++)
                 {
-                    OleDbDataAdapter adapter = new OleDbDataAdapter(currentQuerys.ElementAt(i),
-                        conn);
-                    adapter.Fill(dataSet, selectTableNameFromQuery(currentQuerys.ElementAt(i)));
-                }
-                return true;
+                    try
+                    {
+                        OleDbDataAdapter adapter = new OleDbDataAdapter(currentQuerys.ElementAt(i),
+                            conn);
+                        adapter.Fill(dataSet, selectTableNameFromQuery(currentQuerys.ElementAt(i)));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new DatabaseQueryError("Database query error. Query:" +
+                                currentQuerys.ElementAt(i));
+                    }
+                 }
+                 return true;
             }
             catch (Exception ex)
             {
