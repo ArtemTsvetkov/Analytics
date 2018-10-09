@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea9 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend9 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series9 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea10 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend10 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series10 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tabPage11 = new System.Windows.Forms.TabPage();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage6 = new System.Windows.Forms.TabPage();
@@ -180,7 +180,7 @@
             this.tabControl2.Controls.Add(this.tabPage8);
             this.tabControl2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.tabControl2.ItemSize = new System.Drawing.Size(40, 20);
-            this.tabControl2.Location = new System.Drawing.Point(-3, 3);
+            this.tabControl2.Location = new System.Drawing.Point(-4, -1);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
             this.tabControl2.Size = new System.Drawing.Size(931, 506);
@@ -551,18 +551,18 @@
             // 
             // chart2
             // 
-            chartArea3.Name = "ChartArea1";
-            this.chart2.ChartAreas.Add(chartArea3);
-            legend3.Name = "Legend1";
-            this.chart2.Legends.Add(legend3);
+            chartArea9.Name = "ChartArea1";
+            this.chart2.ChartAreas.Add(chartArea9);
+            legend9.Name = "Legend1";
+            this.chart2.Legends.Add(legend9);
             this.chart2.Location = new System.Drawing.Point(519, 229);
             this.chart2.Name = "chart2";
-            series3.ChartArea = "ChartArea1";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
-            series3.IsVisibleInLegend = false;
-            series3.Legend = "Legend1";
-            series3.Name = "Series1";
-            this.chart2.Series.Add(series3);
+            series9.ChartArea = "ChartArea1";
+            series9.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
+            series9.IsVisibleInLegend = false;
+            series9.Legend = "Legend1";
+            series9.Name = "Series1";
+            this.chart2.Series.Add(series9);
             this.chart2.Size = new System.Drawing.Size(322, 194);
             this.chart2.TabIndex = 5;
             this.chart2.Text = "chart2";
@@ -581,18 +581,18 @@
             // chart1
             // 
             this.chart1.BorderlineColor = System.Drawing.Color.Gray;
-            chartArea4.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea4);
-            legend4.Name = "Legend1";
-            this.chart1.Legends.Add(legend4);
+            chartArea10.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea10);
+            legend10.Name = "Legend1";
+            this.chart1.Legends.Add(legend10);
             this.chart1.Location = new System.Drawing.Point(80, 229);
             this.chart1.Name = "chart1";
-            series4.ChartArea = "ChartArea1";
-            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
-            series4.IsVisibleInLegend = false;
-            series4.Legend = "Legend1";
-            series4.Name = "Series1";
-            this.chart1.Series.Add(series4);
+            series10.ChartArea = "ChartArea1";
+            series10.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
+            series10.IsVisibleInLegend = false;
+            series10.Legend = "Legend1";
+            series10.Name = "Series1";
+            this.chart1.Series.Add(series10);
             this.chart1.Size = new System.Drawing.Size(322, 194);
             this.chart1.TabIndex = 3;
             this.chart1.Text = "chart1";
@@ -666,7 +666,7 @@
             this.pictureBox8.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox8.Image")));
             this.pictureBox8.Location = new System.Drawing.Point(-5, 1);
             this.pictureBox8.Name = "pictureBox8";
-            this.pictureBox8.Size = new System.Drawing.Size(929, 491);
+            this.pictureBox8.Size = new System.Drawing.Size(923, 479);
             this.pictureBox8.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox8.TabIndex = 18;
             this.pictureBox8.TabStop = false;
@@ -701,7 +701,7 @@
             // button25
             // 
             this.button25.Font = new System.Drawing.Font("GDT", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button25.Location = new System.Drawing.Point(396, 239);
+            this.button25.Location = new System.Drawing.Point(396, 261);
             this.button25.Name = "button25";
             this.button25.Size = new System.Drawing.Size(133, 27);
             this.button25.TabIndex = 79;
@@ -732,7 +732,7 @@
             // button11
             // 
             this.button11.Font = new System.Drawing.Font("GDT", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button11.Location = new System.Drawing.Point(487, 427);
+            this.button11.Location = new System.Drawing.Point(487, 470);
             this.button11.Name = "button11";
             this.button11.Size = new System.Drawing.Size(133, 27);
             this.button11.TabIndex = 76;
@@ -767,7 +767,7 @@
             // button18
             // 
             this.button18.Font = new System.Drawing.Font("GDT", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button18.Location = new System.Drawing.Point(229, 372);
+            this.button18.Location = new System.Drawing.Point(229, 415);
             this.button18.Name = "button18";
             this.button18.Size = new System.Drawing.Size(95, 27);
             this.button18.TabIndex = 69;
@@ -777,7 +777,7 @@
             // 
             // textBox7
             // 
-            this.textBox7.Location = new System.Drawing.Point(155, 376);
+            this.textBox7.Location = new System.Drawing.Point(155, 419);
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(69, 20);
             this.textBox7.TabIndex = 68;
@@ -787,7 +787,7 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("GDT", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label10.Location = new System.Drawing.Point(47, 377);
+            this.label10.Location = new System.Drawing.Point(47, 420);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(103, 16);
             this.label10.TabIndex = 67;
@@ -797,7 +797,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("GDT", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label7.Location = new System.Drawing.Point(551, 377);
+            this.label7.Location = new System.Drawing.Point(551, 420);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(0, 16);
             this.label7.TabIndex = 62;
@@ -827,7 +827,7 @@
             this.dataGridView6.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView6.Location = new System.Drawing.Point(551, 125);
             this.dataGridView6.Name = "dataGridView6";
-            this.dataGridView6.Size = new System.Drawing.Size(329, 240);
+            this.dataGridView6.Size = new System.Drawing.Size(329, 284);
             this.dataGridView6.TabIndex = 50;
             this.dataGridView6.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView6_CellEndEdit);
             // 
@@ -836,14 +836,14 @@
             this.dataGridView4.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView4.Location = new System.Drawing.Point(46, 125);
             this.dataGridView4.Name = "dataGridView4";
-            this.dataGridView4.Size = new System.Drawing.Size(329, 240);
+            this.dataGridView4.Size = new System.Drawing.Size(329, 284);
             this.dataGridView4.TabIndex = 45;
             this.dataGridView4.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView4_CellEndEdit);
             // 
             // button9
             // 
             this.button9.Font = new System.Drawing.Font("GDT", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button9.Location = new System.Drawing.Point(302, 427);
+            this.button9.Location = new System.Drawing.Point(302, 470);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(133, 27);
             this.button9.TabIndex = 42;
@@ -866,7 +866,7 @@
             this.pictureBox5.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox5.Image")));
             this.pictureBox5.Location = new System.Drawing.Point(-5, 1);
             this.pictureBox5.Name = "pictureBox5";
-            this.pictureBox5.Size = new System.Drawing.Size(929, 471);
+            this.pictureBox5.Size = new System.Drawing.Size(929, 551);
             this.pictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox5.TabIndex = 40;
             this.pictureBox5.TabStop = false;
@@ -1357,7 +1357,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(985, 545);
+            this.ClientSize = new System.Drawing.Size(922, 542);
             this.Controls.Add(this.tabControl1);
             this.Name = "Form1";
             this.Text = "Form1";

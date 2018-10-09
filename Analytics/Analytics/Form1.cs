@@ -77,6 +77,16 @@ namespace Analytics
             get { return chart1; }
         }
 
+        public PictureBox pictureBox6Elem
+        {
+            get { return pictureBox6; }
+        }
+
+        public PictureBox pictureBox8Elem
+        {
+            get { return pictureBox8; }
+        }
+
         public Chart chart2Elem
         {
             get { return chart2; }
