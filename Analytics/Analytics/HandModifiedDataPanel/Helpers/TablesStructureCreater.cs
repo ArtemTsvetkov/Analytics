@@ -19,7 +19,7 @@ namespace Analytics.HandModifiedDataPanel.Halpers
             col1 = new DataGridViewTextBoxColumn();
             col1.Name = "Название лицензии";
             col1.HeaderText = "Название лицензии";
-            col1.Width = 158;
+            col1.Width = 176;
             DataGridViewTextBoxColumn col2;
             col2 = new DataGridViewTextBoxColumn();
             col2.Name = "Наличие";
@@ -39,7 +39,7 @@ namespace Analytics.HandModifiedDataPanel.Halpers
             col10 = new DataGridViewTextBoxColumn();
             col10.Name = "Название лицензии";
             col10.HeaderText = "Название лицензии";
-            col10.Width = 158;
+            col10.Width = 176;
             DataGridViewTextBoxColumn col11;
             col11 = new DataGridViewTextBoxColumn();
             col11.Name = "Текущий";

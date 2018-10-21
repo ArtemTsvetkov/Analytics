@@ -40,29 +40,32 @@ namespace Analytics.HandModifiedDataPanel
 
         private void setValuesToFormsElements(HandModifiedDataState state)
         {
-            if (form.DataGridView4Elem.Rows.Count == 1)
+            if (state.unicSoftwareNames.Count() > 0)
             {
-                form.DataGridView4Elem.Rows.Add(state.unicSoftwareNames.Count() - 1);
-                form.DataGridView6Elem.Rows.Add(state.unicSoftwareNames.Count() - 1);
-            }
+                if (form.DataGridView4Elem.Rows.Count == 1)
+                {
+                    form.DataGridView4Elem.Rows.Add(state.unicSoftwareNames.Count() - 1);
+                    form.DataGridView6Elem.Rows.Add(state.unicSoftwareNames.Count() - 1);
+                }
 
-            for(int i=0; i<state.unicSoftwareNames.Count(); i++)
-            {
-                form.DataGridView4Elem.Rows[i].Cells[0].Value = state.unicSoftwareNames[i];
-                form.DataGridView6Elem.Rows[i].Cells[0].Value = state.unicSoftwareNames[i];
-            }
+                for (int i = 0; i < state.unicSoftwareNames.Count(); i++)
+                {
+                    form.DataGridView4Elem.Rows[i].Cells[0].Value = state.unicSoftwareNames[i];
+                    form.DataGridView6Elem.Rows[i].Cells[0].Value = state.unicSoftwareNames[i];
+                }
 
-            for (int i = 0; i < state.unicSoftwareNames.Count(); i++)
-            {
-                form.DataGridView4Elem.Rows[i].Cells[1].Value = state.numberOfPurcharedLicenses[i];
-            }
+                for (int i = 0; i < state.unicSoftwareNames.Count(); i++)
+                {
+                    form.DataGridView4Elem.Rows[i].Cells[1].Value = state.numberOfPurcharedLicenses[i];
+                }
 
-            for (int i = 0; i < state.unicSoftwareNames.Count(); i++)
-            {
-                form.DataGridView6Elem.Rows[i].Cells[1].Value = state.percents[i];
-            }
+                for (int i = 0; i < state.unicSoftwareNames.Count(); i++)
+                {
+                    form.DataGridView6Elem.Rows[i].Cells[1].Value = state.percents[i];
+                }
 
-            form.label7Elem.Text = "Сумма долей: " + state.sumOfParts.ToString()+ "/1.0";
+                form.label7Elem.Text = "Сумма долей: " + state.sumOfParts.ToString() + "/1.0";
+            }
         }
     }
 }

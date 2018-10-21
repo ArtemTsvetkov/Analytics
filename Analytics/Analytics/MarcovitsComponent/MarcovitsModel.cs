@@ -44,6 +44,10 @@ namespace Analytics
                 MsSqlServersQueryConfigurator.getUnicLicensesName());
                 state.unicSoftwareNames = unucNamesConverter.convert(ds);*/
                 state.unicSoftwareNames = (string[])config.UnicSoftwareNames.Clone();
+                if(state.unicSoftwareNames.Count() < 2)
+                {
+                    throw new NotEnoughDataToAnalyze("Not enough data to analyze");
+                }
                 //Формирование запроса на получение данных
                 DataSet ds = configProxyForLoadDataFromNewBDAndExecute(MsSqlServersQueryConfigurator.
                     getDataOfUseAllLicenses(state.unicSoftwareNames, config.getInterval()));

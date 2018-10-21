@@ -8,9 +8,11 @@ using Analytics.SecurityComponent;
 using Analytics.SecurityComponent.Views;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Analytics.CommonComponents.InitialyzerComponent
 {
@@ -32,6 +34,16 @@ namespace Analytics.CommonComponents.InitialyzerComponent
             //
             ConcreteExceptionHandlerInitializer.initThisExceptionHandler(
                 ExceptionHandler.ExceptionHandler.getInstance());
+            //
+            //Config tabs
+            form.tabControl1Elem.Appearance = TabAppearance.FlatButtons;
+            form.tabControl1Elem.ItemSize = new Size(0, 1);
+            form.tabControl1Elem.SizeMode = TabSizeMode.Fixed;
+            form.tabControl1Elem.TabStop = false;
+            form.tabControl2Elem.Size=new Size(form.tabControl2Elem.Size.Width, form.tabControl2Elem.Size.Height+70);
+            form.pictureBox6Elem.Size = new Size(form.pictureBox6Elem.Size.Width, form.pictureBox6Elem.Size.Height+70);
+            form.pictureBox8Elem.Size = new Size(form.pictureBox8Elem.Size.Width, form.pictureBox8Elem.Size.Height + 70);
+            //
             //
             //Set unvisible elements on first form(for check reading config)
             //
