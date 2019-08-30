@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea9 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend9 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series9 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea10 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend10 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series10 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tabPage11 = new System.Windows.Forms.TabPage();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage6 = new System.Windows.Forms.TabPage();
@@ -138,6 +138,7 @@
             this.label25 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.button26 = new System.Windows.Forms.Button();
             this.tabPage11.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage6.SuspendLayout();
@@ -551,18 +552,18 @@
             // 
             // chart2
             // 
-            chartArea9.Name = "ChartArea1";
-            this.chart2.ChartAreas.Add(chartArea9);
-            legend9.Name = "Legend1";
-            this.chart2.Legends.Add(legend9);
+            chartArea1.Name = "ChartArea1";
+            this.chart2.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chart2.Legends.Add(legend1);
             this.chart2.Location = new System.Drawing.Point(519, 229);
             this.chart2.Name = "chart2";
-            series9.ChartArea = "ChartArea1";
-            series9.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
-            series9.IsVisibleInLegend = false;
-            series9.Legend = "Legend1";
-            series9.Name = "Series1";
-            this.chart2.Series.Add(series9);
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
+            series1.IsVisibleInLegend = false;
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chart2.Series.Add(series1);
             this.chart2.Size = new System.Drawing.Size(322, 194);
             this.chart2.TabIndex = 5;
             this.chart2.Text = "chart2";
@@ -581,18 +582,18 @@
             // chart1
             // 
             this.chart1.BorderlineColor = System.Drawing.Color.Gray;
-            chartArea10.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea10);
-            legend10.Name = "Legend1";
-            this.chart1.Legends.Add(legend10);
+            chartArea2.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chart1.Legends.Add(legend2);
             this.chart1.Location = new System.Drawing.Point(80, 229);
             this.chart1.Name = "chart1";
-            series10.ChartArea = "ChartArea1";
-            series10.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
-            series10.IsVisibleInLegend = false;
-            series10.Legend = "Legend1";
-            series10.Name = "Series1";
-            this.chart1.Series.Add(series10);
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
+            series2.IsVisibleInLegend = false;
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.chart1.Series.Add(series2);
             this.chart1.Size = new System.Drawing.Size(322, 194);
             this.chart1.TabIndex = 3;
             this.chart1.Text = "chart1";
@@ -1252,6 +1253,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.button26);
             this.tabPage3.Controls.Add(this.button16);
             this.tabPage3.Controls.Add(this.button24);
             this.tabPage3.Controls.Add(this.button23);
@@ -1293,7 +1295,7 @@
             // button23
             // 
             this.button23.Font = new System.Drawing.Font("GDT", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button23.Location = new System.Drawing.Point(372, 239);
+            this.button23.Location = new System.Drawing.Point(372, 208);
             this.button23.Name = "button23";
             this.button23.Size = new System.Drawing.Size(189, 25);
             this.button23.TabIndex = 83;
@@ -1304,7 +1306,7 @@
             // button22
             // 
             this.button22.Font = new System.Drawing.Font("GDT", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button22.Location = new System.Drawing.Point(372, 270);
+            this.button22.Location = new System.Drawing.Point(372, 239);
             this.button22.Name = "button22";
             this.button22.Size = new System.Drawing.Size(189, 25);
             this.button22.TabIndex = 82;
@@ -1352,6 +1354,17 @@
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox2.TabIndex = 43;
             this.pictureBox2.TabStop = false;
+            // 
+            // button26
+            // 
+            this.button26.Font = new System.Drawing.Font("GDT", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button26.Location = new System.Drawing.Point(372, 270);
+            this.button26.Name = "button26";
+            this.button26.Size = new System.Drawing.Size(189, 25);
+            this.button26.TabIndex = 86;
+            this.button26.Text = "Закупленные лицензии";
+            this.button26.UseVisualStyleBackColor = true;
+            this.button26.Click += new System.EventHandler(this.button26_Click);
             // 
             // Form1
             // 
@@ -1499,6 +1512,7 @@
         private System.Windows.Forms.Button button22;
         private System.Windows.Forms.Button button16;
         private System.Windows.Forms.Button button25;
+        private System.Windows.Forms.Button button26;
     }
 }
 
