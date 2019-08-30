@@ -130,8 +130,8 @@ namespace Analytics
                 //Подсчет общего риска
                 state.risk = MathWorker.multiplyMatrix(covarMas, state.percents);
 
-                double[,] transpPercents = new double[1, 5];
-                for (int i = 0; i < 5; i++)
+                double[,] transpPercents = new double[1, state.percents.Length];
+                for (int i = 0; i < state.percents.Length; i++)
                 {
                     transpPercents[0, i] = state.percents[i, 0];
                 }
