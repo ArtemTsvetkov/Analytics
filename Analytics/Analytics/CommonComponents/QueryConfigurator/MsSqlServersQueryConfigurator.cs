@@ -271,7 +271,7 @@ namespace Analytics.CommonComponents.MsSqlServersQueryConfigurator
             {
                 return "SELECT (YEAR(h.DateIN)-1970)FROM History h WHERE h.DateIN is not " +
                     "null AND h.SoftwareID=(SELECT SoftwareID FROM Software s WHERE " +
-                    "s.Code='" + licenseName + "') AND h.UserID!=(SELECT UserID " + 
+                    "s.Code='" + licenseName + "') AND h.UserID not in (SELECT UserID " + 
                     "FROM Users u Where u.Name = 'RevitSystem' )ORDER BY YEAR(h.DateIN)";
             }
             if (type.getType().Equals("month"))
@@ -279,7 +279,7 @@ namespace Analytics.CommonComponents.MsSqlServersQueryConfigurator
                 return "SELECT (YEAR(h.DateIN)-1970)*12+MONTH(h.DateIN) FROM " +
                     "History h WHERE h.DateIN is not null AND h.SoftwareID=(" +
                     "SELECT SoftwareID FROM Software s WHERE s.Code=" +
-                    "'" + licenseName + "') AND h.UserID!=(SELECT UserID FROM " +
+                    "'" + licenseName + "') AND h.UserID not in (SELECT UserID FROM " +
                     "Users u Where u.Name = 'RevitSystem' )ORDER BY YEAR(h.DateIN), " + 
                     "MONTH(h.DateIN)";
             }
@@ -288,7 +288,7 @@ namespace Analytics.CommonComponents.MsSqlServersQueryConfigurator
                 return "SELECT (YEAR(h.DateIN)-1970)*360+MONTH(h.DateIN)*30+DAY(h.DateIN)" +
                     "FROM History h WHERE h.DateIN is not null AND h.SoftwareID=(" +
                     "SELECT SoftwareID FROM Software s WHERE s.Code=" +
-                    "'" + licenseName + "') AND h.UserID!=(SELECT UserID FROM Users" +
+                    "'" + licenseName + "') AND h.UserID not in (SELECT UserID FROM Users" +
                     " u Where u.Name = 'RevitSystem' )ORDER BY YEAR(h.DateIN), " + 
                     "MONTH(h.DateIN), DAY(h.DateIN)";
             }
@@ -298,7 +298,7 @@ namespace Analytics.CommonComponents.MsSqlServersQueryConfigurator
                     "DAY(h.DateIN)*24+DATEPART(hour,h.TimeIN) FROM History h " +
                     "WHERE h.DateIN is not null AND h.SoftwareID=(SELECT SoftwareID " +
                     "FROM Software s WHERE s.Code=" +
-                    "'" + licenseName + "') AND h.UserID!=(SELECT UserID FROM Users " +
+                    "'" + licenseName + "') AND h.UserID not in (SELECT UserID FROM Users " +
                     "u Where u.Name = 'RevitSystem')ORDER BY YEAR(h.DateIN), " + 
                     "MONTH(h.DateIN), DAY(h.DateIN), DATEPART(hour,h.TimeIN)";
             }
@@ -308,7 +308,7 @@ namespace Analytics.CommonComponents.MsSqlServersQueryConfigurator
                     "DAY(h.DateIN)*1440+DATEPART(hour,h.TimeIN)*60+DATEPART(minute," +
                     "h.TimeIN)FROM History h WHERE h.DateIN is not null AND " +
                     "h.SoftwareID=(SELECT SoftwareID FROM Software s WHERE " +
-                    "s.Code='" + licenseName + "') AND h.UserID!=(SELECT UserID " +
+                    "s.Code='" + licenseName + "') AND h.UserID not in (SELECT UserID " +
                     "FROM Users u Where u.Name = 'RevitSystem' )ORDER BY " +
                     "YEAR(h.DateIN), MONTH(h.DateIN), DAY(h.DateIN), DATEPART(" + 
                     "hour,h.TimeIN), DATEPART(minute,h.TimeIN)";
@@ -320,7 +320,7 @@ namespace Analytics.CommonComponents.MsSqlServersQueryConfigurator
                     "(minute,h.TimeIN)*60+DATEPART(second,h.TimeIN)FROM History h " +
                     "WHERE h.DateIN is not null AND h.SoftwareID=(SELECT SoftwareID " +
                     "FROM Software s WHERE s.Code=" +
-                    "'" + licenseName + "')AND h.UserID!=(SELECT UserID FROM Users " +
+                    "'" + licenseName + "')AND h.UserID not in (SELECT UserID FROM Users " +
                     "u Where u.Name = 'RevitSystem')ORDER BY YEAR(h.DateIN), " +
                     "MONTH(h.DateIN), DAY(h.DateIN), DATEPART(hour,h.TimeIN), " + 
                     "DATEPART(minute,h.TimeIN), DATEPART(second,h.TimeIN)";
@@ -336,7 +336,7 @@ namespace Analytics.CommonComponents.MsSqlServersQueryConfigurator
                 return "SELECT YEAR(h.DateExit)-YEAR(h.DateIN)FROM History h WHERE  " +
                     "h.DateIN is not null AND h.DateExit is not null AND h.SoftwareID=" +
                     "(SELECT SoftwareID FROM Software s WHERE s.Code=" +
-                    "'" + licenseName + "') AND h.UserID!=(SELECT UserID FROM " +
+                    "'" + licenseName + "') AND h.UserID not in (SELECT UserID FROM " +
                     "Users u Where u.Name = 'RevitSystem' ) AND YEAR(h.DateExit)-" + 
                     "YEAR(h.DateIN) != 0 ORDER BY YEAR(h.DateIN)";
             }
@@ -346,7 +346,7 @@ namespace Analytics.CommonComponents.MsSqlServersQueryConfigurator
                     "MONTH(h.DateIN)FROM History h WHERE  h.DateIN is not null AND " +
                     "h.DateExit is not null AND h.SoftwareID=(SELECT SoftwareID " +
                     "FROM Software s WHERE s.Code=" +
-                    "'" + licenseName + "') AND h.UserID!=(SELECT UserID FROM " +
+                    "'" + licenseName + "') AND h.UserID not in (SELECT UserID FROM " +
                     "Users u Where u.Name = 'RevitSystem' ) AND (YEAR(h.DateExit)-" +
                     "YEAR(h.DateIN))*12+MONTH(h.DateExit)-MONTH(h.DateIN) != 0 " + 
                     "ORDER BY YEAR(h.DateIN), MONTH(h.DateIN)";
@@ -357,7 +357,7 @@ namespace Analytics.CommonComponents.MsSqlServersQueryConfigurator
                     "MONTH(h.DateIN))*30+DAY(h.DateExit)-DAY(h.DateIN)FROM History " +
                     "h WHERE  h.DateIN is not null AND h.DateExit is not null AND " +
                     "h.SoftwareID=(SELECT SoftwareID FROM Software s WHERE s.Code=" +
-                    "'" + licenseName + "') AND h.UserID!=(SELECT UserID FROM " +
+                    "'" + licenseName + "') AND h.UserID not in (SELECT UserID FROM " +
                     "Users u Where u.Name = 'RevitSystem' ) AND (YEAR(h.DateExit)-" +
                     "YEAR(h.DateIN))*360+(MONTH(h.DateExit)-MONTH(h.DateIN))*30+" +
                     "DAY(h.DateExit)-DAY(h.DateIN) != 0 ORDER BY YEAR(h.DateIN), " + 
@@ -370,7 +370,7 @@ namespace Analytics.CommonComponents.MsSqlServersQueryConfigurator
                     "DATEPART(hour,h.TimeExit)-DATEPART(hour,h.TimeIN) FROM History " +
                     "h WHERE  h.DateIN is not null AND h.DateExit is not null AND " +
                     "h.SoftwareID=(SELECT SoftwareID FROM Software s WHERE s.Code=" +
-                    "'" + licenseName + "') AND h.UserID!=(SELECT UserID FROM Users " +
+                    "'" + licenseName + "') AND h.UserID not in (SELECT UserID FROM Users " +
                     "u Where u.Name = 'RevitSystem' ) AND (YEAR(h.DateExit)-YEAR(" +
                     "h.DateIN))*8640+(MONTH(h.DateExit)-MONTH(h.DateIN))*720+(DAY(" +
                     "h.DateExit)-DAY(h.DateIN))*24+DATEPART(hour,h.TimeExit)-" +
@@ -385,7 +385,7 @@ namespace Analytics.CommonComponents.MsSqlServersQueryConfigurator
                     "DATEPART(minute,h.TimeExit)-DATEPART(minute,h.TimeIN)  " +
                     "FROM History h WHERE  h.DateIN is not null AND h.DateExit is not " +
                     "null AND h.SoftwareID=(SELECT SoftwareID FROM Software s WHERE " +
-                    "s.Code='" + licenseName + "') AND h.UserID!=(SELECT UserID FROM " +
+                    "s.Code='" + licenseName + "') AND h.UserID not in (SELECT UserID FROM " +
                     "Users u Where u.Name = 'RevitSystem' ) AND (YEAR(h.DateExit)-YEAR" +
                     "(h.DateIN))*518400+(MONTH(h.DateExit)-MONTH(h.DateIN))*720+(" +
                     "DAY(h.DateExit)-DAY(h.DateIN))*1440+(DATEPART(hour,h.TimeExit)-" +
@@ -403,7 +403,7 @@ namespace Analytics.CommonComponents.MsSqlServersQueryConfigurator
                     "h.TimeIN))*60+DATEPART(second,h.TimeExit)-DATEPART(second,h.TimeIN)" +
                     "    FROM History h WHERE  h.DateIN is not null AND h.DateExit " +
                     "is not null AND h.SoftwareID=(SELECT SoftwareID FROM Software s " +
-                    "WHERE s.Code='" + licenseName + "') AND h.UserID!=(SELECT " +
+                    "WHERE s.Code='" + licenseName + "') AND h.UserID not in (SELECT " +
                     "UserID FROM Users u Where u.Name = 'RevitSystem' ) AND " +
                     "(YEAR(h.DateExit)-YEAR(h.DateIN))*31104000+(MONTH(h.DateExit)-" +
                     "MONTH(h.DateIN))*2592000+(DAY(h.DateExit)-DAY(h.DateIN))*" +
