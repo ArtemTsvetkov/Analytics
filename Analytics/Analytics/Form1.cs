@@ -691,5 +691,10 @@ namespace Analytics
             comboBox4.SelectedIndex = 0;
             Navigator.Navigator.getInstance().navigateToPreviousView();
         }
+
+        private void button26_Click(object sender, EventArgs e)
+        {
+            Navigator.Navigator.getInstance().navigateTo("HandModifiedDataView");
+        }
     }
 }
