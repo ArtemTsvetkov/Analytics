@@ -36,8 +36,8 @@ namespace Analytics.HandModifiedDataPanel.Halpers
             col10.Width = 176;
             DataGridViewTextBoxColumn col11;
             col11 = new DataGridViewTextBoxColumn();
-            col11.Name = "Текущий";
-            col11.HeaderText = "Текущий";
+            col11.Name = "Стоимость от общего бюджета (%)";
+            col11.HeaderText = "Стоимость от общего бюджета (%)";
             col11.Width = 150;
             form.DataGridView6Elem.Columns.Add(col10);
             form.DataGridView6Elem.Columns.Add(col11);

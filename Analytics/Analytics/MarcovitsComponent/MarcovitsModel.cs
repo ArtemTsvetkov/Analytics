@@ -85,6 +85,15 @@ namespace Analytics
                 double licenseCount = 0;
                 for (int i=0; i<state.numberBuyLicense.Length; i++)
                 {
+                    if(state.numberBuyLicense[i] <= 0)
+                    {
+                        throw new NotEnoughDataToAnalyze("Not enough data to analyze. Count of " +
+                            "purchased license must have more than zero. Plese check it " + 
+                            "(Меню/Закупленные лицензии). For exclude one or more license " +
+                            "types from calculating please set zero in table with the " +
+                            "percentage of purchased licenses (Меню/Закупленные лицензии) in " +
+                            "row(rows) with this license types.");
+                    }
                     licenseCount += state.numberBuyLicense[i];
                 }
                 if (licenseCount <= 0)
