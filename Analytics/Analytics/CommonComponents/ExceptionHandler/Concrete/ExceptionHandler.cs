@@ -55,7 +55,7 @@ namespace Analytics.CommonComponents.ExceptionHandler
                         return;
                     }
                 }
-                //Если до сюда дошло, то исключение не найдено
+                //Если дошло, то исключение не найдено
                 throw new NonFoundException("Unknown exception" + exception.GetType());
             }
             catch(Exception ex)

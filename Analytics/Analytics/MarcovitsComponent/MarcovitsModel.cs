@@ -82,6 +82,17 @@ namespace Analytics
                     state.numberBuyLicense[i] = int.Parse(table.Rows[i][1].ToString());
                 }*/
                 state.numberBuyLicense = (double[])config.NumberOfPurcharedLicenses.Clone();
+                double licenseCount = 0;
+                for (int i=0; i<state.numberBuyLicense.Length; i++)
+                {
+                    licenseCount += state.numberBuyLicense[i];
+                }
+                if (licenseCount <= 0)
+                {
+                    throw new NotEnoughDataToAnalyze("Not enough data to analyze. Please, fill "+
+                        "number of licenses purchased (Меню/Закупленные лицензии)");
+                }
+
                 //Расчет разницы между кол-вом закупленных и текущих лицензий
                 for (int i = 0; i < state.data.Count; i++)
                 {
@@ -126,6 +137,16 @@ namespace Analytics
                 for (int i = 0; i < state.unicSoftwareNames.Count(); i++)
                 {
                     state.percents[i, 0] = config.Percents[i];
+                }
+                double partsSum = 0;
+                for (int i = 0; i < state.percents.Length; i++)
+                {
+                    partsSum += state.percents[i, 0];
+                }
+                if (partsSum <= 0 || partsSum > 1)
+                {
+                    throw new NotEnoughDataToAnalyze("Not enough data to analyze. " +
+                        "Please fill in the ratio of purchased licenses as a percentage" + " (Меню/Закупленные лицензии)");
                 }
                 //Подсчет общего риска
                 state.risk = MathWorker.multiplyMatrix(covarMas, state.percents);

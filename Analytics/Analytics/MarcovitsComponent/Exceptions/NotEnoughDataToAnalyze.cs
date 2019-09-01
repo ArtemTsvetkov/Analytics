@@ -23,7 +23,7 @@ namespace Analytics.MarcovitsComponent.Exceptions
                 new InformationPopupWindow();
             InformationPopupWindowConfig config = new InformationPopupWindowConfig(
                 "Недостаточно данных для анализа, попробуйте изменить "+
-                "рассматриваемый интервал вреиени");
+                "рассматриваемый интервал времени."+ex.Message);
             view.setConfig(config);
             view.show();
 
