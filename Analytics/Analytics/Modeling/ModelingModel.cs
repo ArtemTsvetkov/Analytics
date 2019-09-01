@@ -9,6 +9,7 @@ using Analytics.CommonComponents.Math;
 using Analytics.CommonComponents.MsSqlServersQueryConfigurator;
 using Analytics.CommonComponents.WorkWithDataBase.MsSqlServer;
 using Analytics.CommonComponents.WorkWithFiles.Load;
+using Analytics.MarcovitsComponent.Exceptions;
 using Analytics.Modeling;
 using Analytics.Modeling.Config;
 using Analytics.Modeling.Converters;
@@ -339,139 +340,168 @@ namespace Analytics
 
         public override void loadStore()
         {
-            //чтение файла с конфигурацией модели
-            /*TextFilesDataLoader loader = new TextFilesDataLoader();
-            TextFilesConfigFieldsOnLoad loadersConfig =
-                new TextFilesConfigFieldsOnLoad(config.getConfigData());
-            loader.setConfig(loadersConfig);
-            loader.execute();
-            state.originalRules = loader.getResult();*/
-
-            state = new ModelingState();
-            report = new ModelingReport(state);
-            //Создание модели в реалтайме
-            DataWorker<ModelsCreatorConfigState, List<string>> loader = 
-                new ModelsCreatorProxy();
-            ModelsCreatorConfigState creatorsConfig = new ModelsCreatorConfigState();
-            //Сбор необходимых данных
-            DataSet unicNamesDS = configProxyForLoadDataFromNewBDAndExecute(
-                MsSqlServersQueryConfigurator.getUnicLicensesName());
-            DataConverter<DataSet, string[]> unicNamesConverter = 
-                new DistinctSoftwareNamesConverter();
-            string[] unicNames = unicNamesConverter.convert(unicNamesDS);
-            StateForConverterOfModelCreatorConfig stateForConverter = 
-                new StateForConverterOfModelCreatorConfig();
-
-            stateForConverter.unicNames = unicNames;
-
-            stateForConverter.numberBuyLicenses = configProxyForLoadDataFromNewBDAndExecute(
-                MsSqlServersQueryConfigurator.getNumberOfPurchasedLicenses());
-
-            for (int i=0;i<unicNames.Length;i++)
+            try
             {
-                stateForConverter.bufOftimeBetweenQueryToGetLicenses.Add(
-                    configProxyForLoadDataFromNewBDAndExecute(MsSqlServersQueryConfigurator.getTimesGiveLicense(
-                    unicNames[i], config.getInterval())));
-                stateForConverter.bufOfTimesOfInBetweenOutLicenses.Add(
-                    configProxyForLoadDataFromNewBDAndExecute(MsSqlServersQueryConfigurator.getInBetweenOutLicenses(
-                    unicNames[i], config.getInterval())));
-                stateForConverter.numberOfGetingLicensesPerTime.Add(
-                    configProxyForLoadDataFromNewBDAndExecute(MsSqlServersQueryConfigurator.getNumberOfLicenesForTime(
-                        unicNames[i], config.getInterval())));
-                stateForConverter.avgLicensePerTime.Add(
-                    configProxyForLoadDataFromNewBDAndExecute(MsSqlServersQueryConfigurator.getAvgLicesensePerTime(
-                        unicNames[i], config.getInterval())));
-            }
+                //чтение файла с конфигурацией модели
+                /*TextFilesDataLoader loader = new TextFilesDataLoader();
+                TextFilesConfigFieldsOnLoad loadersConfig =
+                    new TextFilesConfigFieldsOnLoad(config.getConfigData());
+                loader.setConfig(loadersConfig);
+                loader.execute();
+                state.originalRules = loader.getResult();*/
 
-            //Перевод типа DataSet к нужному формату
-            DataConverter<StateForConverterOfModelCreatorConfig,
-                ReturnStateForConverterOfModelCreatorConfig> convertData = 
-                new ModelCreatorConfigCreator();
-            ReturnStateForConverterOfModelCreatorConfig licencesInfo = 
-                convertData.convert(stateForConverter);
-            //Создание конфига
-            creatorsConfig.licenceInfo = new List<LicenceInfo>();
-            for (int i=0; i<unicNames.Length; i++)
-            {
-                if(licencesInfo.bufOfTimesOfInBetweenOutLicenses.ElementAt(i).
-                    characteristic.Count() > 1 & 
-                    licencesInfo.bufOftimeBetweenQueryToGetLicenses.ElementAt(i).
-                    characteristic.Count() > 1)
+                state = new ModelingState();
+                report = new ModelingReport(state);
+                //Создание модели в реалтайме
+                DataWorker<ModelsCreatorConfigState, List<string>> loader =
+                    new ModelsCreatorProxy();
+                ModelsCreatorConfigState creatorsConfig = new ModelsCreatorConfigState();
+                //Сбор необходимых данных
+                DataSet unicNamesDS = configProxyForLoadDataFromNewBDAndExecute(
+                    MsSqlServersQueryConfigurator.getUnicLicensesName());
+                DataConverter<DataSet, string[]> unicNamesConverter =
+                    new DistinctSoftwareNamesConverter();
+                string[] unicNames = unicNamesConverter.convert(unicNamesDS);
+                StateForConverterOfModelCreatorConfig stateForConverter =
+                    new StateForConverterOfModelCreatorConfig();
+
+                stateForConverter.unicNames = unicNames;
+
+                stateForConverter.numberBuyLicenses = configProxyForLoadDataFromNewBDAndExecute(
+                    MsSqlServersQueryConfigurator.getNumberOfPurchasedLicenses());
+
+                for (int i = 0; i < unicNames.Length; i++)
                 {
-                    int numberBuyLicense = licencesInfo.numberBuyLicenses[i];
-                    int avgDelayTimeInTheProcessing = Convert.ToInt32(MathWorker.avg(
-                        licencesInfo.bufOfTimesOfInBetweenOutLicenses.ElementAt(i).characteristic));
-                    int avgSquereDelayTimeInTheProcessing = Convert.ToInt32(MathWorker.
-                        standardDeviation(licencesInfo.bufOfTimesOfInBetweenOutLicenses.
-                        ElementAt(i).characteristic));
-                    if(avgSquereDelayTimeInTheProcessing> avgDelayTimeInTheProcessing)
-                    {
-                        avgDelayTimeInTheProcessing = (avgSquereDelayTimeInTheProcessing + 
-                            avgDelayTimeInTheProcessing) / 2;
-                        avgSquereDelayTimeInTheProcessing = avgDelayTimeInTheProcessing;
-                    }
-                    int avgRequestedTime = Convert.ToInt32(MathWorker.avg(
-                        licencesInfo.bufOftimeBetweenQueryToGetLicenses.ElementAt(i).characteristic));
-                    int avgSquereRequestedTime = Convert.ToInt32(MathWorker.
-                        standardDeviation(licencesInfo.bufOftimeBetweenQueryToGetLicenses.
-                        ElementAt(i).characteristic));
-                    if(avgSquereRequestedTime > avgRequestedTime)
-                    {
-                        avgRequestedTime = (avgSquereRequestedTime + avgRequestedTime) / 2;
-                        avgSquereRequestedTime = avgRequestedTime;
-                    }
-                    creatorsConfig.licenceInfo.Add(new LicenceInfo(unicNames[i], numberBuyLicense,
-                        avgDelayTimeInTheProcessing, avgSquereDelayTimeInTheProcessing, 
-                        licencesInfo.avgLicensePerTime[i], avgRequestedTime, 
-                        avgSquereRequestedTime));
-                }  
-            }
-            //Вычисление матрицы корреляций
-            int size = creatorsConfig.licenceInfo.Count;
-            creatorsConfig.korellation = new double[size, size];
-            for (int i=0; i<size; i++)
-            {
-                for (int m=i; m<size; m++)
+                    stateForConverter.bufOftimeBetweenQueryToGetLicenses.Add(
+                        configProxyForLoadDataFromNewBDAndExecute(MsSqlServersQueryConfigurator.getTimesGiveLicense(
+                        unicNames[i], config.getInterval())));
+                    stateForConverter.bufOfTimesOfInBetweenOutLicenses.Add(
+                        configProxyForLoadDataFromNewBDAndExecute(MsSqlServersQueryConfigurator.getInBetweenOutLicenses(
+                        unicNames[i], config.getInterval())));
+                    stateForConverter.numberOfGetingLicensesPerTime.Add(
+                        configProxyForLoadDataFromNewBDAndExecute(MsSqlServersQueryConfigurator.getNumberOfLicenesForTime(
+                            unicNames[i], config.getInterval())));
+                    stateForConverter.avgLicensePerTime.Add(
+                        configProxyForLoadDataFromNewBDAndExecute(MsSqlServersQueryConfigurator.getAvgLicesensePerTime(
+                            unicNames[i], config.getInterval())));
+                }
+
+                //Перевод типа DataSet к нужному формату
+                DataConverter<StateForConverterOfModelCreatorConfig,
+                    ReturnStateForConverterOfModelCreatorConfig> convertData =
+                    new ModelCreatorConfigCreator();
+                ReturnStateForConverterOfModelCreatorConfig licencesInfo =
+                    convertData.convert(stateForConverter);
+
+
+                double licenseCount = 0;
+                for (int i = 0; i < licencesInfo.numberBuyLicenses.Length; i++)
                 {
-                    if (licencesInfo.numberOfGetingLicensesPerTime.ElementAt(i).
-                    characteristic.Count() != 0 &
-                    licencesInfo.numberOfGetingLicensesPerTime.ElementAt(m).
-                    characteristic.Count() != 0)
+                    if (licencesInfo.numberBuyLicenses[i] <= 0)
                     {
-                        //Перед вычислением корелляции необходимо выяснить, не состоят ли
-                        //проверяемые массивы из одинаковых элементов
-                        bool countCorell = true;
-                        if(MathWorker.standardDeviation(licencesInfo.
-                            numberOfGetingLicensesPerTime.ElementAt(i).characteristic) == 0 ||
-                            MathWorker.standardDeviation(licencesInfo.
-                            numberOfGetingLicensesPerTime.ElementAt(m).characteristic) == 0)
+                        throw new NotEnoughDataToAnalyze("Not enough data to analyze. Count of " +
+                            "purchased license must have more than zero. Plese check it " +
+                            "(Меню/Закупленные лицензии). For exclude one or more license " +
+                            "types from calculating please set zero in table with the " +
+                            "percentage of purchased licenses (Меню/Закупленные лицензии) in " +
+                            "row(rows) with this license types.");
+                    }
+                    licenseCount += licencesInfo.numberBuyLicenses[i];
+                }
+                if (licenseCount <= 0)
+                {
+                    throw new NotEnoughDataToAnalyze("Not enough data to analyze. Please, fill " +
+                        "number of licenses purchased (Меню/Закупленные лицензии)");
+                }
+
+                //Создание конфига
+                creatorsConfig.licenceInfo = new List<LicenceInfo>();
+                for (int i = 0; i < unicNames.Length; i++)
+                {
+                    if (licencesInfo.bufOfTimesOfInBetweenOutLicenses.ElementAt(i).
+                        characteristic.Count() > 1 &
+                        licencesInfo.bufOftimeBetweenQueryToGetLicenses.ElementAt(i).
+                        characteristic.Count() > 1)
+                    {
+                        int numberBuyLicense = licencesInfo.numberBuyLicenses[i];
+                        int avgDelayTimeInTheProcessing = Convert.ToInt32(MathWorker.avg(
+                            licencesInfo.bufOfTimesOfInBetweenOutLicenses.ElementAt(i).characteristic));
+                        int avgSquereDelayTimeInTheProcessing = Convert.ToInt32(MathWorker.
+                            standardDeviation(licencesInfo.bufOfTimesOfInBetweenOutLicenses.
+                            ElementAt(i).characteristic));
+                        if (avgSquereDelayTimeInTheProcessing > avgDelayTimeInTheProcessing)
                         {
-                            countCorell = false;
+                            avgDelayTimeInTheProcessing = (avgSquereDelayTimeInTheProcessing +
+                                avgDelayTimeInTheProcessing) / 2;
+                            avgSquereDelayTimeInTheProcessing = avgDelayTimeInTheProcessing;
                         }
-                        if (countCorell)
+                        int avgRequestedTime = Convert.ToInt32(MathWorker.avg(
+                            licencesInfo.bufOftimeBetweenQueryToGetLicenses.ElementAt(i).characteristic));
+                        int avgSquereRequestedTime = Convert.ToInt32(MathWorker.
+                            standardDeviation(licencesInfo.bufOftimeBetweenQueryToGetLicenses.
+                            ElementAt(i).characteristic));
+                        if (avgSquereRequestedTime > avgRequestedTime)
                         {
-                            double currentCorellation = MathWorker.corellation(
-                            licencesInfo.numberOfGetingLicensesPerTime.ElementAt(i).characteristic,
-                            licencesInfo.numberOfGetingLicensesPerTime.ElementAt(m).characteristic);
-                            creatorsConfig.korellation[i, m] = currentCorellation;
-                            creatorsConfig.korellation[m, i] = currentCorellation;
+                            avgRequestedTime = (avgSquereRequestedTime + avgRequestedTime) / 2;
+                            avgSquereRequestedTime = avgRequestedTime;
                         }
-                        else
+                        creatorsConfig.licenceInfo.Add(new LicenceInfo(unicNames[i], numberBuyLicense,
+                            avgDelayTimeInTheProcessing, avgSquereDelayTimeInTheProcessing,
+                            licencesInfo.avgLicensePerTime[i], avgRequestedTime,
+                            avgSquereRequestedTime));
+                    }
+                }
+                //Вычисление матрицы корреляций
+                int size = creatorsConfig.licenceInfo.Count;
+                creatorsConfig.korellation = new double[size, size];
+                for (int i = 0; i < size; i++)
+                {
+                    for (int m = i; m < size; m++)
+                    {
+                        if (licencesInfo.numberOfGetingLicensesPerTime.ElementAt(i).
+                        characteristic.Count() != 0 &
+                        licencesInfo.numberOfGetingLicensesPerTime.ElementAt(m).
+                        characteristic.Count() != 0)
                         {
-                            creatorsConfig.korellation[i, m] = 0;
-                            creatorsConfig.korellation[m, i] = 0;
+                            //Перед вычислением корелляции необходимо выяснить, не состоят ли
+                            //проверяемые массивы из одинаковых элементов
+                            bool countCorell = true;
+                            if (MathWorker.standardDeviation(licencesInfo.
+                                numberOfGetingLicensesPerTime.ElementAt(i).characteristic) == 0 ||
+                                MathWorker.standardDeviation(licencesInfo.
+                                numberOfGetingLicensesPerTime.ElementAt(m).characteristic) == 0)
+                            {
+                                countCorell = false;
+                            }
+                            if (countCorell)
+                            {
+                                double currentCorellation = MathWorker.corellation(
+                                licencesInfo.numberOfGetingLicensesPerTime.ElementAt(i).characteristic,
+                                licencesInfo.numberOfGetingLicensesPerTime.ElementAt(m).characteristic);
+                                creatorsConfig.korellation[i, m] = currentCorellation;
+                                creatorsConfig.korellation[m, i] = currentCorellation;
+                            }
+                            else
+                            {
+                                creatorsConfig.korellation[i, m] = 0;
+                                creatorsConfig.korellation[m, i] = 0;
+                            }
                         }
                     }
                 }
-            }
-            creatorsConfig.withKovar = true;
-            loader.setConfig(creatorsConfig);
-            loader.execute();
-            state.originalRules = loader.getResult();
+                creatorsConfig.withKovar = true;
+                loader.setConfig(creatorsConfig);
+                loader.execute();
+                state.originalRules = loader.getResult();
 
-            //создание всех очередей, устройств, меток и тд
-            RulesParser rules_parser = new RulesParser();
-            rules_parser.go_parse(this);
+                //создание всех очередей, устройств, меток и тд
+                RulesParser rules_parser = new RulesParser();
+                rules_parser.go_parse(this);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.getInstance().processing(ex);
+            }
         }
 
         //Получение исходных данных для дальнейшей конфигурации конфигуратора 

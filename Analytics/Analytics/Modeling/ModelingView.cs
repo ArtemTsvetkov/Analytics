@@ -60,7 +60,6 @@ namespace Analytics.CommonComponents.Views
             config.setWithKovar(false);
             config.setNumberOfStartsModeling(1);
             model.setConfig(config);
-            model.loadStore();
             form.progressBar1Elem.Value = 0;
         }
 
